@@ -1,4 +1,4 @@
-name: flozaxx
+name: noty
 description: "Şifreli not ve şifre kasası (Android + Web)."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

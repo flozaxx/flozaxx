@@ -1,6 +1,6 @@
 /// Uygulamadaki tüm kullanıcıya görünen metinler.
 abstract final class Str {
-  static const appName = 'Flozaxx';
+  static const appName = 'Noty';
 
   // Giriş
   static const signInTitle = 'Şifreli kasanıza hoş geldiniz';

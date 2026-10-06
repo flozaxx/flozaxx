@@ -1,4 +1,4 @@
-# Flozaxx
+# Noty
 
 Şifreli not ve şifre kasası. Tek Flutter kod tabanı: Android APK + Web (Firebase Hosting).
 

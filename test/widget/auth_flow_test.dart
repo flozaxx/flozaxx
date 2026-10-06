@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flozaxx/app.dart';
-import 'package:flozaxx/core/strings_tr.dart';
-import 'package:flozaxx/data/auth_repository.dart';
-import 'package:flozaxx/data/models/app_user.dart';
+import 'package:noty/app.dart';
+import 'package:noty/core/strings_tr.dart';
+import 'package:noty/data/auth_repository.dart';
+import 'package:noty/data/models/app_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,7 +41,7 @@ Future<FakeAuthRepository> pumpApp(WidgetTester tester) async {
   await tester.pumpWidget(
     ProviderScope(
       overrides: [authRepositoryProvider.overrideWithValue(repo)],
-      child: const FlozaxxApp(),
+      child: const NotyApp(),
     ),
   );
   await tester.pumpAndSettle();

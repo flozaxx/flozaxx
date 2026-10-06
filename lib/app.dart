@@ -17,8 +17,8 @@ ThemeData _theme(Brightness brightness) => ThemeData(
       ),
     );
 
-class FlozaxxApp extends StatelessWidget {
-  const FlozaxxApp({super.key});
+class NotyApp extends StatelessWidget {
+  const NotyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
