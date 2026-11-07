@@ -10,7 +10,7 @@
   resources : projeye bağlı ek kaynaklar (ayrıntıda "Ek kaynaklar" olarak görünür)
 
   SITE.now     : sağ sütundaki "Şu an" kutusu
-  SITE.updates : sağ sütundaki "Son güncellemeler", en yeni en üstte
+  SITE.updates : sağ sütundaki "Son güncellemeler", en yeni en üstte; en yeni 4 tanesi görünür
 */
 
 window.SITE = {

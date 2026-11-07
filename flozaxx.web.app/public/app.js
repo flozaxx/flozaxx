@@ -19,6 +19,7 @@ const UI_ICONS = {
 const KINDS = { app: "Uygulamalar", tool: "Rehber ve araçlar", web: "Web" };
 const KIND_LABEL = { app: "Uygulama", tool: "Rehber / araç", web: "Web" };
 const STATUS_LABEL = { live: "Yayında", dev: "Geliştiriliyor" };
+const SIDE_UPDATE_COUNT = 4;
 
 const projects = window.PROJECTS;
 const site = window.SITE;
@@ -122,6 +123,7 @@ function projectRef(id) {
 function renderSide() {
   $("now-list").innerHTML = site.now.map((n) => `<li>${projectRef(n.project)}<p>${esc(n.text)}</p></li>`).join("");
   $("update-list").innerHTML = site.updates
+    .slice(0, SIDE_UPDATE_COUNT)
     .map((u) => `<li><time>${esc(u.date)}</time><p>${esc(u.text)}</p>${projectRef(u.project)}</li>`)
     .join("");
 }

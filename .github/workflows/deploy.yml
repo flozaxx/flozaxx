@@ -1,0 +1,37 @@
+name: Siteyi yayınla
+
+on:
+  push:
+    branches: [main]
+    paths: ["flozaxx.web.app/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: firebase-hosting
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FLOZAXX_A8521 }}
+    steps:
+      # Anahtar henüz eklenmediyse iş başarısız olmak yerine atlanır.
+      - name: Anahtar var mı
+        if: env.FIREBASE_SERVICE_ACCOUNT == ''
+        run: echo "::notice::FIREBASE_SERVICE_ACCOUNT_FLOZAXX_A8521 gizli anahtarı yok; yayın atlandı."
+
+      - uses: actions/checkout@v4
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+
+      - name: flozaxx.web.app'e yükle
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FLOZAXX_A8521 }}
+          projectId: flozaxx-a8521
+          channelId: live
+          entryPoint: flozaxx.web.app

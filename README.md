@@ -21,7 +21,5 @@ durumu ve bağlantıları tek sayfada: **[flozaxx.web.app](https://flozaxx.web.a
 JavaScript, Firebase Hosting'de. İçerik `flozaxx.web.app/public/projects.js`
 dosyasından gelir.
 
-```sh
-cd flozaxx.web.app
-firebase deploy --only hosting
-```
+`main` dalına gelen her site değişikliği GitHub Actions ile otomatik
+yayınlanır ([deploy.yml](.github/workflows/deploy.yml)).

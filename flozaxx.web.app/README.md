@@ -43,6 +43,15 @@ python -m http.server 8000
 
 ## Yayınlamak
 
+`main` dalına `flozaxx.web.app/` altında bir değişiklik gelince GitHub
+Actions siteyi kendiliğinden yayınlar (`.github/workflows/deploy.yml`).
+Actions sekmesindeki "Siteyi yayınla" iş akışı elle de çalıştırılabilir.
+Bunun için depoda `FIREBASE_SERVICE_ACCOUNT_FLOZAXX_A8521` gizli anahtarı
+olmalı; bir kez bu klasörde `firebase init hosting:github` çalıştırmak onu
+oluşturur. Anahtar yoksa iş akışı yayını atlar.
+
+Elle yayınlamak için:
+
 ```sh
 firebase deploy --only hosting
 ```

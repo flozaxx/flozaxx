@@ -4,3 +4,6 @@ firebase-debug.log
 node_modules/
 .DS_Store
 Thumbs.db
+
+# firebase init hosting:github bu klasöre kendi iş akışı dosyalarını yazar; depo kökündeki .github kullanılıyor.
+flozaxx.web.app/.github/

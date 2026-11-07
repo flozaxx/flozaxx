@@ -1011,13 +1011,16 @@ svg.icon-fill {
   }
 
   .rail {
-    position: sticky;
-    top: 56px;
-    max-height: calc(100vh - 56px);
-    overflow-y: auto;
     padding-top: var(--s8);
     padding-bottom: var(--s5);
-    scrollbar-width: thin;
+  }
+}
+
+/* Yan sütun yalnızca ekrana sığdığında sabitlenir; sığmazsa sayfayla birlikte kayar, böylece iç kaydırma çubuğu hiç çıkmaz. */
+@media (min-width: 1080px) and (min-height: 800px) {
+  .rail {
+    position: sticky;
+    top: calc(56px + var(--s4) - var(--s8));
   }
 }
 
