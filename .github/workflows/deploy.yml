@@ -24,7 +24,7 @@ jobs:
         if: env.FIREBASE_SERVICE_ACCOUNT == ''
         run: echo "::notice::FIREBASE_SERVICE_ACCOUNT_FLOZAXX_A8521 gizli anahtarı yok; yayın atlandı."
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         if: env.FIREBASE_SERVICE_ACCOUNT != ''
 
       - name: flozaxx.web.app'e yükle
