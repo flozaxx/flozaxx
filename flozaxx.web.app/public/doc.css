@@ -207,32 +207,58 @@
   border-bottom: 0;
 }
 
-.checklist {
-  padding-left: 0 !important;
-  list-style: none;
+.step-group {
+  margin-top: var(--s5);
 }
 
-.task label {
+.step-group-title {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  cursor: pointer;
+  align-items: center;
+  gap: var(--s3);
+  margin: 0 0 var(--s2);
 }
 
-.task input {
-  flex: none;
-  width: 18px;
-  height: 18px;
-  margin: 4px 0 0;
-  accent-color: var(--accent);
-}
-
-.task input:checked + span {
+.step-group-title small {
+  font-size: var(--fs-sm);
+  font-weight: 500;
   color: var(--muted);
 }
 
-.checklist-reset {
-  margin-top: var(--s2);
+.step-letter {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.doc .steps {
+  margin: 0 0 0 15px;
+  padding: 0 0 0 var(--s5);
+  list-style: none;
+  border-left: 2px solid var(--line);
+}
+
+.doc .steps li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  margin: 0;
+  padding: 6px 0;
+}
+
+.step-no {
+  flex: none;
+  min-width: 2rem;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--accent);
 }
 
 /* Editör düzeni çizimi */

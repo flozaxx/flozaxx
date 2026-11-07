@@ -49,7 +49,7 @@
           <li><a href="#3-arayuz-profesyonel-editorlerden-duzen-almak" data-spy="3-arayuz-profesyonel-editorlerden-duzen-almak">3. Arayüz: profesyonel editörlerden düzen almak</a></li>
           <li><a href="#4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler" data-spy="4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler">4. Optimizasyon: oyunlardan ve profesyonel uygulamalardan teknikler</a></li>
           <li><a href="#5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki" data-spy="5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki">5. Kod sadeliği: AI kodu ile elle yazılmış kodun farkı</a></li>
-          <li><a href="#6-kontrol-listesi" data-spy="6-kontrol-listesi">6. Kontrol listesi</a></li>
+          <li><a href="#6-adim-adim" data-spy="6-adim-adim">6. Adım adım</a></li>
           <li><a href="#kaynaklar" data-spy="kaynaklar">Kaynaklar</a></li>
         </ol>
       </div>
@@ -70,7 +70,7 @@
           <li><a href="#3-arayuz-profesyonel-editorlerden-duzen-almak" data-spy="3-arayuz-profesyonel-editorlerden-duzen-almak">3. Arayüz: profesyonel editörlerden düzen almak</a></li>
           <li><a href="#4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler" data-spy="4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler">4. Optimizasyon: oyunlardan ve profesyonel uygulamalardan teknikler</a></li>
           <li><a href="#5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki" data-spy="5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki">5. Kod sadeliği: AI kodu ile elle yazılmış kodun farkı</a></li>
-          <li><a href="#6-kontrol-listesi" data-spy="6-kontrol-listesi">6. Kontrol listesi</a></li>
+          <li><a href="#6-adim-adim" data-spy="6-adim-adim">6. Adım adım</a></li>
           <li><a href="#kaynaklar" data-spy="kaynaklar">Kaynaklar</a></li>
         </ol>
       </details>
@@ -480,34 +480,40 @@ fun Bitmap.toSticker(): Bitmap =
 </ul>
 <h3 id="gizli-maliyet-anlama-borcu">Gizli maliyet: anlama borcu</h3>
 <p>Addy Osmani bu soruna <strong>anlama borcu</strong> (comprehension debt) adını verir: sistemdeki kod miktarı ile o kodu gerçekten anlayan insan arasındaki açık. Andığı bir deneyde AI yardımıyla çalışan mühendisler işi aynı sürede bitirdi ama sonraki anlama sınavında %17 daha düşük puan aldı (<a href="https://www.oreilly.com/radar/comprehension-debt-the-hidden-cost-of-ai-generated-code/" target="_blank" rel="noopener">O'Reilly</a>). Bizim için test basit: AI'ın yazdığı her modül için "bu neden böyle çalışıyor?" sorusu koda bakmadan cevaplanabilmeli. Cevaplanamıyorsa o modül birlikte okunur.</p>
-<h2 id="6-kontrol-listesi">6. Kontrol listesi</h2>
-<p>Her yeni proje ya da özellik bu listeden geçer. İlk blok kod yazılmadan önce, son blok yayınlamadan önce işaretlenir.</p>
-<p><strong>Planlama (kod yok)</strong></p>
-<ul class="checklist">
-<li class="task"><label><input type="checkbox" data-task="1"><span>3–5 referans uygulama seçildi, ekran görüntüleri toplandı</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="2"><span>Referans şablonu dolduruldu; ortak noktalar kural olarak yazıldı</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="3"><span>Farkı yaratacağımız tek (ya da birkaç) yer belli</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="4"><span>Renk, yazı, boşluk ve köşe değerleri tek tabloda (tasarım token'ları)</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="5"><span>Boş, yükleniyor, hata, izin reddi, çevrimdışı ekranları listelendi</span></label></li>
-</ul>
-<p><strong>Geliştirme</strong></p>
-<ul class="checklist">
-<li class="task"><label><input type="checkbox" data-task="6"><span>Aynı görünen her şey tek bileşenden geliyor; kopya kod yok</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="7"><span>Ekranda aynı anda en fazla iki ayar katmanı var</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="8"><span>Büyük görseller küçültülerek yükleniyor; ağır işler arka planda</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="9"><span>Her adımdan sonra gerçek telefonda denendi</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="10"><span>Yorumlar yalnızca "neden"i anlatıyor; anlatı ve değişiklik notu yok</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="11"><span>Gereksiz <code>try/catch</code>, imkânsız null kontrolü ve ölü kod yok</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="12"><span>Her modülün neden böyle çalıştığı koda bakmadan anlatılabiliyor</span></label></li>
-</ul>
-<p><strong>Yayınlamadan önce</strong></p>
-<ul class="checklist">
-<li class="task"><label><input type="checkbox" data-task="13"><span>Kodda ve APK'da gizli anahtar yok (gitleaks taraması)</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="14"><span>Firebase / veritabanı kuralları "varsayılan kapalı"; başka kullanıcının verisi okunamıyor</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="15"><span>Lint uyarıları temiz</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="16"><span>Ekran referansla yan yana kondu; her farklılığın gerekçesi var</span></label></li>
-<li class="task"><label><input type="checkbox" data-task="17"><span>Takılan ekran varsa ölçüldü (Profile GPU Rendering)</span></label></li>
-</ul>
+<h2 id="6-adim-adim">6. Adım adım</h2>
+<p>Her yeni proje ya da özellik bu adımlardan sırayla geçer: A kod yazmadan önce, B geliştirirken, C yayınlamadan önce.</p>
+<section class="step-group" aria-labelledby="adim-a">
+<h3 class="step-group-title" id="adim-a"><span class="step-letter">A</span>Planlama <small>(kod yok)</small></h3>
+<ol class="steps">
+<li><span class="step-no">A1</span><span>3–5 referans uygulama seç, ekran görüntülerini topla.</span></li>
+<li><span class="step-no">A2</span><span>Referans şablonunu doldur; ortak noktaları kural olarak yaz.</span></li>
+<li><span class="step-no">A3</span><span>Farkı yaratacağın tek (ya da birkaç) yeri belirle.</span></li>
+<li><span class="step-no">A4</span><span>Renk, yazı, boşluk ve köşe değerlerini tek tabloda topla (tasarım token'ları).</span></li>
+<li><span class="step-no">A5</span><span>Boş, yükleniyor, hata, izin reddi ve çevrimdışı ekranlarını listele.</span></li>
+</ol>
+</section>
+<section class="step-group" aria-labelledby="adim-b">
+<h3 class="step-group-title" id="adim-b"><span class="step-letter">B</span>Geliştirme</h3>
+<ol class="steps">
+<li><span class="step-no">B1</span><span>Aynı görünen her şeyi tek bileşenden üret; kopya kod yazma.</span></li>
+<li><span class="step-no">B2</span><span>Ekranda aynı anda en fazla iki ayar katmanı bırak.</span></li>
+<li><span class="step-no">B3</span><span>Büyük görselleri küçülterek yükle; ağır işleri arka plana al.</span></li>
+<li><span class="step-no">B4</span><span>Her adımdan sonra gerçek telefonda dene.</span></li>
+<li><span class="step-no">B5</span><span>Yorumlarda yalnızca "neden"i anlat; anlatı ve değişiklik notu bırakma.</span></li>
+<li><span class="step-no">B6</span><span>Gereksiz <code>try/catch</code>, imkânsız null kontrolü ve ölü kodu temizle.</span></li>
+<li><span class="step-no">B7</span><span>Her modülün neden böyle çalıştığını koda bakmadan anlatabildiğinden emin ol.</span></li>
+</ol>
+</section>
+<section class="step-group" aria-labelledby="adim-c">
+<h3 class="step-group-title" id="adim-c"><span class="step-letter">C</span>Yayınlamadan önce</h3>
+<ol class="steps">
+<li><span class="step-no">C1</span><span>Kodu ve APK'yı gizli anahtarlar için gitleaks ile tara.</span></li>
+<li><span class="step-no">C2</span><span>Firebase / veritabanı kurallarını "varsayılan kapalı" yap; başka kullanıcının verisinin okunamadığını dene.</span></li>
+<li><span class="step-no">C3</span><span>Lint uyarılarını temizle.</span></li>
+<li><span class="step-no">C4</span><span>Ekranı referansla yan yana koy; her farklılığın gerekçesini yaz.</span></li>
+<li><span class="step-no">C5</span><span>Takılan ekran varsa önce ölç (Profile GPU Rendering), sonra düzelt.</span></li>
+</ol>
+</section>
 <h2 id="kaynaklar">Kaynaklar</h2>
 <ul>
 <li><a href="https://jakobnielsenphd.substack.com/p/jakobs-law" target="_blank" rel="noopener">Jakob's Law of the Internet User Experience — Jakob Nielsen</a></li>

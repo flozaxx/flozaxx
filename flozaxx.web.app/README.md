@@ -10,7 +10,7 @@ public/
   app.js          liste, süzgeçler, tek açık ayrıntı, yan sütunlar
   theme.js        koyu / açık tema (tüm sayfalar)
   style.css       tasarım token'ları ve stiller
-  doc.css, doc.js rehber sayfalarının okuma düzeni, içindekiler, kontrol listesi
+  doc.css, doc.js rehber sayfalarının okuma düzeni ve içindekiler
   p/rubik/                Rubik Küpü Rehberi
   p/bld/                  BLD Harf Küpü (Rubik rehberinin ek kaynağı)
   p/once-bak-sonra-yap/   Önce Bak, Sonra Yap rehberi

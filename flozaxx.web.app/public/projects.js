@@ -145,14 +145,14 @@ window.PROJECTS = [
     tech: [],
     started: "Kasım 2026",
     summary:
-      "Yeni bir uygulama ya da ekrana başlarken izlediğim yöntem: kod yazmadan önce iyi örnekleri incele, ortak olanı kural kabul et, farkı bilinçli yerlerde yarat. Kaynaklı tablolar ve işaretlenebilir bir kontrol listesiyle.",
+      "Yeni bir uygulama ya da ekrana başlarken izlediğim yöntem: kod yazmadan önce iyi örnekleri incele, ortak olanı kural kabul et, farkı bilinçli yerlerde yarat. Kaynaklı tablolar ve A, B, C diye sıralanmış adımlarla.",
     features: [
       "Referans araştırma şablonu: 3–5 örnek uygulama, ortak kalıplar ve kararlar",
       "AI ile yazılmış yazılımların büyük sorunları ve sektördeki karşılıkları",
       "Arayüz: profesyonel editörlerin ortak düzeni, Sticker Studio editörü için öneriler",
       "Optimizasyon: kare bütçesi, vekil önizleme, arka plan işleri",
       "Kod sadeliği: AI kodunu ele veren izler, yorum kuralları, anlama borcu",
-      "Planlama, geliştirme ve yayın öncesi için kontrol listesi",
+      "Adım adım iş akışı: A planlama, B geliştirme, C yayın öncesi",
     ],
     links: [{ label: "Rehberi oku", url: "/p/once-bak-sonra-yap/" }],
   },
