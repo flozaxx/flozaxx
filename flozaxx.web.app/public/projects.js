@@ -1,18 +1,31 @@
 /*
-  Sitedeki proje içeriğinin tamamı bu dosyadadır. Yeni proje eklemek için
-  PROJECTS listesine bir nesne kopyalayıp düzenlemek yeterli; sıra, sitedeki
-  sıradır.
+  Sitedeki içeriğin tamamı bu dosyadadır. Yeni proje eklemek için PROJECTS
+  listesine bir nesne kopyalayıp düzenlemek yeterli; sıra, sitedeki sıradır.
 
-  kind   : "app" Uygulama · "tool" Rehber / araç · "web" Web
-  status : "live" Yayında · "dev" Geliştiriliyor · "private" Özel
-  icon   : app.js içindeki ICONS anahtarlarından biri; yoksa adın baş harfi
-  color  : ikon zemini (CSS rengi ya da gradyan), ink: ikon rengi
-  links  : private: true olan bağlantı claude.ai hesabımda durur; paylaşıma
-           açılmadıysa ziyaretçi açamaz, sitede kilit simgesiyle gösterilir
+  kind      : "app" Uygulama · "tool" Rehber / araç · "web" Web
+  status    : "live" Yayında · "dev" Geliştiriliyor
+  icon      : app.js içindeki ICONS anahtarlarından biri; yoksa adın baş harfi
+  color     : ikon zemini (CSS rengi ya da gradyan), ink: ikon rengi
+  links     : ilk bağlantı satırdaki hızlı "aç" düğmesi olur
+  resources : projeye bağlı ek kaynaklar (ayrıntıda "Ek kaynaklar" olarak görünür)
+
+  SITE.now     : sağ sütundaki "Şu an" kutusu
+  SITE.updates : sağ sütundaki "Son güncellemeler", en yeni en üstte
 */
 
 window.SITE = {
   updated: "7 Kasım 2026",
+  now: [
+    { project: "sticker-studio", text: "İlk sürüm üzerinde çalışıyorum: editör ve paket akışı." },
+    { project: "noty", text: "1.12.1 yayında; telefonda ve web’de kullanılabilir." },
+  ],
+  updates: [
+    { date: "7 Kas 2026", project: "flozaxx-web", text: "Site yenilendi: tüm projeler tek sayfada." },
+    { date: "3 Kas 2026", project: "noty", text: "Noty 1.12: e-postayla erişim, erişim isteği, “Notlarıma ekle”." },
+    { date: "3 Kas 2026", project: "noty", text: "Noty 1.11: uçtan uca şifreli not paylaşımı, okuma görünümü." },
+    { date: "1 Kas 2026", project: "once-bak-sonra-yap", text: "“Önce Bak, Sonra Yap” rehberi yazıldı." },
+    { date: "24 Eki 2026", project: "noty", text: "Noty 1.10: iki yönlü sabitleme, grup şeridi." },
+  ],
 };
 
 window.PROJECTS = [
@@ -40,10 +53,7 @@ window.PROJECTS = [
       "Koyu ve açık tema; telefonda sade arayüz, geniş ekranda panel düzeni",
     ],
     security: "AES-256-GCM şifreleme · Argon2id ile korunan yedekler · sıkı Firestore kuralları",
-    links: [
-      { label: "Web uygulamasını aç", url: "https://noty-app1.web.app" },
-      { label: "Tasarım önizlemesi", url: "https://claude.ai/artifact/KQSau8oKYPNZsZFwJPAj83", private: true },
-    ],
+    links: [{ label: "Web uygulamasını aç", url: "https://noty-app1.web.app" }],
   },
   {
     id: "sticker-studio",
@@ -68,9 +78,7 @@ window.PROJECTS = [
       "Hızlı paket ön ayarları ve Paketlerim listesi",
       "Türkçe ve İngilizce arayüz",
     ],
-    links: [
-      { label: "İkon önerileri", url: "https://claude.ai/artifact/DQXCSs7PwRo8SRsRydeM8H", private: true },
-    ],
+    links: [],
   },
   {
     id: "rubik",
@@ -94,51 +102,36 @@ window.PROJECTS = [
       "Serbest küp: sürükleyip çevir, karıştır, süre tut; kendi küpünü kamerayla tara, beş yöntemi yarıştır",
     ],
     links: [{ label: "Rehberi aç", url: "/p/rubik/" }],
-  },
-  {
-    id: "bld-harf-kupu",
-    name: "BLD Harf Küpü",
-    tagline: "Körleme harf şemasını ezberleme aracı",
-    kind: "tool",
-    status: "live",
-    icon: "letters",
-    color: "#1F6BD6",
-    platforms: ["Web"],
-    tech: ["HTML/CSS/JS"],
-    started: "Ekim 2026",
-    summary:
-      "Körleme çözümde her çıkartmanın bir harfi vardır. Bu araç kendi şemamı (sarı üst, kırmızı ön; büyük harf köşe, küçük harf kenar) 3B küp üzerinde öğretir ve sınar.",
-    features: [
-      "Keşfet: çıkartmaya dokun, aynı parçadaki diğer harfleri gör",
-      "Harf sor: parlayan çıkartmanın harfini bil",
-      "Yer bul: verilen harfi küpte ya da açınımda bul",
-      "Sık yanılınan harfler daha sık sorulur; zayıf harfler listesi",
-      "Köşe / kenar filtresi, sürüklenebilir küp ve klavye kısayolları",
+    resources: [
+      {
+        name: "BLD Harf Küpü",
+        url: "/p/bld/",
+        text: "Körleme harf şemasını (sarı üst, kırmızı ön; büyük harf köşe, küçük harf kenar) 3B küpte öğreten ve sınayan araç. Keşfet, harf sor, yer bul; sık yanılınan harfler daha sık sorulur.",
+      },
     ],
-    links: [{ label: "Aracı aç", url: "/p/bld/" }],
   },
   {
     id: "once-bak-sonra-yap",
     name: "Önce Bak, Sonra Yap",
     tagline: "AI destekli yazılımda profesyonel standartlar",
     kind: "tool",
-    status: "private",
+    status: "live",
     icon: "compass",
     color: "#7A5AF8",
-    platforms: ["Doküman"],
+    platforms: ["Web"],
     tech: [],
     started: "Kasım 2026",
     summary:
-      "Yeni bir uygulama ya da ekrana başlarken izlediğim yöntem: kod yazmadan önce iyi örnekleri incele, ortak olanı kural kabul et, farkı bilinçli yerlerde yarat.",
+      "Yeni bir uygulama ya da ekrana başlarken izlediğim yöntem: kod yazmadan önce iyi örnekleri incele, ortak olanı kural kabul et, farkı bilinçli yerlerde yarat. Kaynaklı tablolar ve işaretlenebilir bir kontrol listesiyle.",
     features: [
       "Referans araştırma şablonu: 3–5 örnek uygulama, ortak kalıplar ve kararlar",
-      "Arayüz kuralları: tutarlı bileşenler, en fazla iki ayar katmanı, boş ve hata ekranları",
-      "AI’ın sık hataları: koda gömülü gizli anahtarlar, açık veritabanı kuralları, kopya kod",
-      "Kod sadeliği ve optimizasyon ilkeleri",
+      "AI ile yazılmış yazılımların büyük sorunları ve sektördeki karşılıkları",
+      "Arayüz: profesyonel editörlerin ortak düzeni, Sticker Studio editörü için öneriler",
+      "Optimizasyon: kare bütçesi, vekil önizleme, arka plan işleri",
+      "Kod sadeliği: AI kodunu ele veren izler, yorum kuralları, anlama borcu",
+      "Planlama, geliştirme ve yayın öncesi için kontrol listesi",
     ],
-    links: [
-      { label: "Rehberi oku", url: "https://claude.ai/artifact/QeQpQXGQoa8WUrGVJeuGBp", private: true },
-    ],
+    links: [{ label: "Rehberi oku", url: "/p/once-bak-sonra-yap/" }],
   },
   {
     id: "flozaxx-web",
@@ -154,10 +147,11 @@ window.PROJECTS = [
     summary:
       "Projelerimi tek sayfada toplayan kişisel site. Çerçevesiz, sade HTML, CSS ve JavaScript; içeriğin tamamı tek bir veri dosyasından gelir.",
     features: [
-      "Kategori ve teknoloji filtresi",
-      "Her projenin açılır ayrıntı bölümü ve paylaşılabilir bağlantısı",
+      "Kategori ve teknoloji süzgeci; aynı anda tek proje açık kalır",
+      "Her projenin paylaşılabilir bağlantısı (#kimlik)",
+      "Geniş ekranda sayfa içi gezinme, güncel durum ve son güncellemeler",
       "Koyu ve açık tema; varsayılan olarak cihaz ayarını izler",
     ],
-    links: [{ label: "GitHub", url: "https://github.com/flozaxx" }],
+    links: [{ label: "Kaynak kodu", url: "https://github.com/flozaxx/flozaxx/tree/main/flozaxx.web.app" }],
   },
 ];

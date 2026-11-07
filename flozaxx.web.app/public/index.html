@@ -32,7 +32,7 @@
   <a class="skip-link" href="#projeler">Projelere geç</a>
 
   <header class="topbar">
-    <div class="topbar-inner">
+    <div class="topbar-inner wrap">
       <a class="brand" href="#top" aria-label="flozaxx, sayfa başı">flozaxx</a>
       <nav class="topnav" aria-label="Bölümler">
         <a href="#projeler">Projeler</a>
@@ -46,8 +46,23 @@
     </div>
   </header>
 
+  <div class="layout wrap">
+    <nav class="rail rail-left" aria-label="Sayfa içi gezinme">
+      <div class="rail-inner">
+        <p class="rail-title">Bu sayfada</p>
+        <ul class="rail-sections">
+          <li><a href="#top" data-spy="top">Giriş</a></li>
+          <li><a href="#projeler" data-spy="projeler">Projeler</a></li>
+          <li><a href="#teknolojiler" data-spy="teknolojiler">Teknolojiler</a></li>
+          <li><a href="#baglantilar" data-spy="baglantilar">Bağlantılar</a></li>
+        </ul>
+        <p class="rail-title">Projeler</p>
+        <ul class="rail-projects" id="rail-projects"></ul>
+      </div>
+    </nav>
+
   <main id="top">
-    <section class="hero container">
+    <section class="hero">
       <h1>flozaxx</h1>
       <p class="tagline">fazlasıyla işlevsel. fazlasıyla yaratıcı.</p>
       <p class="intro">
@@ -65,10 +80,10 @@
       </div>
     </section>
 
-    <section class="section container" id="projeler" aria-labelledby="projeler-baslik">
+    <section class="section" id="projeler" aria-labelledby="projeler-baslik">
       <div class="section-head">
         <h2 id="projeler-baslik">Projeler</h2>
-        <button class="text-btn" id="expand-all" type="button">Tümünü aç</button>
+        <span class="section-hint">Ayrıntı için birine dokun</span>
       </div>
       <div class="filters" id="filters" role="group" aria-label="Kategoriye göre süz"></div>
       <div class="active-filter" id="active-filter" hidden></div>
@@ -81,13 +96,13 @@
           Proje listesi için JavaScript gerekiyor. Doğrudan bağlantılar:
           <a href="https://noty-app1.web.app">Noty</a>,
           <a href="/p/rubik/">Rubik Küpü Rehberi</a>,
-          <a href="/p/bld/">BLD Harf Küpü</a>,
+          <a href="/p/once-bak-sonra-yap/">Önce Bak, Sonra Yap</a>,
           <a href="https://github.com/flozaxx">GitHub</a>.
         </p>
       </noscript>
     </section>
 
-    <section class="section container" id="teknolojiler" aria-labelledby="teknolojiler-baslik">
+    <section class="section" id="teknolojiler" aria-labelledby="teknolojiler-baslik">
       <div class="section-head">
         <h2 id="teknolojiler-baslik">Teknolojiler</h2>
       </div>
@@ -95,7 +110,7 @@
       <div class="tech-list" id="tech-list"></div>
     </section>
 
-    <section class="section container" id="baglantilar" aria-labelledby="baglantilar-baslik">
+    <section class="section" id="baglantilar" aria-labelledby="baglantilar-baslik">
       <div class="section-head">
         <h2 id="baglantilar-baslik">Bağlantılar</h2>
       </div>
@@ -164,8 +179,22 @@
     </section>
   </main>
 
+    <aside class="rail rail-right" aria-label="Güncel durum">
+      <div class="rail-inner">
+        <section class="side-card" aria-labelledby="su-an-baslik">
+          <h2 class="side-title" id="su-an-baslik"><span class="pulse" aria-hidden="true"></span>Şu an</h2>
+          <ul class="now-list" id="now-list"></ul>
+        </section>
+        <section class="side-card" aria-labelledby="guncellemeler-baslik">
+          <h2 class="side-title" id="guncellemeler-baslik">Son güncellemeler</h2>
+          <ol class="update-list" id="update-list"></ol>
+        </section>
+      </div>
+    </aside>
+  </div>
+
   <footer class="footer">
-    <div class="container footer-inner">
+    <div class="wrap footer-inner">
       <span>© 2026 flozaxx</span>
       <span id="updated"></span>
     </div>
@@ -174,6 +203,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="/projects.js"></script>
+  <script src="/theme.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

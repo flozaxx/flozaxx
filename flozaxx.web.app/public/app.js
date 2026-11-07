@@ -12,17 +12,17 @@ const ICONS = {
 const UI_ICONS = {
   chevron: '<svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
   external: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
-  lock: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>',
   link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
   close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>',
 };
 
 const KINDS = { app: "Uygulamalar", tool: "Rehber ve araçlar", web: "Web" };
 const KIND_LABEL = { app: "Uygulama", tool: "Rehber / araç", web: "Web" };
-const STATUS_LABEL = { live: "Yayında", dev: "Geliştiriliyor", private: "Özel" };
-const PRIVATE_LINK_HINT = "claude.ai hesabımda duruyor; paylaşıma açık değilse yalnızca ben açabilirim.";
+const STATUS_LABEL = { live: "Yayında", dev: "Geliştiriliyor" };
 
 const projects = window.PROJECTS;
+const site = window.SITE;
+const projectById = new Map(projects.map((p) => [p.id, p]));
 const filter = { kind: "all", tech: null };
 
 const $ = (id) => document.getElementById(id);
@@ -32,9 +32,12 @@ function esc(text) {
   return String(text).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 function linkAttrs(link) {
-  const tip = link.private ? ` title="${esc(PRIVATE_LINK_HINT)}"` : "";
-  return `href="${esc(link.url)}" target="_blank" rel="noopener"${tip}`;
+  return `href="${esc(link.url)}" target="_blank" rel="noopener"`;
 }
 
 function tileHtml(p) {
@@ -56,18 +59,24 @@ function factsHtml(p) {
   return `<dl class="facts">${rows.map(([k, v, cls]) => `<div${cls ? ` class="${cls}"` : ""}><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>`;
 }
 
+function resourcesHtml(p) {
+  if (!p.resources?.length) return "";
+  const cards = p.resources.map((r) => `
+    <a class="resource" ${linkAttrs(r)}>
+      <span class="resource-name">${esc(r.name)}${UI_ICONS.external}</span>
+      <span class="resource-text">${esc(r.text)}</span>
+    </a>`);
+  return `<h4 class="detail-heading">Ek kaynaklar</h4><div class="resources">${cards.join("")}</div>`;
+}
+
 function linksHtml(p) {
-  const buttons = p.links.map((link) => {
-    const icon = link.private ? UI_ICONS.lock : UI_ICONS.external;
-    const suffix = link.private ? ' <span class="link-note">özel</span>' : "";
-    return `<a class="btn btn-sm${link.private ? " btn-private" : ""}" ${linkAttrs(link)}>${icon}${esc(link.label)}${suffix}</a>`;
-  });
+  const buttons = p.links.map((link) => `<a class="btn btn-sm" ${linkAttrs(link)}>${UI_ICONS.external}${esc(link.label)}</a>`);
   buttons.push(`<button type="button" class="btn btn-sm btn-ghost" data-copy="${esc(p.id)}">${UI_ICONS.link}Bağlantıyı kopyala</button>`);
   return `<div class="detail-links">${buttons.join("")}</div>`;
 }
 
 function projectHtml(p) {
-  const quick = p.links.find((link) => !link.private);
+  const quick = p.links[0];
   const quickHtml = quick
     ? `<a class="quick" ${linkAttrs(quick)} aria-label="${esc(p.name)}: ${esc(quick.label)}">${esc(quick.label)}${UI_ICONS.external}</a>`
     : "";
@@ -91,6 +100,7 @@ function projectHtml(p) {
           <p class="detail-summary">${esc(p.summary)}</p>
           <h4 class="detail-heading">Öne çıkanlar</h4>
           <ul class="feature-list">${p.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+          ${resourcesHtml(p)}
           ${factsHtml(p)}
           ${linksHtml(p)}
         </div>
@@ -98,27 +108,50 @@ function projectHtml(p) {
     </article>`;
 }
 
+function railProjectsHtml() {
+  return projects
+    .map((p) => `<li><a href="#${esc(p.id)}" data-project="${esc(p.id)}"><span class="rail-dot" style="--dot:${esc(p.color)}"></span>${esc(p.name)}${p.status === "dev" ? '<span class="rail-badge">yapımda</span>' : ""}</a></li>`)
+    .join("");
+}
+
+function projectRef(id) {
+  const p = projectById.get(id);
+  return p ? `<a href="#${esc(p.id)}" data-project="${esc(p.id)}" class="side-project"><span class="rail-dot" style="--dot:${esc(p.color)}"></span>${esc(p.name)}</a>` : "";
+}
+
+function renderSide() {
+  $("now-list").innerHTML = site.now.map((n) => `<li>${projectRef(n.project)}<p>${esc(n.text)}</p></li>`).join("");
+  $("update-list").innerHTML = site.updates
+    .map((u) => `<li><time>${esc(u.date)}</time><p>${esc(u.text)}</p>${projectRef(u.project)}</li>`)
+    .join("");
+}
+
+function syncRailProject() {
+  const open = listEl.querySelector(".project.is-open");
+  for (const a of document.querySelectorAll("#rail-projects a")) {
+    a.classList.toggle("is-current", open?.id === a.dataset.project);
+  }
+}
+
+function keepInView(article) {
+  const top = article.getBoundingClientRect().top;
+  if (top < 72 || top > window.innerHeight * 0.6) {
+    article.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  }
+}
+
 function setExpanded(article, open) {
-  const toggle = article.querySelector(".project-toggle");
-  const detail = article.querySelector(".project-detail");
-  toggle.setAttribute("aria-expanded", String(open));
+  if (open) {
+    for (const other of listEl.querySelectorAll(".project.is-open")) {
+      if (other !== article) setExpanded(other, false);
+    }
+  }
+  article.querySelector(".project-toggle").setAttribute("aria-expanded", String(open));
   article.classList.toggle("is-open", open);
+  const detail = article.querySelector(".project-detail");
   if (open) detail.removeAttribute("hidden");
   else detail.setAttribute("hidden", "until-found");
-  syncExpandAll();
-}
-
-function visibleArticles() {
-  return [...listEl.querySelectorAll(".project:not([hidden])")];
-}
-
-function syncExpandAll() {
-  const visible = visibleArticles();
-  const allOpen = visible.length > 0 && visible.every((a) => a.classList.contains("is-open"));
-  const btn = $("expand-all");
-  btn.textContent = allOpen ? "Tümünü kapat" : "Tümünü aç";
-  btn.dataset.mode = allOpen ? "close" : "open";
-  btn.hidden = visible.length === 0;
+  syncRailProject();
 }
 
 function matches(p) {
@@ -140,6 +173,7 @@ function applyFilter() {
     const article = $(p.id);
     const ok = matches(p);
     article.hidden = !ok;
+    if (!ok && article.classList.contains("is-open")) setExpanded(article, false);
     if (ok) shown++;
   }
   $("empty").hidden = shown > 0;
@@ -156,7 +190,6 @@ function applyFilter() {
   for (const chip of document.querySelectorAll("#tech-list .chip")) {
     chip.setAttribute("aria-pressed", String(chip.dataset.tech === filter.tech));
   }
-  syncExpandAll();
 }
 
 function renderTech() {
@@ -174,7 +207,7 @@ function renderStats() {
   const parts = [`${projects.length} proje`, `${live} yayında`];
   if (dev) parts.push(`${dev} geliştiriliyor`);
   $("hero-stats").textContent = parts.join(" · ");
-  $("updated").textContent = `Son güncelleme: ${window.SITE.updated}`;
+  $("updated").textContent = `Son güncelleme: ${site.updated}`;
 }
 
 function showTechFilter(tech) {
@@ -184,8 +217,16 @@ function showTechFilter(tech) {
   $("projeler").scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
 }
 
-function prefersReducedMotion() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function openProject(id, { instant = false } = {}) {
+  const article = document.getElementById(id);
+  if (!article?.classList.contains("project")) return;
+  if (article.hidden) {
+    filter.kind = "all";
+    filter.tech = null;
+    applyFilter();
+  }
+  setExpanded(article, true);
+  article.scrollIntoView({ block: "start", behavior: instant || prefersReducedMotion() ? "auto" : "smooth" });
 }
 
 let toastTimer;
@@ -211,49 +252,46 @@ async function copyLink(id) {
 
 function openFromHash() {
   const id = decodeURIComponent(location.hash.slice(1));
-  if (!id) return;
-  if (id === "araclar") {
-    $("araclar").open = true;
-    return;
-  }
-  const article = document.getElementById(id);
-  if (!article || !article.classList.contains("project")) return;
-  if (article.hidden) {
-    filter.kind = "all";
-    filter.tech = null;
-    applyFilter();
-  }
-  setExpanded(article, true);
-  article.scrollIntoView({ block: "start" });
+  if (id === "araclar") $("araclar").open = true;
+  else if (id) openProject(id, { instant: true });
 }
 
-function setupTheme() {
-  const btn = $("theme-toggle");
-  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
-  const current = () => document.documentElement.dataset.theme || (systemDark.matches ? "dark" : "light");
-  const sync = () => btn.setAttribute("aria-label", current() === "dark" ? "Açık temaya geç" : "Koyu temaya geç");
-  btn.addEventListener("click", () => {
-    const next = current() === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    try {
-      localStorage.setItem("theme", next);
-    } catch {
-      // Gizli sekmede depolama kapalı olabilir; tema yine bu oturum için uygulanır.
-    }
-    sync();
-  });
-  systemDark.addEventListener("change", sync);
-  sync();
+function setupSectionSpy() {
+  const links = [...document.querySelectorAll(".rail-sections [data-spy]")];
+  const targets = links.map((a) => document.getElementById(a.dataset.spy));
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    const line = window.innerHeight * 0.35;
+    let active = 0;
+    targets.forEach((el, i) => {
+      if (el.getBoundingClientRect().top < line) active = i;
+    });
+    links.forEach((a, i) => a.classList.toggle("is-active", i === active));
+  };
+  window.addEventListener("scroll", () => {
+    if (!frame) frame = requestAnimationFrame(update);
+  }, { passive: true });
+  update();
 }
 
 function bindEvents() {
   document.addEventListener("click", (event) => {
+    const projectLink = event.target.closest("a[data-project]");
+    if (projectLink) {
+      event.preventDefault();
+      openProject(projectLink.dataset.project);
+      return;
+    }
+
     const target = event.target.closest("button");
     if (!target) return;
 
     if (target.classList.contains("project-toggle")) {
       const article = target.closest(".project");
-      setExpanded(article, !article.classList.contains("is-open"));
+      const open = !article.classList.contains("is-open");
+      setExpanded(article, open);
+      if (open) keepInView(article);
     } else if (target.dataset.kind && target.closest("#filters")) {
       filter.kind = target.dataset.kind;
       applyFilter();
@@ -268,9 +306,6 @@ function bindEvents() {
       applyFilter();
     } else if (target.dataset.copy) {
       copyLink(target.dataset.copy);
-    } else if (target.id === "expand-all") {
-      const open = target.dataset.mode !== "close";
-      for (const article of visibleArticles()) setExpanded(article, open);
     }
   });
 
@@ -283,10 +318,12 @@ function bindEvents() {
 }
 
 listEl.innerHTML = projects.map(projectHtml).join("");
+$("rail-projects").innerHTML = railProjectsHtml();
+renderSide();
 renderFilters();
 renderTech();
 renderStats();
 applyFilter();
-setupTheme();
 bindEvents();
+setupSectionSpy();
 openFromHash();

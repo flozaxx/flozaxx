@@ -5,12 +5,15 @@ JavaScript, Firebase Hosting'de yayında.
 
 ```
 public/
-  index.html      sayfa iskeleti, Bağlantılar ve Araç kutusu
-  projects.js     tüm proje içeriği (yeni proje buraya eklenir)
-  app.js          liste, süzgeçler, açılır ayrıntılar, tema
+  index.html      sayfa iskeleti, yan sütunlar, Bağlantılar ve Araç kutusu
+  projects.js     tüm içerik: projeler, "Şu an", "Son güncellemeler"
+  app.js          liste, süzgeçler, tek açık ayrıntı, yan sütunlar
+  theme.js        koyu / açık tema (tüm sayfalar)
   style.css       tasarım token'ları ve stiller
-  p/rubik/        Rubik Küpü Rehberi
-  p/bld/          BLD Harf Küpü
+  doc.css, doc.js rehber sayfalarının okuma düzeni, içindekiler, kontrol listesi
+  p/rubik/                Rubik Küpü Rehberi
+  p/bld/                  BLD Harf Küpü (Rubik rehberinin ek kaynağı)
+  p/once-bak-sonra-yap/   Önce Bak, Sonra Yap rehberi
   404.html
 firebase.json     barındırma ayarları, eski /rehberler ve /indirmeler yönlendirmeleri
 ```
@@ -20,7 +23,13 @@ firebase.json     barındırma ayarları, eski /rehberler ve /indirmeler yönlen
 `public/projects.js` içindeki `PROJECTS` listesine bir nesne kopyala ve
 düzenle. Alanların anlamı dosyanın başında yazıyor. Liste, süzgeç sayıları,
 teknoloji listesi ve üstteki sayaç kendiliğinden güncellenir. `SITE.updated`
-alt bilgideki tarihtir.
+alt bilgideki tarihtir; `SITE.now` ve `SITE.updates` sağ sütundaki kutulardır.
+
+## Rehberi güncellemek
+
+`public/p/once-bak-sonra-yap/index.html` düz HTML'dir; metin doğrudan orada
+düzenlenir. İçindekiler `h2` başlıklarından elle yazılı, yeni bölüm eklenirse
+oraya da bir satır eklenir.
 
 Bir projenin kendi bağlantısı `https://flozaxx.web.app/#<id>`; açıldığında o
 projenin ayrıntısı açık gelir.

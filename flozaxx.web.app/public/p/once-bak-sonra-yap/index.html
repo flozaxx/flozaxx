@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Önce Bak, Sonra Yap · flozaxx</title>
+  <meta name="description" content="Yeni bir uygulama ya da özelliğe başlarken izlediğim yöntem: önce iyi örnekleri incele, AI'ın sık hatalarından kaçın, sonra kodla.">
+  <meta name="theme-color" content="#f6f6f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111418" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/doc.css">
+  <script>
+    try {
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "light" || savedTheme === "dark") document.documentElement.dataset.theme = savedTheme;
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#icerik">İçeriğe geç</a>
+
+  <header class="topbar">
+    <div class="topbar-inner wrap">
+      <a class="brand" href="/">flozaxx</a>
+      <nav class="topnav" aria-label="Site">
+        <a href="/#projeler">Tüm projeler</a>
+      </nav>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Temayı değiştir">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="doc-layout wrap">
+    <nav class="doc-toc" aria-label="İçindekiler">
+      <div class="doc-toc-inner">
+        <p class="rail-title">İçindekiler</p>
+        <ol>
+          <li><a href="#giris-neden-once-bakiyoruz" data-spy="giris-neden-once-bakiyoruz">Giriş: neden önce bakıyoruz</a></li>
+          <li><a href="#1-yontem-ozellik-eklemeden-once-referans-arastirmasi" data-spy="1-yontem-ozellik-eklemeden-once-referans-arastirmasi">1. Yöntem: özellik eklemeden önce referans araştırması</a></li>
+          <li><a href="#2-ai-ile-yapilmis-yazilimlarin-buyuk-sorunlari" data-spy="2-ai-ile-yapilmis-yazilimlarin-buyuk-sorunlari">2. AI ile yapılmış yazılımların büyük sorunları</a></li>
+          <li><a href="#3-arayuz-profesyonel-editorlerden-duzen-almak" data-spy="3-arayuz-profesyonel-editorlerden-duzen-almak">3. Arayüz: profesyonel editörlerden düzen almak</a></li>
+          <li><a href="#4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler" data-spy="4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler">4. Optimizasyon: oyunlardan ve profesyonel uygulamalardan teknikler</a></li>
+          <li><a href="#5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki" data-spy="5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki">5. Kod sadeliği: AI kodu ile elle yazılmış kodun farkı</a></li>
+          <li><a href="#6-kontrol-listesi" data-spy="6-kontrol-listesi">6. Kontrol listesi</a></li>
+          <li><a href="#kaynaklar" data-spy="kaynaklar">Kaynaklar</a></li>
+        </ol>
+      </div>
+    </nav>
+
+    <main class="doc" id="icerik">
+      <header class="doc-head">
+        <p class="doc-kicker"><a href="/#once-bak-sonra-yap">Rehber</a></p>
+        <h1>Önce Bak, Sonra Yap: AI Destekli Yazılımda Profesyonel Standartlar</h1>
+        <p class="doc-byline">1 Kasım 2026 · flozaxx</p>
+      </header>
+      <details class="doc-toc-mobile">
+        <summary>İçindekiler</summary>
+        <ol>
+          <li><a href="#giris-neden-once-bakiyoruz" data-spy="giris-neden-once-bakiyoruz">Giriş: neden önce bakıyoruz</a></li>
+          <li><a href="#1-yontem-ozellik-eklemeden-once-referans-arastirmasi" data-spy="1-yontem-ozellik-eklemeden-once-referans-arastirmasi">1. Yöntem: özellik eklemeden önce referans araştırması</a></li>
+          <li><a href="#2-ai-ile-yapilmis-yazilimlarin-buyuk-sorunlari" data-spy="2-ai-ile-yapilmis-yazilimlarin-buyuk-sorunlari">2. AI ile yapılmış yazılımların büyük sorunları</a></li>
+          <li><a href="#3-arayuz-profesyonel-editorlerden-duzen-almak" data-spy="3-arayuz-profesyonel-editorlerden-duzen-almak">3. Arayüz: profesyonel editörlerden düzen almak</a></li>
+          <li><a href="#4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler" data-spy="4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler">4. Optimizasyon: oyunlardan ve profesyonel uygulamalardan teknikler</a></li>
+          <li><a href="#5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki" data-spy="5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki">5. Kod sadeliği: AI kodu ile elle yazılmış kodun farkı</a></li>
+          <li><a href="#6-kontrol-listesi" data-spy="6-kontrol-listesi">6. Kontrol listesi</a></li>
+          <li><a href="#kaynaklar" data-spy="kaynaklar">Kaynaklar</a></li>
+        </ol>
+      </details>
+<h2 id="giris-neden-once-bakiyoruz">Giriş: neden önce bakıyoruz</h2>
+<p>Bir özelliği yazmadan önce, onu yıllardır iyi yapan uygulamalara bakarız; nereye konduğunu, nasıl açıldığını, hangi kontrollerle geldiğini oradan alırız. Ressam da böyle çalışır: önce başka tablolara bakar, sonra kendi tablosunu kendi eliyle yapar.</p>
+<p>Yapay zekâyla yazılan uygulamalar çoğu zaman <strong>çalışır ama amatör hissettirir</strong>. Sebep genelde kodun bozuk olması değildir. Sebep, her ekranın sıfırdan, tek başına tasarlanmasıdır. Profesyonel ekipler ise sıfırdan icat etmez. Kullanıcının zaten bildiği kalıbı kullanır, sadece farkı yaratacakları yere emek harcar.</p>
+<p>Bu rehberin üç işi var:</p>
+<ul>
+<li><strong>Yöntem:</strong> her yeni özellik için kısa bir referans araştırması ve doldurulacak bir şablon.</li>
+<li><strong>Kaçınılacaklar:</strong> AI ile yapılmış yazılımlarda ölçülmüş, tekrar eden sorunlar ve sektörün bunlara karşı kullandığı çözümler.</li>
+<li><strong>Uygulama:</strong> arayüz, optimizasyon ve kod sadeliği için somut kalıplar; örnek vaka olarak Sticker Studio editörü.</li>
+</ul>
+<h2 id="1-yontem-ozellik-eklemeden-once-referans-arastirmasi">1. Yöntem: özellik eklemeden önce referans araştırması</h2>
+<p>Kural basit: bir özelliği yazmadan önce 3–5 profesyonel uygulamada nasıl yapıldığına bakılır. Hepsinde ortak olan şey kural olur; farklı olan şey bizim tercihimiz olur.</p>
+<p>Bunun sektörde adı ve gerekçesi var. <strong>Jakob Yasası</strong>na göre kullanıcılar zamanlarının çoğunu başka uygulamalarda geçirir, bu yüzden sizinkinin de bildikleri gibi çalışmasını bekler; beklentiden sapan tasarım kullanılabilirliği düşürür. Nielsen bu yasanın mobil uygulamalar için de geçerli olduğunu açıkça söyler (<a href="https://jakobnielsenphd.substack.com/p/jakobs-law" target="_blank" rel="noopener">kaynak</a>). Profesyonel tasarımcılar bu araştırmayı o kadar çok yapar ki, gerçek uygulama ekranlarını arşivleyen ücretli kütüphaneler vardır: <a href="https://mobbin.com/index.md" target="_blank" rel="noopener">Mobbin</a> bunların en bilineni.</p>
+<h3 id="adimlar">Adımlar</h3>
+<ol>
+<li><strong>Referans seç.</strong> 3–5 uygulama: bir sektör lideri (Photoshop, Lightroom), aynı kitleye hitap eden popüler bir uygulama (Picsart, CapCut) ve platformun kendi uygulaması (Google Fotoğraflar, Samsung Galeri).</li>
+<li><strong>Ekran görüntüsü topla.</strong> Özelliğin giriş noktası, ana ekranı, alt ayarları ve çıkışı (iptal/onay).</li>
+<li><strong>Şablonu doldur</strong> (aşağıda). Her soruya her referans için tek satır cevap.</li>
+<li><strong>Ortakları kural yap.</strong> Üç referansta aynı olan şey tartışılmaz; aynen alınır.</li>
+<li><strong>Farkı tek yerde yarat.</strong> Uygulamanın kendine has olduğu yer genelde bir özelliktir, tüm ekran değil.</li>
+<li><strong>Yan yana kontrol et.</strong> Bitince kendi ekranını referans ekranın yanına koy; aykırı duran her şeyin bir gerekçesi olmalı.</li>
+</ol>
+<h3 id="referans-sablonu">Referans şablonu</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Soru</th>
+<th>Referans 1</th>
+<th>Referans 2</th>
+<th>Referans 3</th>
+<th>Bizim kararımız</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nereden açılıyor?</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Ekran düzeni: tuval, araç çubuğu, panel nerede?</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Ana kontroller ve varsayılan değerler</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Hazır seçenekler (ön ayar, oran, stil)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Hareketler (sürükle, iki parmak, çift dokun)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>İptal, onay, geri al, sıfırla</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Sınır durumları (boş, hata, çok büyük dosya)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Hız hissi (anında mı, bekletiyor mu?)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="ornek-kirpma-araci">Örnek: kırpma aracı</h3>
+<p>Kırpma, mobil editörlerde neredeyse standartlaşmış bir araçtır. Popüler editörlerde tekrar eden kalıp şudur:</p>
+<ul>
+<li><strong>Ayrı bir mod olarak açılır.</strong> Diğer araçlar kaybolur; ekranda yalnızca görsel ve kırpma kontrolleri kalır.</li>
+<li><strong>Tuvalde tutamaçlı çerçeve.</strong> Köşelerden ve kenarlardan sürüklenir; sürükleme sırasında üçte bir ızgarası belirir.</li>
+<li><strong>Altta oran seçenekleri.</strong> Serbest, Orijinal, 1:1, 4:5, 16:9 gibi.</li>
+<li><strong>Döndürme ve çevirme.</strong> 90° döndür, yatay çevir, ince açı için kaydırmalı cetvel.</li>
+<li><strong>Sıfırla, İptal, Uygula.</strong> Her zaman aynı yerde.</li>
+</ul>
+<p>Bizim kararımız bu kalıbı aynen almak ve farkı içerikte yaratmaktır: Sticker Studio'da varsayılan oran 1:1 olur, çünkü WhatsApp çıkartmaları kare (512×512) biçimdedir.</p>
+<h2 id="2-ai-ile-yapilmis-yazilimlarin-buyuk-sorunlari">2. AI ile yapılmış yazılımların büyük sorunları</h2>
+<p>AI ile yazılan kod çoğunlukla çalışır; sorun görünmeyen yerlerdedir: güvenlik, bakım ve tutarlılık. Aşağıdaki sekiz sorunun her biri ölçülmüş ya da gerçek bir olayla kanıtlanmıştır ve her birinin sektörde yerleşik bir çözümü vardır.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Sorun</th>
+<th>Kanıt</th>
+<th>Sektördeki karşılığı</th>
+<th>Kullanmalı mıyız?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Güvenlik açıkları</strong></td>
+<td>100'den fazla dil modeli, 80 kodlama görevinin %45'inde OWASP Top 10 açığı üretti; Java'da hata oranı %70'in üstünde (<a href="https://www.veracode.com/genai-code-security-report" target="_blank" rel="noopener">Veracode 2025</a>)</td>
+<td>OWASP Top 10 ve mobil için OWASP MASVS; statik analiz (Android Lint, Semgrep)</td>
+<td><strong>Evet.</strong> Her sürümden önce lint ve kısa güvenlik listesi</td>
+</tr>
+<tr>
+<td><strong>Açık veritabanı ve depolama</strong></td>
+<td>Lovable ile yapılmış 1.645 uygulamanın 170'inde tablolar herkese açıktı (<a href="https://blog.pluto.security/p/cve-202548757-what-happened-why-it-b22" target="_blank" rel="noopener">CVE-2025-48757</a>); Tea uygulaması korumasız Firebase deposundan 72.000 görsel sızdırdı (<a href="https://therecord.media/tea-app-data-breach-stolen-ids-leaked" target="_blank" rel="noopener">The Record</a>)</td>
+<td>En az yetki ilkesi; Firebase Security Rules ve Supabase RLS "varsayılan kapalı"</td>
+<td><strong>Evet, kritik.</strong> Şifreli not uygulaması Firebase kullanıyor</td>
+</tr>
+<tr>
+<td><strong>Koda gömülü gizli anahtarlar</strong></td>
+<td>2025'te GitHub'da 28,65 milyon sızmış anahtar; AI destekli commit'ler ortalamanın yaklaşık iki katı sızıntı yapıyor (<a href="https://dev.to/gitguardian/the-state-of-secrets-sprawl-2026-ai-service-leaks-surge-81-and-29m-secrets-hit-public-github-2bgj" target="_blank" rel="noopener">GitGuardian 2026</a>, <a href="https://www.scworld.com/news/ai-coding-assistants-twice-as-likely-to-leak-secrets-as-overall-leaks-rise-34" target="_blank" rel="noopener">SC Media</a>)</td>
+<td>Anahtarlar kodda değil, <code>local.properties</code> / ortam değişkeni / sunucuda; gitleaks ile tarama</td>
+<td><strong>Evet.</strong> APK içine ana anahtar konmaz</td>
+</tr>
+<tr>
+<td><strong>Kod tekrarı, az yeniden düzenleme</strong></td>
+<td>2024'te 5+ satırlık kopya bloklar 8 kat arttı; kopyala-yapıştır ilk kez taşınan (yeniden düzenlenen) kodu geçti (<a href="https://devclass.com/2025/02/20/ai-is-eroding-code-quality-states-new-in-depth-report/" target="_blank" rel="noopener">GitClear / DevClass</a>)</td>
+<td>DRY ilkesi; ortak bileşen kütüphanesi; düzenli refactoring</td>
+<td><strong>Evet.</strong> Özellikle panel, buton, kaydırıcı gibi arayüz parçalarında</td>
+</tr>
+<tr>
+<td><strong>"Neredeyse doğru" kod</strong></td>
+<td>Geliştiricilerin %66'sı en büyük sıkıntı olarak bunu seçti; AI çıktısına güvenmeyenler %31'den %46'ya çıktı (<a href="https://infoworld.com/article/4031673/ai-use-among-software-developers-grows-but-trust-remains-an-issue-stack-overflow-survey.html" target="_blank" rel="noopener">Stack Overflow 2025</a>)</td>
+<td>Kod incelemesi (code review) ve otomatik test</td>
+<td><strong>Evet.</strong> Küçük adımlar; her adımdan sonra telefonda deneme</td>
+</tr>
+<tr>
+<td><strong>Hız yanılsaması</strong></td>
+<td>Deneyimli geliştiriciler AI ile %19 daha yavaş çalıştı ama %20 hızlandıklarını sandı (16 kişi, 246 görev; <a href="https://feeds.simonwillison.net/2025/Jul/12/ai-open-source-productivity/" target="_blank" rel="noopener">METR</a>)</td>
+<td>Ölçerek karar vermek</td>
+<td><strong>Kısmen.</strong> Ders: kodlamadan önce plan; yeniden yazmak pahalı</td>
+</tr>
+<tr>
+<td><strong>Jenerik ve tutarsız arayüz</strong></td>
+<td>Modeller eğitim verisinin "ortalama" görünümüne yakınsar; her bileşene ayrı köşe yuvarlaklığı ve boşluk verir (<a href="https://pub.towardsai.net/10-signs-of-ai-generated-design-and-how-to-make-yours-not-look-like-it-482ff7da81fc" target="_blank" rel="noopener">Towards AI</a>)</td>
+<td>Tasarım sistemi ve tasarım token'ları; Material 3 gibi platform kılavuzları</td>
+<td><strong>Evet.</strong> Proje başında renk, yazı, boşluk, köşe tablosu</td>
+</tr>
+<tr>
+<td><strong>Eksik durumlar</strong></td>
+<td>AI genelde yalnızca "her şey yolunda" ekranını yazar</td>
+<td>Boş, yükleniyor, hata, izin reddedildi, çevrimdışı ekranları ayrı tasarlanır</td>
+<td><strong>Evet.</strong> Şablonda "sınır durumları" satırı bunun için var</td>
+</tr>
+</tbody>
+</table></div>
+<p>Kaynakların sınırları da bilinmeli: Veracode bir güvenlik şirketidir, METR çalışması 16 kişiliktir. Yine de yön tutarlı: AI hızlı yazar, kontrolü bize bırakır.</p>
+<h2 id="3-arayuz-profesyonel-editorlerden-duzen-almak">3. Arayüz: profesyonel editörlerden düzen almak</h2>
+<p>Profesyonel mobil editörler aynı iskeleti kullanır: üstte genel eylemler, ortada tuval, altta araç çubuğu ve seçili aracın tek bir kontrol çubuğu. Sticker Studio editöründeki dağınıklığın kökü, bu iskeletin dışına çıkıp her panelin kendi düzenini kurmasıdır.</p>
+<h3 id="sektorun-ortak-dili">Sektörün ortak dili</h3>
+<p>Fotoğraf editörü SDK'sı IMG.LY, bu bölgeleri resmi adlarla tanımlar: üstte <em>ana tuval eylem çubuğu</em> (geri al, yinele, dışa aktar, kapat), ortada <em>tuval</em>, altta <em>araç çubuğu</em> ve seçili aracın ayarlarını tutan <em>araç kontrol çubuğu</em> (<a href="https://img.ly/docs/pesdk/web/concepts/nomenclature/" target="_blank" rel="noopener">IMG.LY</a>). Lightroom mobil bunun üstüne dört alışkanlık ekler (<a href="https://simplearyan.github.io/kinetix/blog/learning-from-lightroom" target="_blank" rel="noopener">analiz</a>):</p>
+<ul>
+<li><strong>Kategoriler:</strong> araçlar az sayıda gruba ayrılır; uzun bir kaydırıcı listesi asla gösterilmez.</li>
+<li><strong>Kaydırıcılar:</strong> sayısal değer gösterir ve tek dokunuşla sıfırlanır.</li>
+<li><strong>Alt modlar:</strong> karmaşık bir ayar açılınca geri kalan her şey kaybolur; "Bitti" ile geri dönülür.</li>
+<li><strong>Görsel ön ayarlar:</strong> hazır stiller isimle değil, efektin uygulandığı küçük önizlemeyle gösterilir.</li>
+</ul>
+<h3 id="sticker-studio-editoru-tespitler-ve-oneriler">Sticker Studio editörü: tespitler ve öneriler</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Mevcut durum (ekran görüntülerinden)</th>
+<th>Neden dağınık hissettiriyor</th>
+<th>Öneri</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Metin panelinde aynı anda dört katman açık: araç sekmeleri, açma/kapama, Stil/Renk/Kalınlık, stil çipleri</td>
+<td>Göz hangi katmanda olduğunu bilemiyor; ekranda iki ayrı "Renk" var</td>
+<td>Aynı anda en fazla iki katman: araç ve seçenekleri. Daha derini alt moda taşınır</td>
+</tr>
+<tr>
+<td>Stil/Renk/Kalınlık bir ekranda hap çip, diğerinde yuvarlak düğme</td>
+<td>Aynı ayarın iki görünümü tutarsızlık hissi verir</td>
+<td>Bir ayar her yerde tek bileşenle çizilir</td>
+</tr>
+<tr>
+<td>Premium özellikler kalın sarı çerçeveyle işaretli; yeşil dolgu ve gri çiple yan yana</td>
+<td>Çerçeve "seçili" ya da "uyarı" gibi okunuyor; ekranın yarısı sarı olunca en çok dikkat çeken şey kilit oluyor</td>
+<td>Yeşil dolgu = seçili. Premium = düğme normal kalır, köşesine küçük taç rozeti; Canva ve Picsart aynı kalıbı kullanır (<a href="https://www.canva.com/design-school/resources/premium-templates" target="_blank" rel="noopener">Canva</a>, <a href="https://picsart.com/blog/?p=33912" target="_blank" rel="noopener">Picsart</a>)</td>
+</tr>
+<tr>
+<td>Arka plan araçları iki satıra sarılan haplar</td>
+<td>Sarılan satır sırasız görünür, yeni araç eklenince düzen bozulur</td>
+<td>Tek satır, yatay kaydırmalı ikon + etiket</td>
+</tr>
+<tr>
+<td>Tuval her panelde farklı yükseklikte</td>
+<td>Panel değişince görsel zıplıyor</td>
+<td>Tuval sabit kalır; panel yüksekliği sabit ya da yumuşak geçişli</td>
+</tr>
+<tr>
+<td>Üst çubukta büyük "Düzenle" başlığı ve "11 hak" rozeti</td>
+<td>En değerli yer başlığa ve sayaca gidiyor</td>
+<td>Başlık kaldırılır; hak bilgisi AI aracı seçilince "1 hak" olarak görünür</td>
+</tr>
+<tr>
+<td>Gradyan, Gün batımı, Okyanus isimli çipler</td>
+<td>İsim efekti anlatmıyor</td>
+<td>Her stil küçük "Aa" önizlemesiyle gösterilir</td>
+</tr>
+<tr>
+<td>Kaydırıcılarda değer yok</td>
+<td>Kesin ayar yapılamıyor</td>
+<td>Değer etiketi ve sıfırla düğmesi</td>
+</tr>
+</tbody>
+</table></div>
+<p>İyi olanı da korumak gerekir: panel başlığındaki solda ✕, sağda ✓ düzeni, tuvaldeki metin kutusu ve köşe tutamacı sektör kalıbıyla zaten uyumlu.</p>
+<figure class="editor-figure">
+  <div class="phone" aria-hidden="true">
+    <div class="zone zone-top"><span class="zone-no">1</span>Geri · Geri al · Yinele · Karşılaştır · Kaydet</div>
+    <div class="zone zone-canvas"><span class="zone-no">2</span>Tuval<small>her araçta aynı yerde, aynı boyutta</small></div>
+    <div class="zone zone-control"><span class="zone-no">3</span>Seçili aracın ayarı<small>kaydırıcı · değer · sıfırla</small></div>
+    <div class="zone zone-tools"><span class="zone-no">4</span>Kırp · Arka plan · Metin · Kontur · Filtre</div>
+  </div>
+  <figcaption>
+    <strong>Sticker Studio editörü için önerilen düzen, 4 bölge.</strong>
+    <ol>
+      <li>Üst eylem çubuğu: genel eylemler, her araçta aynı.</li>
+      <li>Tuval: sabit kalır, panel değişince zıplamaz.</li>
+      <li>Araç kontrol çubuğu: yalnızca seçili aracın ayarı.</li>
+      <li>Ana araç çubuğu: tek satır, kaydırmalı ikon + etiket.</li>
+    </ol>
+  </figcaption>
+</figure>
+
+<p>Panel değişse de tuval yerinde durur; kullanıcı her araçta aynı iki satırı okur: üstte seçili aracın ayarları, altta araçlar.</p>
+<h2 id="4-optimizasyon-oyunlardan-ve-profesyonel-uygulamalardan-teknikler">4. Optimizasyon: oyunlardan ve profesyonel uygulamalardan teknikler</h2>
+<p>Oyunlar her kareyi sınırlı bir sürede çizmek zorundadır; bu yüzden performans tekniklerinin çoğu oradan gelir. Android için çizgi net: 60 fps için bir kare 16 ms içinde çizilmeli; 700 ms'yi aşan kare "donmuş" sayılır, 5 saniyeyi aşan beklemede sistem "Uygulama yanıt vermiyor" (ANR) uyarısı verir (<a href="https://developer.android.com/topic/performance/vitals/jank" target="_blank" rel="noopener">Android</a>).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Teknik</th>
+<th>Nereden geliyor</th>
+<th>Ne yapar</th>
+<th>Bizde nerede kullanılır</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kare bütçesi</strong></td>
+<td>Oyun motorları; Android vitals</td>
+<td>Her karede yapılacak iş 16 ms'ye sığdırılır; ağır iş kareye bindirilmez</td>
+<td>Editörde silgi ve kalemle çizerken; <code>onDraw</code> içinde hesaplama yapılmaz</td>
+</tr>
+<tr>
+<td><strong>Vekil önizleme (proxy)</strong></td>
+<td>Premiere gibi video editörleri</td>
+<td>Düzenleme düşük çözünürlüklü kopya üzerinde yapılır, dışa aktarırken asıl dosya kullanılır (<a href="https://helpx.adobe.com/premiere-pro-next/organize-media/ingest-proxy-workflow/ingest-and-proxy-workflow.html" target="_blank" rel="noopener">Adobe</a>)</td>
+<td>Sticker editörü ekran boyutunda görselle çalışır, 512×512 çıktı en sonda üretilir; Discord sıkıştırıcıda önizleme kısa parçayla yapılır</td>
+</tr>
+<tr>
+<td><strong>Gerektiği kadar yükle</strong></td>
+<td>Android resmi rehberi</td>
+<td>Büyük görsel, gösterileceği boyuta küçültülerek belleğe alınır; 2048×1536 görsel 4 kat küçültmeyle yaklaşık 512×384 olur (<a href="https://developer.android.com/training/displaying-bitmaps/load-bitmap" target="_blank" rel="noopener">Android</a>)</td>
+<td>Galeriden 12 MP fotoğraf açarken; resmi öneri Glide veya Coil kütüphanesi</td>
+</tr>
+<tr>
+<td><strong>Nesne havuzu</strong></td>
+<td>Unity ve oyun geliştirme</td>
+<td>Sık kullanılan nesneler yok edilmez, yeniden kullanılır; çöp toplayıcı kaynaklı takılmalar azalır (<a href="https://docs.unity.com/en-us/engine/6000.6/manual/scripting/optimization/performance-optimizing-code-managed-memory/reusable-code" target="_blank" rel="noopener">Unity</a>)</td>
+<td>Fırça darbelerinde <code>Paint</code>, <code>Path</code> ve ara bitmap'ler her karede yeniden yaratılmaz</td>
+</tr>
+<tr>
+<td><strong>Ağır işi arka plana al</strong></td>
+<td>Tüm profesyonel uygulamalar</td>
+<td>Ana iş parçacığı yalnızca arayüzü çizer; ağır işler başka iş parçacığında koşar</td>
+<td>AI arka plan silme, WebP sıkıştırma, ffmpeg işleri; arayüz donmaz, ilerleme gösterilir</td>
+</tr>
+<tr>
+<td><strong>Önbellek</strong></td>
+<td>Oyunlarda önceden hazırlanmış varlıklar</td>
+<td>Bir kez üretilen sonuç tekrar hesaplanmaz</td>
+<td>Stil önizlemeleri ve arka plan maskesi bir kez üretilip saklanır</td>
+</tr>
+<tr>
+<td><strong>Algılanan hız</strong></td>
+<td>Oyun yükleme ekranları, iskelet ekranlar</td>
+<td>Bekleme kaçınılmazsa kullanıcıya ne olduğu gösterilir</td>
+<td>"Arka plan siliniyor…" göstergesi, iptal düğmesi</td>
+</tr>
+<tr>
+<td><strong>Ölç, sonra düzelt</strong></td>
+<td>Profesyonel ekiplerin standardı</td>
+<td>Tahmin yerine ölçüm: Profile GPU Rendering çubukları, Perfetto zaman çizelgesi (<a href="https://developer.android.com/topic/performance/vitals/jank" target="_blank" rel="noopener">Android</a>)</td>
+<td>Bir ekran takılıyorsa önce ölçülür, sonra kod değişir</td>
+</tr>
+</tbody>
+</table></div>
+<p>AI'ın bu alanda tipik hatası, işi "çalışır" ilk haliyle bırakmaktır: tam boy fotoğrafı belleğe yüklemek, ağır işi ana iş parçacığında yapmak, her karede nesne yaratmak. Hepsi küçük testte görünmez, gerçek telefonda takılma olarak çıkar.</p>
+<h2 id="5-kod-sadeligi-ai-kodu-ile-elle-yazilmis-kodun-farki">5. Kod sadeliği: AI kodu ile elle yazılmış kodun farkı</h2>
+<p>İki kod aynı işi aynı hızda yapabilir; fark, kodu okuyan programcıda ortaya çıkar. AI kodu genelde fazla konuşur, fazla korunur ve fazla tekrarlar. Profesyonel kod az konuşur, konuştuğunda da yalnızca "neden"i anlatır.</p>
+<p>Bu fark ölçülebiliyor. Bir çalışmada AI kodunu insan kodundan ayıran tek evrensel ölçüt <strong>yorum/kod oranı</strong> çıktı; sekiz yapılandırmanın yedisinde ilk üç özellik arasındaydı (<a href="https://arxiv.org/html/2409.01382v2" target="_blank" rel="noopener">arXiv 2409.01382</a>). Başka bir çalışmada AI ile üretilen Java kodunda profesyonel referans çözümlere göre ortalama %63 daha fazla "kod kokusu" bulundu; en büyük artış tutarsız isimlendirme ve tekrar kategorilerindeydi (<a href="https://arxiv.org/abs/2510.03029?context=cs" target="_blank" rel="noopener">arXiv 2510.03029</a>). Yeni modeller açıkça gereksiz yorumu azalttı; bazı gözlemcilere göre iz artık satırlarda değil mimaride (<a href="https://dev.to/yuvrajangadsingh/i-scanned-a-1k-star-cursor-project-ai-code-doesnt-look-like-ai-code-anymore-1lck" target="_blank" rel="noopener">DEV</a>).</p>
+<h3 id="ai-kodunu-ele-veren-izler">AI kodunu ele veren izler</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>AI izi</th>
+<th>Nasıl görünür</th>
+<th>Profesyonel karşılığı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kodu tekrar eden yorum</strong></td>
+<td><code>// sayacı artır</code> ve altında <code>sayac++</code></td>
+<td>Yorum yok; iyi isim zaten anlatır</td>
+</tr>
+<tr>
+<td><strong>Anlatı ve sohbet izi</strong></td>
+<td>Bölüm başlarında "bunun çalışması için şunu yaptık", <code>// Adım 1:</code>, <code>// Düzeltme: hata giderildi</code></td>
+<td>Değişiklik geçmişi commit mesajında; kodda yalnızca hâlâ geçerli olan "neden"</td>
+</tr>
+<tr>
+<td><strong>Her fonksiyona KDoc</strong></td>
+<td><code>getName()</code> üstünde "İsmi döndürür"</td>
+<td>KDoc yalnızca dışa açık API'de ve sözleşmeyi anlatmak için</td>
+</tr>
+<tr>
+<td><strong>Aşırı savunmacı kod</strong></td>
+<td>İmkânsız null kontrolleri; her şeyi saran <code>try/catch</code> ve "Bir hata oluştu" logu</td>
+<td>Savunma yalnızca dış sınırda (ağ, dosya, kullanıcı girdisi); içeride hata yukarı iletilir</td>
+</tr>
+<tr>
+<td><strong>Tekrar ve yeniden icat</strong></td>
+<td>Aynı mantık üç dosyada; standart kütüphanede olan fonksiyon sıfırdan yazılmış</td>
+<td>Tek fonksiyon; Kotlin standart kütüphanesi (<code>coerceIn</code>, <code>buildList</code>, <code>use</code>)</td>
+</tr>
+<tr>
+<td><strong>Gereksiz soyutlama</strong></td>
+<td>Tek uygulaması olan interface; tek metodu çağıran sarmalayıcı sınıf</td>
+<td>Somut kod; soyutlama ikinci kullanım gelince</td>
+</tr>
+<tr>
+<td><strong>Jenerik isimler</strong></td>
+<td><code>data</code>, <code>result</code>, <code>handler</code>, <code>processData()</code></td>
+<td>Alan dili: <code>stickerBitmap</code>, <code>applyMask()</code></td>
+</tr>
+<tr>
+<td><strong>Gürültülü log</strong></td>
+<td><code>✅ Başarıyla yüklendi!</code> gibi emojili, her adımda log</td>
+<td>Seviyeli log (<code>Log.d</code>, <code>Log.e</code>), yayın sürümünde kapalı</td>
+</tr>
+<tr>
+<td><strong>Ölü kod</strong></td>
+<td>Yoruma alınmış eski kod, kullanılmayan import</td>
+<td>Silinir; git zaten hatırlar</td>
+</tr>
+<tr>
+<td><strong>Dosyalar arası farklı stil</strong></td>
+<td>Her oturumda başka desen ve isimlendirme</td>
+<td>ktlint ve Android Studio biçimlendiricisi; mevcut desene uyulur</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="ayni-is-iki-yazim">Aynı iş, iki yazım</h3>
+<p>WhatsApp çıkartması için görseli 512×512'ye getiren fonksiyon. AI'ın tipik yazımı:</p>
+<pre><code class="language-kotlin">// Bitmap'i ölçeklendirmek için fonksiyon
+fun scaleBitmap(bitmap: Bitmap?): Bitmap? {
+    // Bitmap null mı kontrol et
+    if (bitmap == null) return null
+    try {
+        // Bitmap'i 512x512 boyutuna ölçeklendir
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 512, 512, true)
+        // Ölçeklenmiş bitmap'i döndür
+        return scaledBitmap
+    } catch (e: Exception) {
+        Log.e(&quot;Error&quot;, &quot;Bir hata oluştu&quot;)
+        return null
+    }
+}
+</code></pre>
+<p>Elle yazılmış profesyonel karşılığı:</p>
+<pre><code class="language-kotlin">private const val STICKER_PX = 512 // WhatsApp tam 512×512 dışını reddeder
+
+fun Bitmap.toSticker(): Bitmap =
+    Bitmap.createScaledBitmap(this, STICKER_PX, STICKER_PX, true)
+</code></pre>
+<p>İkincisinde dört yorumun yerini tek bir "neden" aldı. Bitmap zaten null olamayan türde, yani kontrol gereksiz. Hatayı yutan <code>try/catch</code> da gitti; hata olursa çağıran taraf görür.</p>
+<h3 id="yorum-kurallari">Yorum kuralları</h3>
+<ul>
+<li><strong>Neden yazılır, ne yazılmaz.</strong> Google'ın Go stil rehberi basit kodun yorumlarını tam olarak böyle tarif eder (<a href="https://notes.billmill.org/programming/golang/google_style_guide.html" target="_blank" rel="noopener">Google</a>); Kodeco'nun Kotlin rehberi de yorumun güncel tutulmasını ya da silinmesini ister (<a href="https://awesome.ecosyste.ms/projects/github.com%2Fkodecocodes%2Fkotlin-style-guide" target="_blank" rel="noopener">Kodeco</a>).</li>
+<li><strong>Ön ekli yorum.</strong> Gerekli yorum sebebiyle başlar: <code>// Perf:</code>, <code>// Workaround:</code>, <code>// Security:</code>, <code>// Compat:</code>.</li>
+<li><strong>"Neden böyle yaptık" notları koda değil, karar günlüğüne.</strong> AI'ın bölüm başlarına yazdığı açıklamaların doğru yeri commit mesajı ya da projedeki kısa bir <code>KARARLAR.md</code> dosyasıdır.</li>
+</ul>
+<h3 id="gizli-maliyet-anlama-borcu">Gizli maliyet: anlama borcu</h3>
+<p>Addy Osmani bu soruna <strong>anlama borcu</strong> (comprehension debt) adını verir: sistemdeki kod miktarı ile o kodu gerçekten anlayan insan arasındaki açık. Andığı bir deneyde AI yardımıyla çalışan mühendisler işi aynı sürede bitirdi ama sonraki anlama sınavında %17 daha düşük puan aldı (<a href="https://www.oreilly.com/radar/comprehension-debt-the-hidden-cost-of-ai-generated-code/" target="_blank" rel="noopener">O'Reilly</a>). Bizim için test basit: AI'ın yazdığı her modül için "bu neden böyle çalışıyor?" sorusu koda bakmadan cevaplanabilmeli. Cevaplanamıyorsa o modül birlikte okunur.</p>
+<h2 id="6-kontrol-listesi">6. Kontrol listesi</h2>
+<p>Her yeni proje ya da özellik bu listeden geçer. İlk blok kod yazılmadan önce, son blok yayınlamadan önce işaretlenir.</p>
+<p><strong>Planlama (kod yok)</strong></p>
+<ul class="checklist">
+<li class="task"><label><input type="checkbox" data-task="1"><span>3–5 referans uygulama seçildi, ekran görüntüleri toplandı</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="2"><span>Referans şablonu dolduruldu; ortak noktalar kural olarak yazıldı</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="3"><span>Farkı yaratacağımız tek (ya da birkaç) yer belli</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="4"><span>Renk, yazı, boşluk ve köşe değerleri tek tabloda (tasarım token'ları)</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="5"><span>Boş, yükleniyor, hata, izin reddi, çevrimdışı ekranları listelendi</span></label></li>
+</ul>
+<p><strong>Geliştirme</strong></p>
+<ul class="checklist">
+<li class="task"><label><input type="checkbox" data-task="6"><span>Aynı görünen her şey tek bileşenden geliyor; kopya kod yok</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="7"><span>Ekranda aynı anda en fazla iki ayar katmanı var</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="8"><span>Büyük görseller küçültülerek yükleniyor; ağır işler arka planda</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="9"><span>Her adımdan sonra gerçek telefonda denendi</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="10"><span>Yorumlar yalnızca "neden"i anlatıyor; anlatı ve değişiklik notu yok</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="11"><span>Gereksiz <code>try/catch</code>, imkânsız null kontrolü ve ölü kod yok</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="12"><span>Her modülün neden böyle çalıştığı koda bakmadan anlatılabiliyor</span></label></li>
+</ul>
+<p><strong>Yayınlamadan önce</strong></p>
+<ul class="checklist">
+<li class="task"><label><input type="checkbox" data-task="13"><span>Kodda ve APK'da gizli anahtar yok (gitleaks taraması)</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="14"><span>Firebase / veritabanı kuralları "varsayılan kapalı"; başka kullanıcının verisi okunamıyor</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="15"><span>Lint uyarıları temiz</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="16"><span>Ekran referansla yan yana kondu; her farklılığın gerekçesi var</span></label></li>
+<li class="task"><label><input type="checkbox" data-task="17"><span>Takılan ekran varsa ölçüldü (Profile GPU Rendering)</span></label></li>
+</ul>
+<h2 id="kaynaklar">Kaynaklar</h2>
+<ul>
+<li><a href="https://jakobnielsenphd.substack.com/p/jakobs-law" target="_blank" rel="noopener">Jakob's Law of the Internet User Experience — Jakob Nielsen</a></li>
+<li><a href="https://mobbin.com/index.md" target="_blank" rel="noopener">Mobbin</a></li>
+<li><a href="https://www.veracode.com/genai-code-security-report" target="_blank" rel="noopener">2025 GenAI Code Security Report — Veracode</a></li>
+<li><a href="https://blog.pluto.security/p/cve-202548757-what-happened-why-it-b22" target="_blank" rel="noopener">CVE-2025-48757 analizi — Pluto Security</a></li>
+<li><a href="https://therecord.media/tea-app-data-breach-stolen-ids-leaked" target="_blank" rel="noopener">Tea uygulaması veri sızıntısı — The Record</a></li>
+<li><a href="https://dev.to/gitguardian/the-state-of-secrets-sprawl-2026-ai-service-leaks-surge-81-and-29m-secrets-hit-public-github-2bgj" target="_blank" rel="noopener">State of Secrets Sprawl 2026 — GitGuardian</a></li>
+<li><a href="https://www.scworld.com/news/ai-coding-assistants-twice-as-likely-to-leak-secrets-as-overall-leaks-rise-34" target="_blank" rel="noopener">AI destekli commit'lerde sızıntı oranı — SC Media</a></li>
+<li><a href="https://devclass.com/2025/02/20/ai-is-eroding-code-quality-states-new-in-depth-report/" target="_blank" rel="noopener">GitClear kod kalitesi raporu — DevClass</a></li>
+<li><a href="https://infoworld.com/article/4031673/ai-use-among-software-developers-grows-but-trust-remains-an-issue-stack-overflow-survey.html" target="_blank" rel="noopener">2025 Stack Overflow Developer Survey — InfoWorld</a></li>
+<li><a href="https://feeds.simonwillison.net/2025/Jul/12/ai-open-source-productivity/" target="_blank" rel="noopener">METR verimlilik çalışması — Simon Willison</a></li>
+<li><a href="https://pub.towardsai.net/10-signs-of-ai-generated-design-and-how-to-make-yours-not-look-like-it-482ff7da81fc" target="_blank" rel="noopener">AI ile üretilmiş tasarımın 10 belirtisi — Towards AI</a></li>
+<li><a href="https://img.ly/docs/pesdk/web/concepts/nomenclature/" target="_blank" rel="noopener">Editör ad landırması — IMG.LY</a></li>
+<li><a href="https://simplearyan.github.io/kinetix/blog/learning-from-lightroom" target="_blank" rel="noopener">Lightroom mobil arayüz analizi — Kinetix</a></li>
+<li><a href="https://developer.android.com/topic/performance/vitals/jank" target="_blank" rel="noopener">Jank ve donmuş kareler — Android Developers</a></li>
+<li><a href="https://developer.android.com/training/displaying-bitmaps/load-bitmap" target="_blank" rel="noopener">Büyük bitmap'leri verimli yüklemek — Android Developers</a></li>
+<li><a href="https://docs.unity.com/en-us/engine/6000.6/manual/scripting/optimization/performance-optimizing-code-managed-memory/reusable-code" target="_blank" rel="noopener">Nesne havuzu — Unity Manual</a></li>
+<li><a href="https://helpx.adobe.com/premiere-pro-next/organize-media/ingest-proxy-workflow/ingest-and-proxy-workflow.html" target="_blank" rel="noopener">Proxy iş akışı — Adobe Premiere Pro</a></li>
+<li><a href="https://www.canva.com/design-school/resources/premium-templates" target="_blank" rel="noopener">Premium şablonlarda taç simgesi — Canva</a></li>
+<li><a href="https://picsart.com/blog/?p=33912" target="_blank" rel="noopener">Picsart Gold ve taç işareti — Picsart</a></li>
+<li><a href="https://arxiv.org/html/2409.01382v2" target="_blank" rel="noopener">AI kodunun yapısal ölçütlerle tespiti — arXiv 2409.01382</a></li>
+<li><a href="https://arxiv.org/abs/2510.03029?context=cs" target="_blank" rel="noopener">Investigating the Smells of LLM Generated Code — arXiv 2510.03029</a></li>
+<li><a href="https://dev.to/yuvrajangadsingh/i-scanned-a-1k-star-cursor-project-ai-code-doesnt-look-like-ai-code-anymore-1lck" target="_blank" rel="noopener">AI kodu artık AI kodu gibi görünmüyor — DEV</a></li>
+<li><a href="https://notes.billmill.org/programming/golang/google_style_guide.html" target="_blank" rel="noopener">Google Go stil rehberi notları</a></li>
+<li><a href="https://awesome.ecosyste.ms/projects/github.com%2Fkodecocodes%2Fkotlin-style-guide" target="_blank" rel="noopener">Kodeco Kotlin stil rehberi</a></li>
+<li><a href="https://www.oreilly.com/radar/comprehension-debt-the-hidden-cost-of-ai-generated-code/" target="_blank" rel="noopener">Comprehension Debt — Addy Osmani, O'Reilly Radar</a></li>
+</ul>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span>© 2026 flozaxx</span>
+      <a href="/">Tüm projeler</a>
+    </div>
+  </footer>
+
+  <script src="/theme.js"></script>
+  <script src="/doc.js"></script>
+</body>
+</html>

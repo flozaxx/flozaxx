@@ -1,0 +1,324 @@
+/* Rehber sayfaları: okuma düzeni. Renk ve boşluk token'ları style.css'ten gelir. */
+.doc-layout {
+  padding-top: var(--s7);
+  padding-bottom: var(--s7);
+}
+
+.doc-toc {
+  display: none;
+}
+
+@media (min-width: 1080px) {
+  .doc-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 720px);
+    justify-content: center;
+    column-gap: var(--s7);
+    align-items: start;
+  }
+
+  .doc-toc {
+    display: block;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+  }
+
+  .doc-toc-mobile {
+    display: none;
+  }
+}
+
+.doc-toc ol,
+.doc-toc-mobile ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-toc a {
+  display: block;
+  padding: 6px 10px;
+  border-left: 2px solid var(--line);
+  color: var(--muted);
+  font-size: var(--fs-xs);
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.doc-toc a:hover {
+  color: var(--text);
+}
+
+.doc-toc a.is-active {
+  border-left-color: var(--accent);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.doc-toc-mobile {
+  margin: var(--s5) 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.doc-toc-mobile summary {
+  padding: var(--s3) var(--s4);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doc-toc-mobile ol {
+  padding: 0 var(--s4) var(--s3);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: var(--fs-sm);
+}
+
+.doc-toc-mobile a {
+  color: var(--muted);
+}
+
+.doc {
+  min-width: 0;
+}
+
+.doc-kicker {
+  margin: 0 0 var(--s2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.doc-kicker a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.doc h1 {
+  margin: 0;
+  font-size: clamp(1.875rem, 5vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.doc-byline {
+  margin: var(--s3) 0 0;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.doc h2 {
+  margin: var(--s7) 0 var(--s3);
+  font-size: 1.5rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 80px;
+}
+
+.doc h3 {
+  margin: var(--s6) 0 var(--s2);
+  font-size: var(--fs-lg);
+  scroll-margin-top: 80px;
+}
+
+.doc p,
+.doc li {
+  max-width: 68ch;
+  line-height: 1.7;
+}
+
+.doc ul,
+.doc ol {
+  padding-left: 1.25rem;
+}
+
+.doc li + li {
+  margin-top: 6px;
+}
+
+.doc a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.doc code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+
+.doc pre {
+  margin: var(--s4) 0;
+  padding: var(--s4);
+  overflow-x: auto;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  line-height: 1.55;
+}
+
+.doc pre code {
+  padding: 0;
+  background: none;
+  font-size: 0.8125rem;
+}
+
+.table-wrap {
+  margin: var(--s4) 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.doc table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+}
+
+.doc th,
+.doc td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+.doc th {
+  background: var(--surface-2);
+  font-weight: 600;
+}
+
+.doc tr:last-child td {
+  border-bottom: 0;
+}
+
+.checklist {
+  padding-left: 0 !important;
+  list-style: none;
+}
+
+.task label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.task input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 4px 0 0;
+  accent-color: var(--accent);
+}
+
+.task input:checked + span {
+  color: var(--muted);
+}
+
+.checklist-reset {
+  margin-top: var(--s2);
+}
+
+/* Editör düzeni çizimi */
+.editor-figure {
+  display: grid;
+  gap: var(--s5);
+  align-items: center;
+  margin: var(--s5) 0;
+  padding: var(--s5);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+
+@media (min-width: 640px) {
+  .editor-figure {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+.phone {
+  justify-self: center;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 6px;
+  width: 210px;
+  height: 380px;
+  padding: 10px;
+  border: 2px solid var(--line-strong);
+  border-radius: 28px;
+  background: var(--bg);
+}
+
+.zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 8px 8px 30px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.zone small {
+  color: var(--muted);
+  font-size: 0.625rem;
+}
+
+.zone-canvas {
+  align-items: center;
+  padding-left: 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  background: var(--surface-2);
+  border-style: solid;
+  border-color: var(--line);
+}
+
+.zone-no {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.zone-canvas .zone-no {
+  top: 10px;
+  transform: none;
+}
+
+.editor-figure figcaption {
+  font-size: var(--fs-sm);
+}
+
+.editor-figure figcaption ol {
+  margin: var(--s2) 0 0;
+}
