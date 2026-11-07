@@ -693,6 +693,11 @@ svg.icon-fill {
   background: var(--dev-soft);
 }
 
+.status-idea {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
 .status-private {
   color: var(--private);
   background: var(--private-soft);
@@ -1090,6 +1095,10 @@ svg.icon-fill {
   margin-left: auto;
   font-size: 0.6875rem;
   color: var(--dev);
+}
+
+.rail-badge-idea {
+  color: var(--accent);
 }
 
 .side-card {

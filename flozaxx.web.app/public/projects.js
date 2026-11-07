@@ -3,7 +3,8 @@
   listesine bir nesne kopyalayıp düzenlemek yeterli; sıra, sitedeki sıradır.
 
   kind      : "app" Uygulama · "tool" Rehber / araç · "web" Web
-  status    : "live" Yayında · "dev" Geliştiriliyor
+  status    : "live" Yayında · "dev" Geliştiriliyor · "idea" Planlanıyor
+              (planlanan projede "Öne çıkanlar" yerine "Planlananlar" yazar)
   icon      : app.js içindeki ICONS anahtarlarından biri; yoksa adın baş harfi
   color     : ikon zemini (CSS rengi ya da gradyan), ink: ikon rengi
   links     : ilk bağlantı satırdaki hızlı "aç" düğmesi olur
@@ -77,6 +78,28 @@ window.PROJECTS = [
       "“WhatsApp’ta böyle görünecek” paket önizlemesi",
       "Hızlı paket ön ayarları ve Paketlerim listesi",
       "Türkçe ve İngilizce arayüz",
+    ],
+    links: [],
+  },
+  {
+    id: "pc-kontrol",
+    name: "PC Kontrol",
+    tagline: "Evdeki bilgisayarı telefondan açıp yönetmek",
+    kind: "app",
+    status: "idea",
+    icon: "power",
+    color: "#E5484D",
+    platforms: ["Android", "Windows"],
+    tech: ["Wake-on-LAN"],
+    summary:
+      "Evdeki bilgisayarımı telefondan yönetmek için planladığım uygulama. İlk hedef Wake-on-LAN ile kapalı bilgisayarı uzaktan açmak; ardından durumunu görmek, kapatmak ve uyutmak.",
+    features: [
+      "Wake-on-LAN: telefondan bilgisayarın ağ kartına “sihirli paket” göndererek onu açmak",
+      "Ev dışından açma: sihirli paket yalnızca yerel ağda çalışır; bu yüzden evde sürekli açık bir aracı (modem, Raspberry Pi ya da evde kalan eski bir telefon) paketi iletir",
+      "Durum: bilgisayar açık mı, kapalı mı, uykuda mı tek bakışta",
+      "Uzaktan kapatma, uyku ve yeniden başlatma",
+      "Güvenlik: komutları yalnızca kendi hesabım ve cihazım gönderebilir; bilgisayarda internete açık bir bağlantı noktası olmaz",
+      "Hazırlık: BIOS'ta ve ağ kartı ayarlarında Wake-on-LAN'ı açmak, Windows'ta hızlı başlatmayı kapatmak",
     ],
     links: [],
   },

@@ -11,6 +11,7 @@ durumu ve bağlantıları tek sayfada: **[flozaxx.web.app](https://flozaxx.web.a
 | --- | --- | --- | --- |
 | **[Noty](https://noty-app1.web.app)** | Şifreli not ve şifre kasası. Her şey cihazda şifrelenir, sunucuya yalnızca şifreli veri gider. | Flutter · Firebase | Yayında (web + Android) |
 | **Sticker Studio** | Fotoğraf ve videolardan WhatsApp çıkartma paketleri. | Kotlin · Jetpack Compose | Geliştiriliyor |
+| **PC Kontrol** | Evdeki bilgisayarı telefondan açıp yönetmek: Wake-on-LAN ile uzaktan açma, durum, kapatma. | Wake-on-LAN | Planlanıyor |
 | **[Rubik Küpü Rehberi](https://flozaxx.web.app/p/rubik/)** | Hiç çözmemişlikten körlemeye beş yöntem, formül kütüphanesi, serbest küp. Ek kaynak: [BLD Harf Küpü](https://flozaxx.web.app/p/bld/). | HTML/CSS/JS · three.js | Yayında |
 | **[Önce Bak, Sonra Yap](https://flozaxx.web.app/p/once-bak-sonra-yap/)** | Yeni bir özelliğe başlarken izlediğim yöntem ve kontrol listesi. | — | Yayında |
 

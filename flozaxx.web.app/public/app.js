@@ -6,6 +6,7 @@ const ICONS = {
   cube: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 20 7.4v9.2l-8 4.6-8-4.6V7.4z"/><path d="m4 7.4 8 4.6 8-4.6M12 12v9.2"/><path d="m8 5.1 8 4.6M16 5.1 8 9.7"/></svg>',
   letters: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="m8.4 16.2 3.6-8.4 3.6 8.4M9.7 13.3h4.6"/></svg>',
   compass: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1z"/></svg>',
+  power: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v7.5"/><path d="M6.6 6.8a7.5 7.5 0 1 0 10.8 0"/></svg>',
   globe: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.5 3.5 5.3 3.5 8.5s-1.1 6-3.5 8.5c-2.4-2.5-3.5-5.3-3.5-8.5s1.1-6 3.5-8.5z"/></svg>',
 };
 
@@ -18,7 +19,8 @@ const UI_ICONS = {
 
 const KINDS = { app: "Uygulamalar", tool: "Rehber ve araçlar", web: "Web" };
 const KIND_LABEL = { app: "Uygulama", tool: "Rehber / araç", web: "Web" };
-const STATUS_LABEL = { live: "Yayında", dev: "Geliştiriliyor" };
+const STATUS_LABEL = { live: "Yayında", dev: "Geliştiriliyor", idea: "Planlanıyor" };
+const RAIL_BADGE = { dev: "yapımda", idea: "plan" };
 const SIDE_UPDATE_COUNT = 4;
 
 const projects = window.PROJECTS;
@@ -99,7 +101,7 @@ function projectHtml(p) {
       <div class="project-detail" id="${esc(p.id)}-detay" hidden="until-found">
         <div class="detail-inner">
           <p class="detail-summary">${esc(p.summary)}</p>
-          <h4 class="detail-heading">Öne çıkanlar</h4>
+          <h4 class="detail-heading">${p.status === "idea" ? "Planlananlar" : "Öne çıkanlar"}</h4>
           <ul class="feature-list">${p.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
           ${resourcesHtml(p)}
           ${factsHtml(p)}
@@ -111,7 +113,7 @@ function projectHtml(p) {
 
 function railProjectsHtml() {
   return projects
-    .map((p) => `<li><a href="#${esc(p.id)}" data-project="${esc(p.id)}"><span class="rail-dot" style="--dot:${esc(p.color)}"></span>${esc(p.name)}${p.status === "dev" ? '<span class="rail-badge">yapımda</span>' : ""}</a></li>`)
+    .map((p) => `<li><a href="#${esc(p.id)}" data-project="${esc(p.id)}"><span class="rail-dot" style="--dot:${esc(p.color)}"></span>${esc(p.name)}${RAIL_BADGE[p.status] ? `<span class="rail-badge rail-badge-${p.status}">${RAIL_BADGE[p.status]}</span>` : ""}</a></li>`)
     .join("");
 }
 
@@ -206,8 +208,10 @@ function renderTech() {
 function renderStats() {
   const live = projects.filter((p) => p.status === "live").length;
   const dev = projects.filter((p) => p.status === "dev").length;
+  const idea = projects.filter((p) => p.status === "idea").length;
   const parts = [`${projects.length} proje`, `${live} yayında`];
   if (dev) parts.push(`${dev} geliştiriliyor`);
+  if (idea) parts.push(`${idea} planlanıyor`);
   $("hero-stats").textContent = parts.join(" · ");
   $("updated").textContent = `Son güncelleme: ${site.updated}`;
 }
