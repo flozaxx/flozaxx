@@ -38,5 +38,6 @@ python -m http.server 8000
 firebase deploy --only hosting
 ```
 
-`.firebaserc` içindeki proje kimliği `flozaxx` varsayıldı. Farklıysa bir kez
-`firebase use --add` ile doğru projeyi seç.
+Firebase projesi `flozaxx-a8521`. Projenin varsayılan sitesi
+`flozaxx-a8521.web.app`, bu site ise aynı projedeki ek `flozaxx` sitesi;
+`firebase.json` içindeki `"site": "flozaxx"` yüklemeyi oraya yönlendirir.
