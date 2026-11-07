@@ -62,6 +62,11 @@ function factsHtml(p) {
   return `<dl class="facts">${rows.map(([k, v, cls]) => `<div${cls ? ` class="${cls}"` : ""}><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>`;
 }
 
+function plannedHtml(p) {
+  if (!p.planned?.length) return "";
+  return `<h4 class="detail-heading">Planlananlar</h4><ul class="feature-list feature-list-planned">${p.planned.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>`;
+}
+
 function resourcesHtml(p) {
   if (!p.resources?.length) return "";
   const cards = p.resources.map((r) => `
@@ -103,6 +108,7 @@ function projectHtml(p) {
           <p class="detail-summary">${esc(p.summary)}</p>
           <h4 class="detail-heading">${p.status === "idea" ? "Planlananlar" : "Öne çıkanlar"}</h4>
           <ul class="feature-list">${p.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+          ${plannedHtml(p)}
           ${resourcesHtml(p)}
           ${factsHtml(p)}
           ${linksHtml(p)}

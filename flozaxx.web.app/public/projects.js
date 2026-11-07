@@ -4,10 +4,11 @@
 
   kind      : "app" Uygulama · "tool" Rehber / araç · "web" Web
   status    : "live" Yayında · "dev" Geliştiriliyor · "idea" Planlanıyor
-              (planlanan projede "Öne çıkanlar" yerine "Planlananlar" yazar)
+              (henüz başlanmamış projede "Öne çıkanlar" yerine "Planlananlar" yazar)
   icon      : app.js içindeki ICONS anahtarlarından biri; yoksa adın baş harfi
   color     : ikon zemini (CSS rengi ya da gradyan), ink: ikon rengi
   links     : ilk bağlantı satırdaki hızlı "aç" düğmesi olur
+  planned   : planlanan özellikler (ayrıntıda "Planlananlar" olarak görünür)
   resources : projeye bağlı ek kaynaklar (ayrıntıda "Ek kaynaklar" olarak görünür)
 
   SITE.now     : sağ sütundaki "Şu an" kutusu
@@ -84,22 +85,29 @@ window.PROJECTS = [
   {
     id: "pc-kontrol",
     name: "PC Kontrol",
-    tagline: "Evdeki bilgisayarı telefondan açıp yönetmek",
+    tagline: "Evdeki bilgisayarı telefondan yönetmek",
     kind: "app",
-    status: "idea",
+    status: "dev",
     icon: "power",
     color: "#E5484D",
     platforms: ["Android", "Windows"],
-    tech: ["Wake-on-LAN"],
+    tech: ["Kotlin", "Jetpack Compose", "PowerShell"],
+    started: "Ağustos 2026",
     summary:
-      "Evdeki bilgisayarımı telefondan yönetmek için planladığım uygulama. İlk hedef Wake-on-LAN ile kapalı bilgisayarı uzaktan açmak; ardından durumunu görmek, kapatmak ve uyutmak.",
+      "Bilgisayarımı telefondan kilitlemek, uyutmak, kapatmak ya da ekranına bakmak için yaptığım uygulama. Bilgisayarda arka planda çalışan küçük bir PowerShell sunucusu, telefonda tek ekranlık bir Compose uygulaması var; her komut gizli bir anahtarla doğrulanır. Sıradaki büyük adım kapalı bilgisayarı Wake-on-LAN ile uzaktan açmak.",
     features: [
-      "Wake-on-LAN: telefondan bilgisayarın ağ kartına “sihirli paket” göndererek onu açmak",
-      "Ev dışından açma: sihirli paket yalnızca yerel ağda çalışır; bu yüzden evde sürekli açık bir aracı (modem, Raspberry Pi ya da evde kalan eski bir telefon) paketi iletir",
-      "Durum: bilgisayar açık mı, kapalı mı, uykuda mı tek bakışta",
-      "Uzaktan kapatma, uyku ve yeniden başlatma",
-      "Güvenlik: komutları yalnızca kendi hesabım ve cihazım gönderebilir; bilgisayarda internete açık bir bağlantı noktası olmaz",
-      "Hazırlık: BIOS'ta ve ağ kartı ayarlarında Wake-on-LAN'ı açmak, Windows'ta hızlı başlatmayı kapatmak",
+      "Güç: kilitle, uyku, hazırda beklet, kapat ve kapatmayı iptal et",
+      "Uzaktan ekran görüntüsü; istenirse telefonun galerisine kendiliğinden kaydedilir",
+      "Dosya açma ve program başlatma, yalnızca izin verilenler listesinden",
+      "Dosya ve program listeleri; bilgisayarın açık olup olmadığını gösteren durum",
+      "Ev dışından erişim: bilgisayar bir tünel üzerinden dışarıya açılır; sunucu pencere açmadan arka planda çalışır",
+    ],
+    planned: [
+      "Wake-on-LAN: kapalı bilgisayarı telefondan açmak. Bilgisayar kapalıyken kendi sunucusu da kapalı olduğundan, sihirli paketi evde sürekli açık bir cihaz (modem, Raspberry Pi ya da eski bir telefon) gönderecek",
+      "Yeniden başlatma komutu",
+      "Ayrıntılı durum: işlemci, bellek, açık kalma süresi",
+      "“Eve geliyorum” modu: konuma göre bilgisayarı kendiliğinden açmak",
+      "Ana ekran widget'ı ve kısayollar",
     ],
     links: [],
   },
