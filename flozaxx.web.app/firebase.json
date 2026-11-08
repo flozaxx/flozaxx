@@ -10,6 +10,16 @@
     ],
     "redirects": [
       {
+        "source": "/downloads/:slug",
+        "destination": "/:slug/dllatest",
+        "type": 302
+      },
+      {
+        "source": "/download/:slug",
+        "destination": "/:slug/dllatest",
+        "type": 302
+      },
+      {
         "source": "/rehberler",
         "destination": "/#projeler",
         "type": 301
