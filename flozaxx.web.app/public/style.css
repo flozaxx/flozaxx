@@ -1230,8 +1230,18 @@ svg.icon-fill {
 
 .rail-badge-dev {
   display: inline-flex;
-  font-size: 15px;
-  color: #f08619;
+  font-size: 18px;
+  color: #c9925a;
+}
+
+:root[data-theme="light"] .rail-badge-dev {
+  color: #a8743f;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .rail-badge-dev {
+    color: #a8743f;
+  }
 }
 
 .rail-badge-idea {
