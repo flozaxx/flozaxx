@@ -7,7 +7,10 @@ JavaScript, Firebase Hosting'de yayında.
 public/
   index.html      sayfa iskeleti, yan sütunlar, Bağlantılar ve Araç kutusu
   projects.js     tüm içerik: projeler, "Şu an", "Son güncellemeler"
-  app.js          liste, süzgeçler, tek açık ayrıntı, yan sütunlar
+  site.js         tüm sayfaların ortak parçaları: ikonlar, sol panel, telefondaki menü
+  app.js          ana sayfa: proje kartları, süzgeçler, sağ sütun
+  page.html       proje sayfalarının şablonu (/noty, /noty/changelog …)
+  page.js         proje sayfasını ve sürüm geçmişini projects.js'ten çizer
   theme.js        koyu / açık tema (tüm sayfalar)
   style.css       tasarım token'ları ve stiller
   doc.css, doc.js rehber sayfalarının okuma düzeni ve içindekiler

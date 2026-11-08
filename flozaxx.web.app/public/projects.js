@@ -2,6 +2,7 @@
   Sitedeki içeriğin tamamı bu dosyadadır. Yeni proje eklemek için PROJECTS
   listesine bir nesne kopyalayıp düzenlemek yeterli; sıra, sitedeki sıradır.
 
+  slug      : projenin sayfa adresi (flozaxx.com/<slug>)
   kind      : "app" Uygulama · "tool" Rehber / araç · "web" Web
   status    : "live" Yayında · "dev" Geliştiriliyor · "idea" Planlanıyor
               (henüz başlanmamış projede "Öne çıkanlar" yerine "Planlananlar" yazar)
@@ -10,8 +11,8 @@
   links     : ilk bağlantı satırdaki hızlı "aç" düğmesi olur
   planned   : planlanan özellikler (ayrıntıda "Planlananlar" olarak görünür)
   resources : projeye bağlı ek kaynaklar (ayrıntıda "Ek kaynaklar" olarak görünür)
-  changelog : sürüm geçmişi, en yeni en üstte: { version (isteğe bağlı), date, items: [...] }
-              İlk kayıt açık görünür, diğerleri "Önceki sürümler" altında toplanır.
+  changelog : sürüm geçmişi, en yeni en üstte: { version?, date, title?, items: [...] }
+              proje sayfasında son 3 kayıt, <slug>/changelog sayfasında tamamı görünür
 
   SITE.now     : sağ sütundaki "Şu an" kutusu
   SITE.updates : sağ sütundaki "Son güncellemeler", en yeni en üstte; en yeni 4 tanesi görünür
@@ -24,7 +25,7 @@ window.SITE = {
     { project: "noty", text: "1.12.1 yayında; telefonda ve web’de kullanılabilir." },
   ],
   updates: [
-    { date: "8 Kas 2026", project: "flozaxx-web", text: "Site flozaxx.com’a taşındı; projelere sürüm geçmişi eklendi." },
+    { date: "8 Kas 2026", project: "flozaxx-web", text: "Site flozaxx.com’a taşındı; her projenin kendi sayfası ve sürüm geçmişi var." },
     { date: "7 Kas 2026", project: "flozaxx-web", text: "Site yenilendi: tüm projeler tek sayfada." },
     { date: "3 Kas 2026", project: "noty", text: "Noty 1.12: e-postayla erişim, erişim isteği, “Notlarıma ekle”." },
     { date: "3 Kas 2026", project: "noty", text: "Noty 1.11: uçtan uca şifreli not paylaşımı, okuma görünümü." },
@@ -36,6 +37,7 @@ window.SITE = {
 window.PROJECTS = [
   {
     id: "noty",
+    slug: "noty",
     name: "Noty",
     tagline: "Şifreli not ve şifre kasası",
     kind: "app",
@@ -60,25 +62,68 @@ window.PROJECTS = [
     security: "AES-256-GCM şifreleme · Argon2id ile korunan yedekler · sıkı Firestore kuralları",
     links: [{ label: "Web uygulamasını aç", url: "https://noty.tr" }],
     changelog: [
-      { version: "1.12.1", date: "3 Kas 2026", items: ["Bazı cihazlarda açılışta görülen beyaz ekran sorunu giderildi"] },
-      { version: "1.12.0", date: "3 Kas 2026", items: ["Notu e-postayla doğrudan paylaşma", "Paylaşılan nota erişim isteği gönderme", "Paylaşılan notu “Notlarıma ekle” ile kütüphaneye alma"] },
-      { version: "1.11.0", date: "3 Kas 2026", items: ["Uçtan uca şifreli not paylaşımı", "Okuma görünümü ve metin stili paneli", "Ekran koruması ayarı"] },
-      { version: "1.10.0", date: "24 Eki 2026", items: ["İki yönlü sabitleme ve grup şeridi", "İkonlu eylemler; üzerine gelince kopyala", "CSV içe aktarmada ad düzeltmesi"] },
-      { version: "1.9.2", date: "23 Eki 2026", items: ["Uzun listelerde akıcı kaydırma", "Sabit seçim araçları, kapatılabilen bildirimler", "Açılışta “noty” yazısı"] },
-      { version: "1.9.0", date: "23 Eki 2026", items: ["Çam yeşili vurgu rengi ve Figtree yazı tipi", "Telefona uygun arayüz, yeni yeşil ikon"] },
-      { version: "1.8.0", date: "23 Eki 2026", items: ["Şifreli .noty yedeği", "CSV şifre dosyası ve Google Keep’ten içe aktarma"] },
-      { version: "1.7.0", date: "23 Eki 2026", items: ["Çöp kutusu: silinen kayıtlar 30 gün geri alınabilir"] },
-      { version: "1.6.0", date: "23 Eki 2026", items: ["Sade yeni tasarım ve “Kaldığın yerden” ana sayfası", "Sabitleme ve Ctrl+K komut paleti"] },
-      { version: "1.5.0", date: "23 Eki 2026", items: ["Şifrelerde giriş bilgileri: kullanıcı adı, e-posta, telefon ve kimlik/müşteri no", "Şifre notu zengin metin oldu", "Toplu seçim ve not klasörleri"] },
-      { version: "1.4.0", date: "23 Eki 2026", items: ["Grup menüsü, seçim modu ve grup düzenleyici"] },
-      { version: "1.3.0", date: "22 Eki 2026", items: ["Arayüz ölçeği ayarı", "Yeni logo: iç boşluğu anahtar deliği olan “n”"] },
-      { version: "1.2.0", date: "22 Eki 2026", items: ["Panel pencereleri ve detaylı görünüm", "Adres önerileri ve site ikonları", "Tek tıkla tema değiştirme"] },
-      { version: "1.1.0", date: "22 Eki 2026", items: ["Zengin not düzenleyici ve “/” komutları", "Yeni arayüz ve hızlı işlem kartları"] },
-      { version: "1.0", date: "7 Eki 2026", items: ["İlk sürüm: Google ile giriş, cihazda şifreleme, web ve Android", "PIN, desen ya da şifre kilidi; ekran görüntüsü koruması"] },
+      { version: "1.12.1", date: "3 Kasım 2026", title: "Beyaz ekran düzeltmesi", items: [
+        "Bazı cihazlarda girişten sonra uygulamanın boş, soluk bir ekranda kalması düzeltildi (telefon ve web).",
+        "Yeni eklenen ayarların okunamaması bu hataya yol açıyordu; artık her yeni ayar otomatik testle denetleniyor.",
+      ] },
+      { version: "1.12.0", date: "3 Kasım 2026", title: "E-postayla erişim ve erişim isteği", items: [
+        "Bir notu e-postasını yazdığın kişiyle paylaşabilirsin; not onun “Benimle paylaşılanlar” bölümüne düşer, bildirim gelir, bağlantı gerekmez.",
+        "Kişi henüz Noty kullanmıyorsa erişim bekler; Noty’ye katıldığında kendiliğinden tamamlanır.",
+        "Yalnızca davetlilere açık bir bağlantıyı açan biri “Erişim iste” diyebilir; istek sana bildirim olarak gelir, Ayarlar’dan onaylar ya da reddedersin.",
+        "“Notlarıma ekle”: seninle paylaşılan not, Notlar sekmesinde “ad tarafından paylaşıldı” dipnotuyla durur.",
+        "Android’de sistem bildirimleri.",
+      ] },
+      { version: "1.11.0", date: "3 Kasım 2026", title: "Uçtan uca şifreli not paylaşımı", items: [
+        "Paylaş ikonu bir bağlantı oluşturur; anahtar yalnızca bağlantının içindedir, sunucu notu okuyamaz.",
+        "Bağlantıya sahip herkes görüntüleyebilir ya da düzenleyebilir; istersen yalnızca davet ettiğin kişiler.",
+        "Not önce okuma görünümünde açılır; kalemle düzenlemeye geçilir. Yapılacak kutucukları okurken de işaretlenir.",
+        "“Aa” paneli: başlık seviyeleri, yazı boyutu ve hizalama.",
+        "Android’de ekran koruması ayarı; kapatmak kilit doğrulaması ister.",
+      ] },
+      { version: "1.10.0", date: "24 Ekim 2026", title: "İki yönlü sabitleme", items: [
+        "Bir kaydı listenin en üstüne ya da ana sayfaya sabitleyebilirsin.",
+        "Kayıt ekranında menü yerine raptiye, kalem ve sil ikonları.",
+        "Bilgisayarda kopyala ikonu yalnızca fareyle satırın üstüne gelince görünür.",
+        "CSV içe aktarmada “www.instagram.com” gibi adlar okunur ada (“Instagram”) çevrilebilir.",
+      ] },
+      { version: "1.9", date: "23 Ekim 2026", title: "Yeni görünüm: çam yeşili ve Figtree", items: [
+        "Vurgu rengi çam yeşili; uygulama ikonu yeşile geçti, yazı tipi Figtree.",
+        "Telefonda gruplu yuvarlak kartlar, hap biçimli düğmeler ve arama kutusu.",
+        "1.9.1: logo yazısının oranları düzeltildi.",
+        "1.9.2: yüzlerce kayıtta listeler akıcı; “Geri al” bildirimi 5 sn sonra kapanıyor.",
+      ] },
+      { version: "1.8.0", date: "23 Ekim 2026", title: "Yedek ve içe aktarma", items: [
+        "Şifreli .noty yedeği: kendi belirlediğin yedek şifresiyle korunur, başka hesaba da yüklenebilir.",
+        "Chrome, Firefox ve Bitwarden şifrelerini (CSV) ve Google Keep notlarını içe aktarma.",
+        "Her işlemden önce ne ekleneceği önizlenir; dosyalar cihazda okunur.",
+      ] },
+      { version: "1.7.0", date: "23 Ekim 2026", title: "Çöp kutusu", items: [
+        "Silinen kayıt önce çöp kutusuna gider; “Geri al” ile hemen döner.",
+        "30 günü geçenler kendiliğinden kalıcı silinir; sunucu hangi kaydın çöpte olduğunu göremez.",
+      ] },
+      { version: "1.6.0", date: "23 Ekim 2026", title: "“Kaldığın yerden” ana sayfası", items: [
+        "Ana sayfada son düzenlenen not, sabitlenenler ve son değişenler.",
+        "Ctrl+K komut paleti; yazı alanında değilken N yeni not açar.",
+      ] },
+      { version: "1.4 – 1.5", date: "23 Ekim 2026", title: "Gruplar ve zengin şifre notları", items: [
+        "Benzer kayıtları gruplama, seçim modu ve grup düzenleyici.",
+        "Şifre kaydının notu da zengin metin; “/” komutları orada da çalışır.",
+        "1.5.1: panel pencereleri sürüklenirken akıcı.",
+      ] },
+      { version: "1.1 – 1.3", date: "22 Ekim 2026", title: "Yeni arayüz ve zengin not düzenleyici", items: [
+        "Zengin not düzenleyici ve yeni arayüz (1.1.0).",
+        "Geniş ekranda panel pencereleri, şifrede adres önerileri (1.2.0).",
+        "Arayüz ölçeği ayarı (1.3.0) ve yeni “n” logosu (1.3.1).",
+      ] },
+      { version: "1.0", date: "7 Ekim 2026", title: "İlk sürüm", items: [
+        "Google ile giriş; her şey cihazda şifrelenir, web ve Android’de çalışır.",
+        "PIN, desen ya da şifre kilidi; ekran görüntüsü koruması.",
+      ] },
     ],
   },
   {
     id: "sticker-studio",
+    slug: "stickerstudio",
     name: "Sticker Studio",
     tagline: "Fotoğraf ve videolardan WhatsApp çıkartma paketleri",
     kind: "app",
@@ -102,20 +147,20 @@ window.PROJECTS = [
     ],
     links: [],
     changelog: [
-      {
-        date: "1 Kas 2026",
-        items: [
-          "Editör yenilendi: kaydet düğmesi üst çubukta, paneller arası yumuşak geçiş",
-          "Paneller tek bileşende birleşti, en fazla iki katman",
-          "Daha sakin yüzeyler; iç bölümlerde geri oku",
-          "Kod temizliği ve hata düzeltmeleri",
-        ],
-      },
-      { date: "Ekim 2026", items: ["İlk çalışan sürüm: fotoğraf ve videodan çıkartma, paket oluşturma"] },
+      { date: "1 Kasım 2026", title: "Editör yenilendi", items: [
+        "Kaydet düğmesi üst çubukta, paneller arası yumuşak geçiş.",
+        "Paneller tek bileşende birleşti; ekranda en fazla iki katman.",
+        "Daha sakin yüzeyler; iç bölümlerde geri oku.",
+        "Kod temizliği ve hata düzeltmeleri.",
+      ] },
+      { date: "Ekim 2026", title: "İlk çalışan sürüm", items: [
+        "Fotoğraf ve videodan çıkartma, paket oluşturma.",
+      ] },
     ],
   },
   {
     id: "pc-kontrol",
+    slug: "pckontrol",
     name: "PC Kontrol",
     tagline: "Evdeki bilgisayarı telefondan yönetmek",
     kind: "app",
@@ -145,6 +190,7 @@ window.PROJECTS = [
   },
   {
     id: "rubik",
+    slug: "rubik",
     name: "Rubik Küpü Rehberi",
     tagline: "Hiç çözmemişlikten körlemeye, etkileşimli küp rehberi",
     kind: "tool",
@@ -175,6 +221,7 @@ window.PROJECTS = [
   },
   {
     id: "once-bak-sonra-yap",
+    slug: "oncebak",
     name: "Önce Bak, Sonra Yap",
     tagline: "AI destekli yazılımda profesyonel standartlar",
     kind: "tool",
@@ -198,6 +245,7 @@ window.PROJECTS = [
   },
   {
     id: "flozaxx-web",
+    slug: "flozaxx",
     name: "flozaxx.com",
     tagline: "Bu site: tüm projelerimin özeti",
     kind: "web",
@@ -217,8 +265,15 @@ window.PROJECTS = [
     ],
     links: [{ label: "Kaynak kodu", url: "https://github.com/flozaxx/flozaxx/tree/main/flozaxx.web.app" }],
     changelog: [
-      { date: "8 Kas 2026", items: ["flozaxx.com alan adına taşındı", "Projelere sürüm geçmişi eklendi"] },
-      { date: "7 Kas 2026", items: ["Site baştan yazıldı: tüm projeler tek sayfada", "Kategori ve teknoloji süzgeci, yan sütunlar", "“Önce Bak, Sonra Yap” rehber sayfası"] },
+      { date: "8 Kasım 2026", title: "flozaxx.com ve proje sayfaları", items: [
+        "Site flozaxx.com alan adına taşındı.",
+        "Her projenin kendi sayfası; Noty, Sticker Studio ve site için sürüm geçmişi.",
+        "Ana sayfada sade kartlar; telefonda sol üstten açılan menü.",
+      ] },
+      { date: "7 Kasım 2026", title: "Site baştan yazıldı", items: [
+        "Tüm projeler tek sayfada; kategori ve teknoloji süzgeci, yan sütunlar.",
+        "“Önce Bak, Sonra Yap” rehber sayfası.",
+      ] },
     ],
   },
 ];
