@@ -440,3 +440,32 @@ textarea.page-summary {
 .toast {
   bottom: 88px;
 }
+
+.access-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.access-add {
+  display: flex;
+  gap: var(--s2);
+  margin-top: var(--s3);
+  max-width: 420px;
+}
+
+.access-add .ghost {
+  margin: 0;
+  border-color: var(--line-strong);
+}
+
+.setup-details {
+  margin-top: var(--s6);
+  text-align: left;
+}
+
+.setup-details summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}

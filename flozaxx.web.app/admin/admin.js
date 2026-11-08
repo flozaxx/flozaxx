@@ -18,6 +18,7 @@ let db;
 let saved = null;
 let draft = null;
 let view = { name: "project", index: 0 };
+let admins = null;
 let drawerReady = false;
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
@@ -90,6 +91,7 @@ function renderRail() {
       <p class="rail-title">Yönetim</p>
       <ul class="rail-sections">
         ${link("home", "Ana sayfa içeriği")}
+        ${link("access", "Erişim")}
         ${link("setup", "Kurulum")}
         <li><a href="https://flozaxx.com" target="_blank" rel="noopener">Siteyi aç ↗</a></li>
       </ul>
@@ -184,6 +186,76 @@ function projectSide(i) {
     </div>`;
 }
 
+/* ---------- Erişim ve kurallar ---------- */
+
+const ADMINS_PATH = ["site", "admins"];
+
+// Sahip (owner) kurallara kimliğiyle yazılır; listeyi boşaltsa bile dışarıda kalmaz.
+function rulesText(ownerUid) {
+  return `rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.uid == "${ownerUid}" || (
+          request.auth.token.email_verified == true &&
+          exists(/databases/$(database)/documents/site/admins) &&
+          request.auth.token.email.lower() in get(/databases/$(database)/documents/site/admins).data.emails
+        )
+      );
+    }
+    match /site/content {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /site/admins {
+      allow read, write: if isAdmin();
+    }
+  }
+}`;
+}
+
+function rulesBlock(ownerUid) {
+  return `
+    <ol class="setup-steps">
+      <li><a href="https://console.firebase.google.com/project/flozaxx-a8521/firestore/rules" target="_blank" rel="noopener">Firebase konsolu → Firestore → Kurallar</a> sayfasını aç.</li>
+      <li>Metnin tamamını silip aşağıdakini yapıştır, <b>Yayınla</b>'ya bas.</li>
+    </ol>
+    <div class="rules-box"><pre id="rules-text">${esc(rulesText(ownerUid))}</pre><button type="button" class="btn btn-sm" id="copy-rules">Kopyala</button></div>`;
+}
+
+function accessMain() {
+  const me = auth.currentUser.email.toLowerCase();
+  const rows = admins.emails.map((email, i) => `
+    <li class="edit-card access-row">
+      <span>${esc(email)}${email === me ? ' <span class="muted">(sen)</span>' : ""}</span>
+      <button type="button" class="mini mini-danger" data-remove-admin="${i}" aria-label="${esc(email)} erişimini kaldır">✕</button>
+    </li>`).join("");
+  return `
+    <header class="page-head page-head-plain"><div><h1>Erişim</h1><p class="page-tagline">Bu listedeki Google hesapları yönetim paneline girip siteyi düzenleyebilir.</p></div></header>
+    <ol class="edit-stack">${rows || '<li class="muted">Listede kimse yok; yalnızca sahip hesap girebilir.</li>'}</ol>
+    <form class="access-add" id="add-admin">
+      <input class="ghost" type="email" id="admin-email" placeholder="ornek@gmail.com" required aria-label="Eklenecek e-posta">
+      <button type="submit" class="btn btn-sm btn-primary">Ekle</button>
+    </form>
+    <p class="field-hint">Değişiklik hemen kaydedilir. Sahip hesap (panelin ilk kurulduğu hesap) listede olmasa da her zaman girebilir.</p>`;
+}
+
+async function saveAdmins(emails) {
+  await setDoc(doc(db, ...ADMINS_PATH), { owner: admins.owner, emails });
+  admins.emails = emails;
+  toast("Erişim listesi kaydedildi");
+  render();
+}
+
+document.addEventListener("submit", async (event) => {
+  if (event.target.id !== "add-admin") return;
+  event.preventDefault();
+  const email = document.getElementById("admin-email").value.trim().toLowerCase();
+  if (!email || admins.emails.includes(email)) return;
+  await saveAdmins([...admins.emails, email]);
+});
+
 /* ---------- Ana sayfa ve kurulum ---------- */
 
 function homeMain() {
@@ -212,24 +284,10 @@ function homeMain() {
 }
 
 function setupMain() {
-  const uid = auth.currentUser.uid;
-  const rules = `rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /site/content {
-      allow read: if true;
-      allow write: if request.auth != null && request.auth.uid == "${uid}";
-    }
-  }
-}`;
   return `
-    <header class="page-head page-head-plain"><div><h1>Kurulum</h1><p class="page-tagline">Firestore kuralları; bir kez yapılır.</p></div></header>
-    <ol class="setup-steps">
-      <li><a href="https://console.firebase.google.com/project/flozaxx-a8521/firestore/rules" target="_blank" rel="noopener">Firebase konsolu → Firestore → Kurallar</a> sayfasını aç.</li>
-      <li>Metnin tamamını silip aşağıdakini yapıştır, <b>Yayınla</b>'ya bas.</li>
-    </ol>
-    <div class="rules-box"><pre id="rules-text">${esc(rules)}</pre><button type="button" class="btn btn-sm" id="copy-rules">Kopyala</button></div>
-    <p class="field-hint">Hesap kimliğin: <code>${esc(uid)}</code>. Herkes okuyabilir; yalnızca bu hesap yazabilir.</p>`;
+    <header class="page-head page-head-plain"><div><h1>Kurulum</h1><p class="page-tagline">Firestore kuralları; değiştiğinde bir kez yapıştırılır.</p></div></header>
+    ${rulesBlock(admins.owner)}
+    <p class="field-hint">Herkes site içeriğini okuyabilir; içeriği ve erişim listesini yalnızca sahip hesap ile Erişim sayfasındaki hesaplar değiştirebilir.</p>`;
 }
 
 /* ---------- Çizim ---------- */
@@ -243,7 +301,7 @@ function render() {
     side.innerHTML = projectSide(view.index);
     side.hidden = false;
   } else {
-    main.innerHTML = view.name === "home" ? homeMain() : setupMain();
+    main.innerHTML = view.name === "home" ? homeMain() : view.name === "access" ? accessMain() : setupMain();
     side.hidden = true;
   }
   savebar.hidden = !isDirty();
@@ -298,7 +356,13 @@ document.addEventListener("change", (event) => {
 
 document.addEventListener("click", async (event) => {
   const target = event.target.closest("a[data-view], button");
-  if (!target || !draft) return;
+  if (!target) return;
+  if (target.id === "copy-rules") {
+    await navigator.clipboard.writeText(document.getElementById("rules-text").textContent);
+    toast("Kurallar kopyalandı");
+    return;
+  }
+  if (!draft) return;
   const { dataset } = target;
   if (dataset.view) {
     event.preventDefault();
@@ -329,9 +393,10 @@ document.addEventListener("click", async (event) => {
     const slug = `yeniproje${n}`;
     draft.projects.push({ id: slug, slug, name: "Yeni proje", tagline: "", kind: "app", status: "idea", icon: "", color: "#4a5462", platforms: [], tech: [], summary: "", features: [], links: [] });
     view = { name: "project", index: draft.projects.length - 1 };
-  } else if (target.id === "copy-rules") {
-    await navigator.clipboard.writeText(document.getElementById("rules-text").textContent);
-    toast("Kurallar kopyalandı");
+  } else if (dataset.removeAdmin) {
+    const email = admins.emails[Number(dataset.removeAdmin)];
+    if (!confirm(`${email} erişimi kaldırılsın mı?`)) return;
+    await saveAdmins(admins.emails.filter((e) => e !== email));
     return;
   } else {
     return;
@@ -419,6 +484,43 @@ function loginView(message = "") {
   });
 }
 
+// Erişim listesini yalnızca yetkili hesaplar okuyabilir (Firestore kuralları); okunamıyorsa bu hesap yetkisizdir.
+async function checkAccess(user) {
+  try {
+    const snap = await getDoc(doc(db, ...ADMINS_PATH));
+    if (snap.exists()) {
+      admins = snap.data();
+    } else {
+      admins = { owner: user.uid, emails: [user.email.toLowerCase()] };
+      await setDoc(doc(db, ...ADMINS_PATH), admins);
+    }
+    return true;
+  } catch (error) {
+    if (error.code !== "permission-denied") throw error;
+    noAccessView(user);
+    return false;
+  }
+}
+
+function noAccessView(user) {
+  draft = null;
+  rail.innerHTML = "";
+  side.hidden = true;
+  savebar.hidden = true;
+  main.innerHTML = `
+    <section class="login">
+      <h1>flozaxx<span class="brand-admin">admin</span></h1>
+      <p class="login-error">${esc(user.email)} hesabının yönetim paneline erişimi yok.</p>
+      <button type="button" class="btn" id="switch-account">Başka hesapla giriş yap</button>
+      <details class="setup-details">
+        <summary>Panelin sahibiysen ve kuralları henüz güncellemediysen</summary>
+        <p class="field-hint">Erişim listesi yeni kurallar gerektirir. Aşağıdaki metin bu hesabı sahip olarak tanımlar; yalnızca kendi hesabınla yapıştır.</p>
+        ${rulesBlock(user.uid)}
+      </details>
+    </section>`;
+  document.getElementById("switch-account").addEventListener("click", () => signOut(auth));
+}
+
 async function loadDraft() {
   const snap = await getDoc(doc(db, "site", "content"));
   saved = snap.exists() ? JSON.parse(snap.data().json) : { site: window.SITE, projects: window.PROJECTS };
@@ -442,14 +544,14 @@ async function start() {
     }
     userEl.innerHTML = `<span class="hide-sm">${esc(user.displayName || user.email)}</span><button type="button" class="text-btn" id="logout">Çıkış</button>`;
     document.getElementById("logout").addEventListener("click", () => signOut(auth));
-    main.innerHTML = '<p class="muted">İçerik yükleniyor…</p>';
+    main.innerHTML = '<p class="muted">Erişim kontrol ediliyor…</p>';
+    if (!(await checkAccess(user))) return;
     try {
       await loadDraft();
-    } catch (error) {
+    } catch {
       saved = { site: window.SITE, projects: window.PROJECTS };
       draft = clone(saved);
-      view = { name: "setup" };
-      toast(error.code === "permission-denied" ? "Okuma izni yok; önce Kurulum adımını yap" : "Veritabanına ulaşılamadı; mevcut içerik yüklendi");
+      toast("Veritabanına ulaşılamadı; mevcut içerik yüklendi");
     }
     render();
   });
