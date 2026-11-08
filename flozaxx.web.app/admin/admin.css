@@ -469,3 +469,47 @@ textarea.page-summary {
   color: var(--muted);
   font-size: var(--fs-sm);
 }
+
+.rail-count {
+  margin-left: auto;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-pill);
+  background: #e5484d;
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}
+
+.attempt {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+}
+
+.attempt.is-new {
+  border-color: var(--dev);
+}
+
+.attempt-main {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  min-width: 0;
+}
+
+.attempt-main img,
+.attempt-avatar {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-2);
+}
+
+.small-text {
+  font-size: var(--fs-xs);
+}

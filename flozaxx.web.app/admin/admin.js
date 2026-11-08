@@ -2,7 +2,7 @@
 // Yalnızca sahibin yazabilmesini Firestore kuralları sağlar; bu sayfa yalnızca arayüzdür.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, orderBy, limit, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const RESERVED_SLUGS = new Set(["admin", "download", "downloads", "p", "favicon", "page", "index", "404"]);
 const KIND_OPTIONS = { app: "Uygulama", tool: "Rehber / araç", web: "Web" };
@@ -19,6 +19,7 @@ let saved = null;
 let draft = null;
 let view = { name: "project", index: 0 };
 let admins = null;
+let attempts = [];
 let drawerReady = false;
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
@@ -85,13 +86,14 @@ function renderRail() {
     const badge = p.status === "dev" ? RAIL_BADGE.dev : p.status === "idea" ? RAIL_BADGE.idea : "";
     return `<li${current ? ' class="is-group"' : ""}><a href="#" data-view="project" data-index="${i}"${current ? ' class="is-current"' : ""}><span class="rail-dot" style="--dot:${esc(p.color || "#4a5462")}"></span>${esc(p.name || "Adsız proje")}${badge}</a></li>`;
   }).join("");
-  const link = (name, label) => `<li><a href="#" data-view="${name}"${view.name === name ? ' class="is-current"' : ""}>${label}</a></li>`;
+  const fresh = attempts.filter((a) => !a.seen).length;
+  const link = (name, label, badge = "") => `<li><a href="#" data-view="${name}"${view.name === name ? ' class="is-current"' : ""}>${label}${badge}</a></li>`;
   rail.innerHTML = `
     <div class="rail-inner">
       <p class="rail-title">Yönetim</p>
       <ul class="rail-sections">
         ${link("home", "Ana sayfa içeriği")}
-        ${link("access", "Erişim")}
+        ${link("access", "Erişim", fresh ? `<span class="rail-count" title="Yeni başarısız giriş">${fresh}</span>` : "")}
         ${link("setup", "Kurulum")}
         <li><a href="https://flozaxx.com" target="_blank" rel="noopener">Siteyi aç ↗</a></li>
       </ul>
@@ -211,6 +213,18 @@ service cloud.firestore {
     match /site/admins {
       allow read, write: if isAdmin();
     }
+    // Başarısız giriş kaydı: her hesap yalnızca kendi kaydını yazabilir, bilgileri değiştiremez; okumak yöneticilere.
+    match /loginAttempts/{uid} {
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(["uid", "email", "name", "photo", "agent", "lang", "count", "at", "seen"])
+        && request.resource.data.uid == uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.seen == false
+        && request.resource.data.at == request.time
+        && request.resource.data.count == (resource == null ? 1 : resource.data.count + 1);
+      allow read, delete: if isAdmin();
+      allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["seen"]);
+    }
   }
 }`;
 }
@@ -238,7 +252,53 @@ function accessMain() {
       <input class="ghost" type="email" id="admin-email" placeholder="ornek@gmail.com" required aria-label="Eklenecek e-posta">
       <button type="submit" class="btn btn-sm btn-primary">Ekle</button>
     </form>
-    <p class="field-hint">Değişiklik hemen kaydedilir. Sahip hesap (panelin ilk kurulduğu hesap) listede olmasa da her zaman girebilir.</p>`;
+    <p class="field-hint">Değişiklik hemen kaydedilir. Sahip hesap (panelin ilk kurulduğu hesap) listede olmasa da her zaman girebilir.</p>
+    <h2>Başarısız girişler</h2>
+    ${attemptsHtml()}`;
+}
+
+function describeAgent(agent = "") {
+  const os = /Android/.test(agent) ? "Android" : /iPhone|iPad/.test(agent) ? "iOS" : /Windows/.test(agent) ? "Windows" : /Mac OS/.test(agent) ? "macOS" : /Linux/.test(agent) ? "Linux" : "Bilinmeyen sistem";
+  const browser = /Edg\//.test(agent) ? "Edge" : /OPR\/|Opera/.test(agent) ? "Opera" : /Firefox\//.test(agent) ? "Firefox" : /Chrome\//.test(agent) ? "Chrome" : /Safari\//.test(agent) ? "Safari" : "tarayıcı";
+  return `${browser} · ${os}`;
+}
+
+function formatTime(ts) {
+  return ts?.toDate ? ts.toDate().toLocaleString("tr-TR", { dateStyle: "medium", timeStyle: "short" }) : "";
+}
+
+function attemptsHtml() {
+  if (!attempts.length) return '<p class="muted">Yetkisiz giriş denemesi yok.</p>';
+  const rows = attempts.map((a) => `
+    <li class="edit-card attempt${a.seen ? "" : " is-new"}">
+      <div class="attempt-main">
+        ${a.photo ? `<img src="${esc(a.photo)}" alt="" width="36" height="36" referrerpolicy="no-referrer">` : '<span class="attempt-avatar"></span>'}
+        <div>
+          <b>${esc(a.name || "Adsız")}</b>${a.seen ? "" : ' <span class="status status-dev">yeni</span>'}
+          <div class="muted small-text">${esc(a.email)}</div>
+          <div class="muted small-text">${esc(formatTime(a.at))} · ${a.count} deneme · ${esc(describeAgent(a.agent))}${a.lang ? ` · ${esc(a.lang)}` : ""}</div>
+        </div>
+      </div>
+      <span class="edit-card-tools">
+        ${admins.emails.includes(a.email.toLowerCase()) ? '<span class="muted small-text">erişimi var</span>' : `<button type="button" class="btn btn-sm" data-grant="${esc(a.uid)}">Erişim ver</button>`}
+        <button type="button" class="mini mini-danger" data-forget="${esc(a.uid)}" aria-label="Kaydı sil">✕</button>
+      </span>
+    </li>`).join("");
+  return `<ol class="edit-stack">${rows}</ol>`;
+}
+
+async function loadAttempts() {
+  const snap = await getDocs(query(collection(db, "loginAttempts"), orderBy("at", "desc"), limit(50)));
+  attempts = snap.docs.map((d) => d.data());
+  const fresh = attempts.filter((a) => !a.seen).length;
+  if (fresh) toast(`${fresh} yeni başarısız giriş denemesi var`);
+}
+
+// Erişim sayfası açılınca yeni denemeler görüldü sayılır; rozet o zaman söner.
+async function markAttemptsSeen() {
+  const fresh = attempts.filter((a) => !a.seen);
+  await Promise.all(fresh.map((a) => updateDoc(doc(db, "loginAttempts", a.uid), { seen: true })));
+  fresh.forEach((a) => { a.seen = true; });
 }
 
 async function saveAdmins(emails) {
@@ -368,6 +428,7 @@ document.addEventListener("click", async (event) => {
     event.preventDefault();
     view = dataset.view === "project" ? { name: "project", index: Number(dataset.index) } : { name: dataset.view };
     render();
+    if (view.name === "access" && attempts.some((a) => !a.seen)) markAttemptsSeen().then(renderRail);
     window.scrollTo({ top: 0 });
     return;
   }
@@ -393,6 +454,16 @@ document.addEventListener("click", async (event) => {
     const slug = `yeniproje${n}`;
     draft.projects.push({ id: slug, slug, name: "Yeni proje", tagline: "", kind: "app", status: "idea", icon: "", color: "#4a5462", platforms: [], tech: [], summary: "", features: [], links: [] });
     view = { name: "project", index: draft.projects.length - 1 };
+  } else if (dataset.grant) {
+    const a = attempts.find((x) => x.uid === dataset.grant);
+    if (!confirm(`${a.email} hesabına yönetim erişimi verilsin mi?`)) return;
+    await saveAdmins([...admins.emails, a.email.toLowerCase()]);
+    return;
+  } else if (dataset.forget) {
+    await deleteDoc(doc(db, "loginAttempts", dataset.forget));
+    attempts = attempts.filter((x) => x.uid !== dataset.forget);
+    render();
+    return;
   } else if (dataset.removeAdmin) {
     const email = admins.emails[Number(dataset.removeAdmin)];
     if (!confirm(`${email} erişimi kaldırılsın mı?`)) return;
@@ -498,7 +569,27 @@ async function checkAccess(user) {
   } catch (error) {
     if (error.code !== "permission-denied") throw error;
     noAccessView(user);
+    recordFailedLogin(user);
     return false;
+  }
+}
+
+// Yetkisiz giriş kaydedilir; yöneticiler Erişim sayfasında görür. Başarılı girişler kaydedilmez.
+async function recordFailedLogin(user) {
+  try {
+    await setDoc(doc(db, "loginAttempts", user.uid), {
+      uid: user.uid,
+      email: user.email,
+      name: user.displayName || "",
+      photo: user.photoURL || "",
+      agent: navigator.userAgent.slice(0, 300),
+      lang: navigator.language || "",
+      count: increment(1),
+      at: serverTimestamp(),
+      seen: false,
+    }, { merge: true });
+  } catch {
+    // Kayıt yazılamasa da (ör. kurallar eski) kullanıcıya gösterilecek bir şey yok.
   }
 }
 
@@ -512,11 +603,6 @@ function noAccessView(user) {
       <h1>flozaxx<span class="brand-admin">admin</span></h1>
       <p class="login-error">${esc(user.email)} hesabının yönetim paneline erişimi yok.</p>
       <button type="button" class="btn" id="switch-account">Başka hesapla giriş yap</button>
-      <details class="setup-details">
-        <summary>Panelin sahibiysen ve kuralları henüz güncellemediysen</summary>
-        <p class="field-hint">Erişim listesi yeni kurallar gerektirir. Aşağıdaki metin bu hesabı sahip olarak tanımlar; yalnızca kendi hesabınla yapıştır.</p>
-        ${rulesBlock(user.uid)}
-      </details>
     </section>`;
   document.getElementById("switch-account").addEventListener("click", () => signOut(auth));
 }
@@ -546,6 +632,9 @@ async function start() {
     document.getElementById("logout").addEventListener("click", () => signOut(auth));
     main.innerHTML = '<p class="muted">Erişim kontrol ediliyor…</p>';
     if (!(await checkAccess(user))) return;
+    await loadAttempts().catch(() => {
+      // Kurallar henüz loginAttempts'i kapsamıyorsa liste boş kalır.
+    });
     try {
       await loadDraft();
     } catch {
