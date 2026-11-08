@@ -1,6 +1,5 @@
 /* Yönetim paneli: sitenin düzenini (style.css) kullanır; burada yalnızca düzenlenebilir alanların görünümü var. */
 .brand-admin {
-  margin-left: 1px;
   font-weight: 500;
   color: var(--muted);
   opacity: 0.75;
