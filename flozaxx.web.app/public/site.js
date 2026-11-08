@@ -70,10 +70,11 @@ function renderRail({ sections, current = null, currentSub = null }) {
   const projectLinks = PROJECTS.map((p) => {
     const isCurrent = p.slug === current && !currentSub;
     const badge = RAIL_BADGE[p.status] ? `<span class="rail-badge rail-badge-${p.status}">${RAIL_BADGE[p.status]}</span>` : "";
-    const subs = p.changelog?.length
+    const inProject = p.slug === current;
+    const subs = inProject && p.changelog?.length
       ? `<ul class="rail-sub"><li><a href="${projectUrl(p)}/changelog"${p.slug === current && currentSub === "changelog" ? ' class="is-current" aria-current="page"' : ""}>Changelog</a></li></ul>`
       : "";
-    return `<li><a href="${projectUrl(p)}"${isCurrent ? ' class="is-current" aria-current="page"' : ""}><span class="rail-dot" style="--dot:${esc(p.color)}"></span>${esc(p.name)}${badge}</a>${subs}</li>`;
+    return `<li${inProject ? ' class="is-group"' : ""}><a href="${projectUrl(p)}"${isCurrent ? ' class="is-current" aria-current="page"' : ""}><span class="rail-dot" style="--dot:${esc(p.color)}"></span>${esc(p.name)}${badge}</a>${subs}</li>`;
   }).join("");
 
   document.getElementById("rail-left").innerHTML = `

@@ -1430,6 +1430,11 @@ svg.icon-fill {
   line-height: 1.5;
 }
 
+/* İçinde bulunulan projenin başlığı ve alt sekmeleri tek bir vurgulu çizgiyle bağlanır. */
+.rail-projects .is-group a {
+  border-left-color: var(--accent);
+}
+
 .rail-sub {
   margin: 0;
   padding: 0;
