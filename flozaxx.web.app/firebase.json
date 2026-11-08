@@ -12,12 +12,12 @@
       "redirects": [
         {
           "source": "/admin",
-          "destination": "https://admin.flozaxx.com/",
+          "destination": "https://flozaxx-admin.web.app/",
           "type": 302
         },
         {
           "source": "/admin/**",
-          "destination": "https://admin.flozaxx.com/",
+          "destination": "https://flozaxx-admin.web.app/",
           "type": 302
         },
         {
