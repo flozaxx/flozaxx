@@ -1228,6 +1228,12 @@ svg.icon-fill {
   color: var(--dev);
 }
 
+.rail-badge-dev {
+  display: inline-flex;
+  font-size: 15px;
+  color: #f08619;
+}
+
 .rail-badge-idea {
   color: var(--accent);
 }

@@ -22,7 +22,11 @@ const UI_ICONS = {
 const KINDS = { app: "Uygulamalar", tool: "Rehber ve araçlar", web: "Web" };
 const KIND_LABEL = { app: "Uygulama", tool: "Rehber / araç", web: "Web" };
 const STATUS_LABEL = { live: "Yayında", dev: "Geliştiriliyor", idea: "Planlanıyor" };
-const RAIL_BADGE = { dev: "yapımda", idea: "plan" };
+const WRENCH = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2l-5.2 5.2a1.8 1.8 0 0 0 2.5 2.5l5.2-5.2a4 4 0 0 0 5.2-5.2l-2.4 2.4-2.3-.6-.6-2.3z"/></svg>';
+const RAIL_BADGE = {
+  dev: `<span class="rail-badge rail-badge-dev" title="Geliştiriliyor">${WRENCH}<span class="visually-hidden">Geliştiriliyor</span></span>`,
+  idea: '<span class="rail-badge rail-badge-idea">plan</span>',
+};
 
 // Yayında olanlar üstte, geliştirilenler en altta; aynı durumdakiler projects.js sırasını korur.
 const STATUS_ORDER = { live: 0, idea: 1, dev: 2 };
@@ -71,7 +75,7 @@ function renderRail({ sections, current = null, currentSub = null }) {
 
   const projectLinks = PROJECTS.map((p) => {
     const isCurrent = p.slug === current && !currentSub;
-    const badge = RAIL_BADGE[p.status] ? `<span class="rail-badge rail-badge-${p.status}">${RAIL_BADGE[p.status]}</span>` : "";
+    const badge = RAIL_BADGE[p.status] || "";
     const inProject = p.slug === current;
     const subs = inProject && p.changelog?.length
       ? `<ul class="rail-sub"><li><a href="${projectUrl(p)}/changelog"${p.slug === current && currentSub === "changelog" ? ' class="is-current" aria-current="page"' : ""}>Changelog</a></li></ul>`
