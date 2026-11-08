@@ -55,7 +55,7 @@ window.PROJECTS = [
       "Koyu ve açık tema; telefonda sade arayüz, geniş ekranda panel düzeni",
     ],
     security: "AES-256-GCM şifreleme · Argon2id ile korunan yedekler · sıkı Firestore kuralları",
-    links: [{ label: "Web uygulamasını aç", url: "https://noty-app1.web.app" }],
+    links: [{ label: "Web uygulamasını aç", url: "https://noty.tr" }],
   },
   {
     id: "sticker-studio",
@@ -166,7 +166,7 @@ window.PROJECTS = [
   },
   {
     id: "flozaxx-web",
-    name: "flozaxx.web.app",
+    name: "flozaxx.com",
     tagline: "Bu site: tüm projelerimin özeti",
     kind: "web",
     status: "live",

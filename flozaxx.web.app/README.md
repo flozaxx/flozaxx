@@ -1,4 +1,4 @@
-# flozaxx.web.app
+# flozaxx.com
 
 Projelerimin özet sitesi. Çerçeve ve derleme adımı yok: düz HTML, CSS ve
 JavaScript, Firebase Hosting'de yayında.
@@ -31,7 +31,7 @@ alt bilgideki tarihtir; `SITE.now` ve `SITE.updates` sağ sütundaki kutulardır
 düzenlenir. İçindekiler `h2` başlıklarından elle yazılı, yeni bölüm eklenirse
 oraya da bir satır eklenir.
 
-Bir projenin kendi bağlantısı `https://flozaxx.web.app/#<id>`; açıldığında o
+Bir projenin kendi bağlantısı `https://flozaxx.com/#<id>`; açıldığında o
 projenin ayrıntısı açık gelir.
 
 ## Yerelde bakmak
