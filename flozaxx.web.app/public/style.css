@@ -329,14 +329,6 @@ svg.icon-fill {
   font-size: var(--fs-lg);
 }
 
-.hero-stats {
-  margin: var(--s4) 0 0;
-  font-family: var(--mono);
-  font-size: var(--fs-xs);
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
-
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -425,7 +417,7 @@ svg.icon-fill {
 
 .section-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: var(--s4);
   margin-bottom: var(--s4);
@@ -1030,46 +1022,6 @@ svg.icon-fill {
 }
 
 /* Bağlantılar */
-.link-cards {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--s2);
-}
-
-@media (min-width: 560px) {
-  .link-cards {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.link-card {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: var(--s4);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  text-decoration: none;
-  box-shadow: var(--shadow);
-  transition: border-color 0.15s;
-}
-
-.link-card:hover {
-  border-color: var(--text);
-}
-
-.link-card-title {
-  font-weight: 600;
-}
-
-.link-card-url {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--muted);
-  overflow-wrap: anywhere;
-}
-
 .toolbox {
   margin-top: var(--s4);
   background: var(--surface);
@@ -1393,9 +1345,56 @@ svg.icon-fill {
   height: 8px;
 }
 
-.section-hint {
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  width: min(240px, 55%);
+  min-height: 38px;
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  color: var(--muted);
+}
+
+.search:focus-within {
+  border-color: var(--accent);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-sm);
+  outline: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.project-stats {
+  margin: calc(var(--s2) * -1) 0 var(--s4);
+  font-family: var(--mono);
   font-size: var(--fs-xs);
   color: var(--muted);
+}
+
+.section-toolbox {
+  padding-top: var(--s2);
+}
+
+.section-toolbox .toolbox {
+  margin-top: 0;
 }
 
 .resources {

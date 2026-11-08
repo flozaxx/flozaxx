@@ -231,7 +231,6 @@ renderRail({
   sections: [
     { label: "Ana sayfa", href: "/" },
     { label: "Projeler", href: "/#projeler" },
-    { label: "Bağlantılar", href: "/#baglantilar" },
     { label: "İndirmeler", href: "/download" },
   ],
   current: slug === "download" ? null : project?.slug,

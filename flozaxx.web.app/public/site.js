@@ -24,7 +24,9 @@ const KIND_LABEL = { app: "Uygulama", tool: "Rehber / araç", web: "Web" };
 const STATUS_LABEL = { live: "Yayında", dev: "Geliştiriliyor", idea: "Planlanıyor" };
 const RAIL_BADGE = { dev: "yapımda", idea: "plan" };
 
-const PROJECTS = window.PROJECTS;
+// Yayında olanlar üstte, geliştirilenler en altta; aynı durumdakiler projects.js sırasını korur.
+const STATUS_ORDER = { live: 0, idea: 1, dev: 2 };
+const PROJECTS = [...window.PROJECTS].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
 const SITE = window.SITE;
 
 function esc(text) {
@@ -124,6 +126,8 @@ function setupScrollSpy(selector, line = () => window.innerHeight * 0.35) {
     targets.forEach((el, i) => {
       if (el.getBoundingClientRect().top < line()) active = i;
     });
+    // Sayfa son bölüme kadar kaydırılamayabilir; en alttaysak son bağlantı vurgulanır.
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) active = targets.length - 1;
     links.forEach((a, i) => a.classList.toggle("is-active", i === active));
   };
   window.addEventListener("scroll", () => {

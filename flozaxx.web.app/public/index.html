@@ -40,7 +40,7 @@
       <nav class="topnav" aria-label="Bölümler">
         <a href="/#projeler">Projeler</a>
         <a href="/#teknolojiler" class="hide-sm">Teknolojiler</a>
-        <a href="/#baglantilar">Bağlantılar</a>
+        <a href="/download">İndirmeler</a>
       </nav>
       <button class="icon-btn" id="theme-toggle" type="button" aria-label="Açık temaya geç">
         <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
@@ -61,7 +61,6 @@
         bir çıkartma stüdyosu, Rubik küpü rehberleri. Hepsi burada; her birinin
         kendi sayfasında ne olduğu, durumu ve bağlantıları var.
       </p>
-      <p class="hero-stats" id="hero-stats"></p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#projeler">Projelere göz at</a>
         <a class="btn" href="https://github.com/flozaxx" target="_blank" rel="noopener">
@@ -74,13 +73,18 @@
     <section class="section" id="projeler" aria-labelledby="projeler-baslik">
       <div class="section-head">
         <h2 id="projeler-baslik">Projeler</h2>
-        <span class="section-hint">Ayrıntılar her projenin kendi sayfasında</span>
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+          <span class="visually-hidden">Projelerde ara</span>
+          <input type="search" id="project-search" placeholder="Projelerde ara" autocomplete="off">
+        </label>
       </div>
+      <p class="project-stats" id="project-stats"></p>
       <div class="filters" id="filters" role="group" aria-label="Kategoriye göre süz"></div>
       <div class="active-filter" id="active-filter" hidden></div>
       <div class="project-list" id="project-list"></div>
       <p class="empty" id="empty" hidden>
-        Bu filtreye uyan proje yok. <button class="text-btn" type="button" data-clear-filters>Filtreleri temizle</button>
+        Aramaya ya da filtreye uyan proje yok. <button class="text-btn" type="button" data-clear-filters>Filtreleri temizle</button>
       </p>
       <noscript>
         <p class="empty">
@@ -101,25 +105,7 @@
       <div class="tech-list" id="tech-list"></div>
     </section>
 
-    <section class="section" id="baglantilar" aria-labelledby="baglantilar-baslik">
-      <div class="section-head">
-        <h2 id="baglantilar-baslik">Bağlantılar</h2>
-      </div>
-      <div class="link-cards">
-        <a class="link-card" href="https://github.com/flozaxx" target="_blank" rel="noopener">
-          <span class="link-card-title">GitHub</span>
-          <span class="link-card-url">github.com/flozaxx</span>
-        </a>
-        <a class="link-card" href="https://noty.tr" target="_blank" rel="noopener">
-          <span class="link-card-title">Noty</span>
-          <span class="link-card-url">noty.tr</span>
-        </a>
-        <a class="link-card" href="/p/rubik/" target="_blank" rel="noopener">
-          <span class="link-card-title">Rubik Küpü Rehberi</span>
-          <span class="link-card-url">flozaxx.com/p/rubik</span>
-        </a>
-      </div>
-
+    <section class="section section-toolbox" aria-label="Araç kutusu">
       <details class="toolbox" id="araclar">
         <summary>
           <span>

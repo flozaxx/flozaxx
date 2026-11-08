@@ -3,7 +3,7 @@
 // Ana sayfa: sade proje kartları, süzgeçler, teknoloji listesi ve sağ sütun.
 
 const SIDE_UPDATE_COUNT = 4;
-const filter = { kind: "all", tech: null };
+const filter = { kind: "all", tech: null, query: "" };
 const $ = (id) => document.getElementById(id);
 const listEl = $("project-list");
 
@@ -33,8 +33,15 @@ function renderSide() {
     .join("");
 }
 
+const fold = (text) => text.toLocaleLowerCase("tr");
+
 function matches(p) {
-  return (filter.kind === "all" || p.kind === filter.kind) && (!filter.tech || p.tech.includes(filter.tech));
+  const haystack = fold([p.name, p.tagline, ...p.tech, ...p.platforms].join(" "));
+  return (
+    (filter.kind === "all" || p.kind === filter.kind) &&
+    (!filter.tech || p.tech.includes(filter.tech)) &&
+    (!filter.query || haystack.includes(filter.query))
+  );
 }
 
 function renderFilters() {
@@ -80,10 +87,10 @@ function renderTech() {
 
 function renderStats() {
   const count = (status) => PROJECTS.filter((p) => p.status === status).length;
-  const parts = [`${PROJECTS.length} proje`, `${count("live")} yayında`];
+  const parts = [`${count("live")} yayında`];
   if (count("dev")) parts.push(`${count("dev")} geliştiriliyor`);
   if (count("idea")) parts.push(`${count("idea")} planlanıyor`);
-  $("hero-stats").textContent = parts.join(" · ");
+  $("project-stats").textContent = parts.join(" · ");
   $("updated").textContent = `Son güncelleme: ${SITE.updated}`;
 }
 
@@ -117,8 +124,14 @@ function bindEvents() {
     } else if ("clearFilters" in target.dataset) {
       filter.kind = "all";
       filter.tech = null;
+      filter.query = "";
+      $("project-search").value = "";
       applyFilter();
     }
+  });
+  $("project-search").addEventListener("input", (event) => {
+    filter.query = fold(event.target.value.trim());
+    applyFilter();
   });
   window.addEventListener("hashchange", redirectOldHash);
 }
@@ -128,7 +141,6 @@ renderRail({
     { label: "Giriş", href: "#top", spy: "top" },
     { label: "Projeler", href: "#projeler", spy: "projeler" },
     { label: "Teknolojiler", href: "#teknolojiler", spy: "teknolojiler" },
-    { label: "Bağlantılar", href: "#baglantilar", spy: "baglantilar" },
     { label: "İndirmeler", href: "/download" },
   ],
 });
