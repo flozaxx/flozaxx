@@ -150,7 +150,6 @@ window.PROJECTS = [
       "Türkçe ve İngilizce arayüz",
     ],
     links: [],
-    download: { file: "sticker-studio.apk", platform: "Android" },
     changelog: [
       { date: "1 Kasım 2026", title: "Editör yenilendi", items: [
         "Kaydet düğmesi üst çubukta, paneller arası yumuşak geçiş.",

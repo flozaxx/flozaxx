@@ -25,11 +25,6 @@
         "type": 302
       },
       {
-        "source": "/stickerstudio/dllatest",
-        "destination": "https://github.com/flozaxx/downloads/releases/download/stickerstudio/sticker-studio.apk",
-        "type": 302
-      },
-      {
         "source": "/downloads",
         "destination": "/download",
         "type": 301
