@@ -107,13 +107,12 @@ async function hideDownloadIfMissing(p) {
   const btn = main.querySelector(`a[href="${downloadUrl(p)}"]`);
   try {
     const res = await fetch(`https://api.github.com/repos/${DOWNLOADS_REPO}/releases/tags/${encodeURIComponent(p.slug)}`);
-    const release = res.ok ? await res.json() : null;
-    if (release?.assets.some((a) => a.name === p.download.file)) return;
+    // Yalnızca GitHub "yok" derse gizlenir; istek sınırı gibi hatalarda düğme kalır, bağlantı yine çalışır.
+    const missing = res.status === 404 || (res.ok && !(await res.json()).assets.some((a) => a.name === p.download.file));
+    if (missing) btn.remove();
   } catch {
-    // Compat: GitHub'a ulaşılamazsa (ör. istek sınırı) düğme kalır; bağlantı yine çalışır.
-    return;
+    // Ağ hatası: düğme kalır.
   }
-  btn.remove();
 }
 
 function changelogView(p) {
@@ -153,12 +152,21 @@ function formatDate(iso) {
 async function fillDownloadCard(p) {
   const card = document.getElementById(`dl-${p.slug}`);
   const info = card.querySelector(".dl-info");
+  let release;
   try {
     const res = await fetch(`https://api.github.com/repos/${DOWNLOADS_REPO}/releases/tags/${encodeURIComponent(p.slug)}`);
-    if (!res.ok) throw new Error(String(res.status));
-    const release = await res.json();
-    const asset = release.assets.find((a) => a.name === p.download.file);
-    if (!asset) throw new Error("dosya yok");
+    if (res.status === 404) release = { assets: [] };
+    else if (res.ok) release = await res.json();
+  } catch {
+    // Ağ hatası: aşağıda bilgisiz kart gösterilir.
+  }
+  // GitHub'a ulaşılamadıysa (ör. saatlik istek sınırı) dosyanın varlığı bilinemez; düğme kalır.
+  if (!release) {
+    info.textContent = "Dosya bilgileri şu an alınamadı; indirme bağlantısı çalışıyor.";
+    return;
+  }
+  const asset = release.assets.find((a) => a.name === p.download.file);
+  if (asset) {
     const sha = asset.digest?.startsWith("sha256:") ? asset.digest.slice(7) : null;
     info.innerHTML = `
       <span>${esc(release.name || p.slug)}</span>
@@ -167,11 +175,11 @@ async function fillDownloadCard(p) {
     if (sha) {
       card.querySelector(".dl-sha").innerHTML = `<span class="dl-sha-label">SHA-256</span><code>${esc(sha)}</code><button type="button" class="text-btn" data-copy-sha="${esc(sha)}">Kopyala</button>`;
     }
-  } catch {
-    card.classList.add("is-empty");
-    info.textContent = "Henüz yüklenmiş bir dosya yok.";
-    card.querySelector(".btn").remove();
+    return;
   }
+  card.classList.add("is-empty");
+  info.textContent = "Henüz yüklenmiş bir dosya yok.";
+  card.querySelector(".btn").remove();
 }
 
 function downloadView() {
