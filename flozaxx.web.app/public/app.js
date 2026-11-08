@@ -77,6 +77,24 @@ function resourcesHtml(p) {
   return `<h4 class="detail-heading">Ek kaynaklar</h4><div class="resources">${cards.join("")}</div>`;
 }
 
+function changelogEntryHtml(c) {
+  const version = c.version ? `<span class="log-version">${esc(c.version)}</span>` : "";
+  return `
+    <li class="log-entry">
+      <div class="log-head">${version}<time>${esc(c.date)}</time></div>
+      <ul class="feature-list">${c.items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
+    </li>`;
+}
+
+function changelogHtml(p) {
+  if (!p.changelog?.length) return "";
+  const [latest, ...older] = p.changelog;
+  const more = older.length
+    ? `<details class="log-more"><summary>Önceki sürümler (${older.length})</summary><ol class="changelog">${older.map(changelogEntryHtml).join("")}</ol></details>`
+    : "";
+  return `<h4 class="detail-heading">Sürüm geçmişi</h4><ol class="changelog">${changelogEntryHtml(latest)}</ol>${more}`;
+}
+
 function linksHtml(p) {
   const buttons = p.links.map((link) => `<a class="btn btn-sm" ${linkAttrs(link)}>${UI_ICONS.external}${esc(link.label)}</a>`);
   buttons.push(`<button type="button" class="btn btn-sm btn-ghost" data-copy="${esc(p.id)}">${UI_ICONS.link}Bağlantıyı kopyala</button>`);
@@ -110,6 +128,7 @@ function projectHtml(p) {
           <ul class="feature-list">${p.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
           ${plannedHtml(p)}
           ${resourcesHtml(p)}
+          ${changelogHtml(p)}
           ${factsHtml(p)}
           ${linksHtml(p)}
         </div>

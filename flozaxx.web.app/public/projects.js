@@ -10,18 +10,21 @@
   links     : ilk bağlantı satırdaki hızlı "aç" düğmesi olur
   planned   : planlanan özellikler (ayrıntıda "Planlananlar" olarak görünür)
   resources : projeye bağlı ek kaynaklar (ayrıntıda "Ek kaynaklar" olarak görünür)
+  changelog : sürüm geçmişi, en yeni en üstte: { version (isteğe bağlı), date, items: [...] }
+              İlk kayıt açık görünür, diğerleri "Önceki sürümler" altında toplanır.
 
   SITE.now     : sağ sütundaki "Şu an" kutusu
   SITE.updates : sağ sütundaki "Son güncellemeler", en yeni en üstte; en yeni 4 tanesi görünür
 */
 
 window.SITE = {
-  updated: "7 Kasım 2026",
+  updated: "8 Kasım 2026",
   now: [
     { project: "sticker-studio", text: "İlk sürüm üzerinde çalışıyorum: editör ve paket akışı." },
     { project: "noty", text: "1.12.1 yayında; telefonda ve web’de kullanılabilir." },
   ],
   updates: [
+    { date: "8 Kas 2026", project: "flozaxx-web", text: "Site flozaxx.com’a taşındı; projelere sürüm geçmişi eklendi." },
     { date: "7 Kas 2026", project: "flozaxx-web", text: "Site yenilendi: tüm projeler tek sayfada." },
     { date: "3 Kas 2026", project: "noty", text: "Noty 1.12: e-postayla erişim, erişim isteği, “Notlarıma ekle”." },
     { date: "3 Kas 2026", project: "noty", text: "Noty 1.11: uçtan uca şifreli not paylaşımı, okuma görünümü." },
@@ -56,6 +59,23 @@ window.PROJECTS = [
     ],
     security: "AES-256-GCM şifreleme · Argon2id ile korunan yedekler · sıkı Firestore kuralları",
     links: [{ label: "Web uygulamasını aç", url: "https://noty.tr" }],
+    changelog: [
+      { version: "1.12.1", date: "3 Kas 2026", items: ["Bazı cihazlarda açılışta görülen beyaz ekran sorunu giderildi"] },
+      { version: "1.12.0", date: "3 Kas 2026", items: ["Notu e-postayla doğrudan paylaşma", "Paylaşılan nota erişim isteği gönderme", "Paylaşılan notu “Notlarıma ekle” ile kütüphaneye alma"] },
+      { version: "1.11.0", date: "3 Kas 2026", items: ["Uçtan uca şifreli not paylaşımı", "Okuma görünümü ve metin stili paneli", "Ekran koruması ayarı"] },
+      { version: "1.10.0", date: "24 Eki 2026", items: ["İki yönlü sabitleme ve grup şeridi", "İkonlu eylemler; üzerine gelince kopyala", "CSV içe aktarmada ad düzeltmesi"] },
+      { version: "1.9.2", date: "23 Eki 2026", items: ["Uzun listelerde akıcı kaydırma", "Sabit seçim araçları, kapatılabilen bildirimler", "Açılışta “noty” yazısı"] },
+      { version: "1.9.0", date: "23 Eki 2026", items: ["Çam yeşili vurgu rengi ve Figtree yazı tipi", "Telefona uygun arayüz, yeni yeşil ikon"] },
+      { version: "1.8.0", date: "23 Eki 2026", items: ["Şifreli .noty yedeği", "CSV şifre dosyası ve Google Keep’ten içe aktarma"] },
+      { version: "1.7.0", date: "23 Eki 2026", items: ["Çöp kutusu: silinen kayıtlar 30 gün geri alınabilir"] },
+      { version: "1.6.0", date: "23 Eki 2026", items: ["Sade yeni tasarım ve “Kaldığın yerden” ana sayfası", "Sabitleme ve Ctrl+K komut paleti"] },
+      { version: "1.5.0", date: "23 Eki 2026", items: ["Şifrelerde giriş bilgileri: kullanıcı adı, e-posta, telefon ve kimlik/müşteri no", "Şifre notu zengin metin oldu", "Toplu seçim ve not klasörleri"] },
+      { version: "1.4.0", date: "23 Eki 2026", items: ["Grup menüsü, seçim modu ve grup düzenleyici"] },
+      { version: "1.3.0", date: "22 Eki 2026", items: ["Arayüz ölçeği ayarı", "Yeni logo: iç boşluğu anahtar deliği olan “n”"] },
+      { version: "1.2.0", date: "22 Eki 2026", items: ["Panel pencereleri ve detaylı görünüm", "Adres önerileri ve site ikonları", "Tek tıkla tema değiştirme"] },
+      { version: "1.1.0", date: "22 Eki 2026", items: ["Zengin not düzenleyici ve “/” komutları", "Yeni arayüz ve hızlı işlem kartları"] },
+      { version: "1.0", date: "7 Eki 2026", items: ["İlk sürüm: Google ile giriş, cihazda şifreleme, web ve Android", "PIN, desen ya da şifre kilidi; ekran görüntüsü koruması"] },
+    ],
   },
   {
     id: "sticker-studio",
@@ -81,6 +101,18 @@ window.PROJECTS = [
       "Türkçe ve İngilizce arayüz",
     ],
     links: [],
+    changelog: [
+      {
+        date: "1 Kas 2026",
+        items: [
+          "Editör yenilendi: kaydet düğmesi üst çubukta, paneller arası yumuşak geçiş",
+          "Paneller tek bileşende birleşti, en fazla iki katman",
+          "Daha sakin yüzeyler; iç bölümlerde geri oku",
+          "Kod temizliği ve hata düzeltmeleri",
+        ],
+      },
+      { date: "Ekim 2026", items: ["İlk çalışan sürüm: fotoğraf ve videodan çıkartma, paket oluşturma"] },
+    ],
   },
   {
     id: "pc-kontrol",
@@ -184,5 +216,9 @@ window.PROJECTS = [
       "Koyu ve açık tema; varsayılan olarak cihaz ayarını izler",
     ],
     links: [{ label: "Kaynak kodu", url: "https://github.com/flozaxx/flozaxx/tree/main/flozaxx.web.app" }],
+    changelog: [
+      { date: "8 Kas 2026", items: ["flozaxx.com alan adına taşındı", "Projelere sürüm geçmişi eklendi"] },
+      { date: "7 Kas 2026", items: ["Site baştan yazıldı: tüm projeler tek sayfada", "Kategori ve teknoloji süzgeci, yan sütunlar", "“Önce Bak, Sonra Yap” rehber sayfası"] },
+    ],
   },
 ];
