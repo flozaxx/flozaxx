@@ -11,6 +11,9 @@
   links     : ilk bağlantı satırdaki hızlı "aç" düğmesi olur
   planned   : planlanan özellikler (ayrıntıda "Planlananlar" olarak görünür)
   resources : projeye bağlı ek kaynaklar (ayrıntıda "Ek kaynaklar" olarak görünür)
+  download  : indirilebilir dosya { file, platform }; dosya github.com/flozaxx/downloads
+              deposunda, etiketi slug olan release'te durur. flozaxx.com/<slug>/dllatest hep
+              son dosyayı indirir (firebase.json'daki yönlendirme), /download sayfası listeler.
   changelog : sürüm geçmişi, en yeni en üstte: { version?, date, title?, items: [...] }
               proje sayfasında son 3 kayıt, <slug>/changelog sayfasında tamamı görünür
 
@@ -61,6 +64,7 @@ window.PROJECTS = [
     ],
     security: "AES-256-GCM şifreleme · Argon2id ile korunan yedekler · sıkı Firestore kuralları",
     links: [{ label: "Web uygulamasını aç", url: "https://noty.tr" }],
+    download: { file: "noty.apk", platform: "Android" },
     changelog: [
       { version: "1.12.1", date: "3 Kasım 2026", title: "Beyaz ekran düzeltmesi", items: [
         "Bazı cihazlarda girişten sonra uygulamanın boş, soluk bir ekranda kalması düzeltildi (telefon ve web).",
@@ -146,6 +150,7 @@ window.PROJECTS = [
       "Türkçe ve İngilizce arayüz",
     ],
     links: [],
+    download: { file: "sticker-studio.apk", platform: "Android" },
     changelog: [
       { date: "1 Kasım 2026", title: "Editör yenilendi", items: [
         "Kaydet düğmesi üst çubukta, paneller arası yumuşak geçiş.",

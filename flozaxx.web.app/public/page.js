@@ -21,9 +21,13 @@ function listHtml(items, cls = "") {
 }
 
 function linkButtonsHtml(p) {
-  return p.links
-    .map((link, i) => `<a class="btn${i === 0 ? " btn-primary" : ""}" href="${esc(link.url)}" target="_blank" rel="noopener">${esc(link.label)}${UI_ICONS.external}</a>`)
+  const download = p.download
+    ? `<a class="btn btn-primary" href="${downloadUrl(p)}">${UI_ICONS.download}İndir<span class="btn-note">${esc(p.download.platform)}</span></a>`
+    : "";
+  const links = p.links
+    .map((link, i) => `<a class="btn${!download && i === 0 ? " btn-primary" : ""}" href="${esc(link.url)}" target="_blank" rel="noopener">${esc(link.label)}${UI_ICONS.external}</a>`)
     .join("");
+  return download + links;
 }
 
 function factsCardHtml(p) {
@@ -86,7 +90,7 @@ function projectView(p) {
         <p class="page-meta">${statusHtml(p)}<span>${esc(p.platforms.join(" · "))}</span></p>
       </div>
     </header>
-    ${p.links.length ? `<div class="page-actions">${linkButtonsHtml(p)}</div>` : ""}
+    ${p.links.length || p.download ? `<div class="page-actions">${linkButtonsHtml(p)}</div>` : ""}
     <p class="page-summary">${esc(p.summary)}</p>
     <h2>${featuresTitle}</h2>
     ${listHtml(p.features)}
@@ -95,6 +99,21 @@ function projectView(p) {
     ${releases}`;
 
   side.innerHTML = `<div class="rail-inner">${factsCardHtml(p)}</div>`;
+  if (p.download) hideDownloadIfMissing(p);
+}
+
+// Dosya henüz yüklenmediyse "İndir" düğmesi GitHub'da 404'e gideceği için gizlenir.
+async function hideDownloadIfMissing(p) {
+  const btn = main.querySelector(`a[href="${downloadUrl(p)}"]`);
+  try {
+    const res = await fetch(`https://api.github.com/repos/${DOWNLOADS_REPO}/releases/tags/${encodeURIComponent(p.slug)}`);
+    const release = res.ok ? await res.json() : null;
+    if (release?.assets.some((a) => a.name === p.download.file)) return;
+  } catch {
+    // Compat: GitHub'a ulaşılamazsa (ör. istek sınırı) düğme kalır; bağlantı yine çalışır.
+    return;
+  }
+  btn.remove();
 }
 
 function changelogView(p) {
@@ -122,6 +141,71 @@ function changelogView(p) {
   setupScrollSpy(".version-jump [data-spy]", () => 140);
 }
 
+function formatSize(bytes) {
+  return bytes >= 1e6 ? `${(bytes / 1e6).toFixed(1).replace(".", ",")} MB` : `${Math.ceil(bytes / 1e3)} KB`;
+}
+
+function formatDate(iso) {
+  return new Date(iso).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
+}
+
+// Sürüm, boyut, tarih ve SHA-256 GitHub'daki release'ten okunur; böylece yeni dosya yüklemek sayfayı da günceller.
+async function fillDownloadCard(p) {
+  const card = document.getElementById(`dl-${p.slug}`);
+  const info = card.querySelector(".dl-info");
+  try {
+    const res = await fetch(`https://api.github.com/repos/${DOWNLOADS_REPO}/releases/tags/${encodeURIComponent(p.slug)}`);
+    if (!res.ok) throw new Error(String(res.status));
+    const release = await res.json();
+    const asset = release.assets.find((a) => a.name === p.download.file);
+    if (!asset) throw new Error("dosya yok");
+    const sha = asset.digest?.startsWith("sha256:") ? asset.digest.slice(7) : null;
+    info.innerHTML = `
+      <span>${esc(release.name || p.slug)}</span>
+      <span>${formatSize(asset.size)}</span>
+      <span>${formatDate(asset.updated_at)}</span>`;
+    if (sha) {
+      card.querySelector(".dl-sha").innerHTML = `<span class="dl-sha-label">SHA-256</span><code>${esc(sha)}</code><button type="button" class="text-btn" data-copy-sha="${esc(sha)}">Kopyala</button>`;
+    }
+  } catch {
+    card.classList.add("is-empty");
+    info.textContent = "Henüz yüklenmiş bir dosya yok.";
+    card.querySelector(".btn").remove();
+  }
+}
+
+function downloadView() {
+  setMeta("İndirmeler", "flozaxx projelerinin indirilebilir dosyaları; her bağlantı doğrudan son sürümü indirir.");
+  const items = PROJECTS.filter((p) => p.download);
+  main.innerHTML = `
+    <header class="page-head page-head-plain">
+      <div>
+        <h1>İndirmeler</h1>
+        <p class="page-tagline">Düğmeye basınca dosya doğrudan iner; her zaman son sürüm.</p>
+      </div>
+    </header>
+    <div class="dl-list">${items.map((p) => `
+      <article class="dl-card" id="dl-${esc(p.slug)}">
+        ${tileHtml(p)}
+        <div class="dl-body">
+          <h2><a href="${projectUrl(p)}">${esc(p.name)}</a>${statusHtml(p)}</h2>
+          <p class="dl-info">Bilgiler yükleniyor…</p>
+          <p class="dl-sha"></p>
+        </div>
+        <a class="btn btn-primary" href="${downloadUrl(p)}">${UI_ICONS.download}İndir<span class="btn-note">${esc(p.download.platform)}</span></a>
+      </article>`).join("")}
+    </div>
+    <p class="dl-note">Android, Play Store dışından indirilen uygulamalar için “bilinmeyen kaynak” izni ister. Kurulumdan önce SHA-256 kodunu karşılaştırarak dosyanın değişmediğini doğrulayabilirsin. Kalıcı bağlantı: <code>flozaxx.com/&lt;proje&gt;/dllatest</code></p>`;
+  side.hidden = true;
+  items.forEach(fillDownloadCard);
+  main.addEventListener("click", async (event) => {
+    const btn = event.target.closest("[data-copy-sha]");
+    if (!btn) return;
+    await navigator.clipboard.writeText(btn.dataset.copySha);
+    btn.textContent = "Kopyalandı";
+  });
+}
+
 function notFoundView() {
   setMeta("Sayfa bulunamadı", "Aradığın sayfa burada değil.");
   main.innerHTML = `
@@ -140,12 +224,14 @@ renderRail({
     { label: "Ana sayfa", href: "/" },
     { label: "Projeler", href: "/#projeler" },
     { label: "Bağlantılar", href: "/#baglantilar" },
+    { label: "İndirmeler", href: "/download" },
   ],
-  current: project?.slug,
+  current: slug === "download" ? null : project?.slug,
   currentSub: sub,
 });
 
-if (!project || (sub && !(sub === "changelog" && project.changelog?.length))) notFoundView();
+if (slug === "download" && !sub) downloadView();
+else if (!project || (sub && !(sub === "changelog" && project.changelog?.length))) notFoundView();
 else if (sub === "changelog") changelogView(project);
 else projectView(project);
 

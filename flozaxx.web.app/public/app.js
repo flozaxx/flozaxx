@@ -129,6 +129,7 @@ renderRail({
     { label: "Projeler", href: "#projeler", spy: "projeler" },
     { label: "Teknolojiler", href: "#teknolojiler", spy: "teknolojiler" },
     { label: "Bağlantılar", href: "#baglantilar", spy: "baglantilar" },
+    { label: "İndirmeler", href: "/download" },
   ],
 });
 listEl.innerHTML = PROJECTS.map(projectCardHtml).join("");

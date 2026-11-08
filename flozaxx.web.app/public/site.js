@@ -14,6 +14,7 @@ const ICONS = {
 const UI_ICONS = {
   external: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  download: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
   back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>',
   close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>',
 };
@@ -32,6 +33,12 @@ function esc(text) {
 
 function projectUrl(p) {
   return `/${p.slug}`;
+}
+
+const DOWNLOADS_REPO = "flozaxx/downloads";
+
+function downloadUrl(p) {
+  return `/${p.slug}/dllatest`;
 }
 
 function projectBySlug(slug) {
