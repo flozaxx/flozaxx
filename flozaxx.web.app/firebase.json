@@ -10,11 +10,6 @@
     ],
     "redirects": [
       {
-        "source": "/admin",
-        "destination": "/admin/",
-        "type": 301
-      },
-      {
         "source": "/downloads/:slug",
         "destination": "/:slug/dllatest",
         "type": 302
