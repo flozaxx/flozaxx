@@ -28,10 +28,36 @@ const RAIL_BADGE = {
   idea: '<span class="rail-badge rail-badge-idea">plan</span>',
 };
 
-// Yayında olanlar üstte, geliştirilenler en altta; aynı durumdakiler projects.js sırasını korur.
+// Yayında olanlar üstte, geliştirilenler en altta; aynı durumdakiler kayıt sırasını korur.
 const STATUS_ORDER = { live: 0, idea: 1, dev: 2 };
-const PROJECTS = [...window.PROJECTS].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
-const SITE = window.SITE;
+const sortProjects = (list) => [...list].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
+
+/*
+  İçerik yönetim panelinden (admin.flozaxx.com) Firestore'daki site/content belgesine yazılır.
+  Belge okunamazsa (ilk kurulum, ağ hatası) projects.js'teki kopya kullanılır.
+*/
+const CONTENT_URL = "https://firestore.googleapis.com/v1/projects/flozaxx-a8521/databases/(default)/documents/site/content";
+const CONTENT_TIMEOUT_MS = 3000;
+let PROJECTS = [];
+let SITE = {};
+
+async function loadContent() {
+  try {
+    const res = await fetch(CONTENT_URL, { signal: AbortSignal.timeout(CONTENT_TIMEOUT_MS) });
+    if (res.ok) {
+      const doc = await res.json();
+      return JSON.parse(doc.fields.json.stringValue);
+    }
+  } catch {
+    // Firestore'a ulaşılamazsa projects.js yedeği kullanılır.
+  }
+  return { site: window.SITE, projects: window.PROJECTS };
+}
+
+const contentReady = loadContent().then((content) => {
+  SITE = content.site;
+  PROJECTS = sortProjects(content.projects);
+});
 
 function esc(text) {
   return String(text).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);

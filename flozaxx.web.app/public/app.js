@@ -136,24 +136,26 @@ function bindEvents() {
   window.addEventListener("hashchange", redirectOldHash);
 }
 
-renderRail({
-  sections: [
-    { label: "Giriş", href: "#top", spy: "top" },
-    { label: "Projeler", href: "#projeler", spy: "projeler" },
-    { label: "Teknolojiler", href: "#teknolojiler", spy: "teknolojiler" },
-    { label: "İndirmeler", href: "/download" },
-  ],
-});
-listEl.innerHTML = PROJECTS.map(projectCardHtml).join("");
-renderSide();
-renderFilters();
-renderTech();
-renderStats();
-applyFilter();
-bindEvents();
-setupDrawer();
-setupScrollSpy(".rail-sections [data-spy]");
-redirectOldHash();
+contentReady.then(() => {
+  renderRail({
+    sections: [
+      { label: "Giriş", href: "#top", spy: "top" },
+      { label: "Projeler", href: "#projeler", spy: "projeler" },
+      { label: "Teknolojiler", href: "#teknolojiler", spy: "teknolojiler" },
+      { label: "İndirmeler", href: "/download" },
+    ],
+  });
+  listEl.innerHTML = PROJECTS.map(projectCardHtml).join("");
+  renderSide();
+  renderFilters();
+  renderTech();
+  renderStats();
+  applyFilter();
+  bindEvents();
+  setupDrawer();
+  setupScrollSpy(".rail-sections [data-spy]");
+  redirectOldHash();
 
-const techParam = new URLSearchParams(location.search).get("tech");
-if (techParam && PROJECTS.some((p) => p.tech.includes(techParam))) showTechFilter(techParam, { scroll: false });
+  const techParam = new URLSearchParams(location.search).get("tech");
+  if (techParam && PROJECTS.some((p) => p.tech.includes(techParam))) showTechFilter(techParam, { scroll: false });
+});

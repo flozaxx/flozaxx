@@ -5,7 +5,7 @@
 
 const LATEST_RELEASES = 3;
 const [slug, sub] = location.pathname.split("/").filter(Boolean);
-const project = projectBySlug(slug);
+let project;
 const main = document.getElementById("icerik");
 const side = document.getElementById("page-side");
 
@@ -227,20 +227,23 @@ function notFoundView() {
   side.hidden = true;
 }
 
-renderRail({
-  sections: [
-    { label: "Ana sayfa", href: "/" },
-    { label: "Projeler", href: "/#projeler" },
-    { label: "İndirmeler", href: "/download" },
-  ],
-  current: slug === "download" ? null : project?.slug,
-  currentSub: sub,
+contentReady.then(() => {
+  project = projectBySlug(slug);
+  renderRail({
+    sections: [
+      { label: "Ana sayfa", href: "/" },
+      { label: "Projeler", href: "/#projeler" },
+      { label: "İndirmeler", href: "/download" },
+    ],
+    current: slug === "download" ? null : project?.slug,
+    currentSub: sub,
+  });
+
+  if (slug === "download" && !sub) downloadView();
+  else if (!project || (sub && !(sub === "changelog" && project.changelog?.length))) notFoundView();
+  else if (sub === "changelog") changelogView(project);
+  else projectView(project);
+
+  document.getElementById("updated").textContent = `Son güncelleme: ${SITE.updated}`;
+  setupDrawer();
 });
-
-if (slug === "download" && !sub) downloadView();
-else if (!project || (sub && !(sub === "changelog" && project.changelog?.length))) notFoundView();
-else if (sub === "changelog") changelogView(project);
-else projectView(project);
-
-document.getElementById("updated").textContent = `Son güncelleme: ${SITE.updated}`;
-setupDrawer();

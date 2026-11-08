@@ -10,6 +10,11 @@
     ],
     "redirects": [
       {
+        "source": "/admin",
+        "destination": "/admin/",
+        "type": 301
+      },
+      {
         "source": "/downloads/:slug",
         "destination": "/:slug/dllatest",
         "type": 302
@@ -30,14 +35,14 @@
         "type": 301
       },
       {
-        "source": "/noty/dllatest",
-        "destination": "https://github.com/flozaxx/downloads/releases/download/noty/noty.apk",
-        "type": 302
-      },
-      {
         "source": "/downloads",
         "destination": "/download",
         "type": 301
+      },
+      {
+        "source": "/:slug/dllatest",
+        "destination": "https://github.com/flozaxx/downloads/releases/download/:slug/:slug.apk",
+        "type": 302
       }
     ],
     "headers": [
@@ -73,6 +78,19 @@
           {
             "key": "Cache-Control",
             "value": "public, max-age=604800"
+          }
+        ]
+      },
+      {
+        "source": "/admin/**",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
           }
         ]
       }
