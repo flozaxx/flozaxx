@@ -223,6 +223,9 @@ svg.icon-fill {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-weight: 700;
   font-size: var(--fs-lg);
   letter-spacing: -0.02em;
@@ -291,6 +294,11 @@ svg.icon-fill {
   :root:not([data-theme="light"]) .icon-moon {
     display: none;
   }
+}
+
+.brand img {
+  display: block;
+  border-radius: 7px;
 }
 
 /* Giriş */

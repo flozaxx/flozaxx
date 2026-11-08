@@ -1,6 +1,6 @@
 # flozaxx
 
-fazlasıyla işlevsel. fazlasıyla yaratıcı.
+İşe yarayan şeyler yapıyorum.
 
 Önce kendi ihtiyacım için uygulamalar ve araçlar yapıyorum. Hepsinin özeti,
 durumu ve bağlantıları tek sayfada: **[flozaxx.com](https://flozaxx.com)**
