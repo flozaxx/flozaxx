@@ -62,3 +62,21 @@ firebase deploy --only hosting
 Firebase projesi `flozaxx-a8521`. Projenin varsayılan sitesi
 `flozaxx-a8521.web.app`, bu site ise aynı projedeki ek `flozaxx` sitesi;
 `firebase.json` içindeki `"site": "flozaxx"` yüklemeyi oraya yönlendirir.
+
+## İçerik
+
+Projeler, "Şu an" ve son güncellemeler Firestore'daki `site/content`
+belgesinde durur ve yönetim panelinden (`/admin/`) düzenlenir.
+`public/projects.js` yalnızca veritabanına ulaşılamazsa kullanılan yedektir.
+
+Kodla içerik değiştirmek için (Claude bu yolu kullanır):
+
+```sh
+python tools/content.py pull     # canlı içerik -> content/content.json
+# content/content.json düzenlenir, main'e gönderilir
+```
+
+`.github/workflows/content.yml` dosyayı Firestore'a yazar. Arada panelden
+kayıt yapılmışsa yazma reddedilir; içerik yeniden çekilip değişiklik tekrar
+uygulanır. İş akışının hesabında Firestore'a yazma izni (Cloud Datastore
+User) olmalıdır.
