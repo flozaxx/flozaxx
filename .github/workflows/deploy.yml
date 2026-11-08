@@ -31,7 +31,7 @@ jobs:
       - name: CSS ve JS bağlantılarını sürümle
         if: env.FIREBASE_SERVICE_ACCOUNT != ''
         run: |
-          find flozaxx.web.app/public -name '*.html' -exec sed -i "s/?v=dev/?v=${GITHUB_SHA::8}/g" {} +
+          find flozaxx.web.app/public flozaxx.web.app/admin -name '*.html' -exec sed -i "s/?v=dev/?v=${GITHUB_SHA::8}/g" {} +
 
       - name: flozaxx.web.app'e yükle
         if: env.FIREBASE_SERVICE_ACCOUNT != ''

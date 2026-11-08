@@ -1,104 +1,138 @@
 {
-  "hosting": {
-    "site": "flozaxx",
-    "public": "public",
-    "cleanUrls": true,
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "redirects": [
-      {
-        "source": "/downloads/:slug",
-        "destination": "/:slug/dllatest",
-        "type": 302
-      },
-      {
-        "source": "/download/:slug",
-        "destination": "/:slug/dllatest",
-        "type": 302
-      },
-      {
-        "source": "/rehberler",
-        "destination": "/#projeler",
-        "type": 301
-      },
-      {
-        "source": "/indirmeler",
-        "destination": "/#araclar",
-        "type": 301
-      },
-      {
-        "source": "/downloads",
-        "destination": "/download",
-        "type": 301
-      },
-      {
-        "source": "/:slug/dllatest",
-        "destination": "https://github.com/flozaxx/downloads/releases/download/:slug/:slug.apk",
-        "type": 302
-      }
-    ],
-    "headers": [
-      {
-        "source": "**",
-        "headers": [
-          {
-            "key": "X-Content-Type-Options",
-            "value": "nosniff"
-          },
-          {
-            "key": "Referrer-Policy",
-            "value": "strict-origin-when-cross-origin"
-          },
-          {
-            "key": "X-Frame-Options",
-            "value": "SAMEORIGIN"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(html|js|css|webmanifest)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache"
-          }
-        ]
-      },
-      {
-        "source": "/favicon/**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=604800"
-          }
-        ]
-      },
-      {
-        "source": "/admin/**",
-        "headers": [
-          {
-            "key": "X-Robots-Tag",
-            "value": "noindex, nofollow"
-          },
-          {
-            "key": "X-Frame-Options",
-            "value": "DENY"
-          }
-        ]
-      }
-    ],
-    "rewrites": [
-      {
-        "regex": "^/[^/.]+/?$",
-        "destination": "/page.html"
-      },
-      {
-        "regex": "^/[^/.]+/changelog/?$",
-        "destination": "/page.html"
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "site": "flozaxx",
+      "public": "public",
+      "cleanUrls": true,
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/admin",
+          "destination": "https://admin.flozaxx.com/",
+          "type": 302
+        },
+        {
+          "source": "/admin/**",
+          "destination": "https://admin.flozaxx.com/",
+          "type": 302
+        },
+        {
+          "source": "/downloads/:slug",
+          "destination": "/:slug/dllatest",
+          "type": 302
+        },
+        {
+          "source": "/download/:slug",
+          "destination": "/:slug/dllatest",
+          "type": 302
+        },
+        {
+          "source": "/rehberler",
+          "destination": "/#projeler",
+          "type": 301
+        },
+        {
+          "source": "/indirmeler",
+          "destination": "/#araclar",
+          "type": 301
+        },
+        {
+          "source": "/downloads",
+          "destination": "/download",
+          "type": 301
+        },
+        {
+          "source": "/:slug/dllatest",
+          "destination": "https://github.com/flozaxx/downloads/releases/download/:slug/:slug.apk",
+          "type": 302
+        }
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "strict-origin-when-cross-origin"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(html|js|css|webmanifest)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        },
+        {
+          "source": "/favicon/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=604800"
+            }
+          ]
+        }
+      ],
+      "rewrites": [
+        {
+          "regex": "^/[^/.]+/?$",
+          "destination": "/page.html"
+        },
+        {
+          "regex": "^/[^/.]+/changelog/?$",
+          "destination": "/page.html"
+        }
+      ]
+    },
+    {
+      "site": "flozaxx-admin",
+      "public": "admin",
+      "ignore": [
+        "firebase.json",
+        "**/.*"
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "X-Robots-Tag",
+              "value": "noindex, nofollow"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "strict-origin-when-cross-origin"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
