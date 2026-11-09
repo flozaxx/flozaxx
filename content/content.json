@@ -1,16 +1,16 @@
 {
-  "basedOn": "2026-11-08T19:08:51.489284Z",
+  "basedOn": "2026-11-08T20:19:01.502950Z",
   "content": {
     "site": {
       "updated": "8 Kasım 2026",
       "now": [
         {
-          "project": "sticker-studio",
-          "text": "İlk sürüm üzerinde çalışıyorum: editör ve paket akışı."
+          "project": "flozaxx-web",
+          "text": "Sitenin güncellenmesi ve veritabanı işlemleri."
         },
         {
-          "project": "noty",
-          "text": "1.12.1 yayında; telefonda ve web’de kullanılabilir."
+          "project": "sticker-studio",
+          "text": "İlk sürüm üzerinde çalışıyorum: editör ve paket akışı."
         }
       ],
       "updates": [
@@ -90,6 +90,13 @@
           "platform": "Android"
         },
         "changelog": [
+          {
+            "date": "9 Kasım 2026",
+            "title": "Yan menüde yumuşak ışık",
+            "items": [
+              "Bilgisayardaki yan menünün arkasına yeşil ve mavi tonlarda yumuşak bir ışık eklendi."
+            ]
+          },
           {
             "version": "1.12.1",
             "date": "3 Kasım 2026",
@@ -205,92 +212,6 @@
         ]
       },
       {
-        "id": "sticker-studio",
-        "slug": "stickerstudio",
-        "name": "Sticker Studio",
-        "tagline": "Fotoğraf ve videolardan WhatsApp çıkartma paketleri",
-        "kind": "app",
-        "status": "dev",
-        "icon": "sticker",
-        "color": "#4FF07F",
-        "ink": "#003914",
-        "platforms": [
-          "Android"
-        ],
-        "tech": [
-          "Kotlin",
-          "Jetpack Compose",
-          "Material 3"
-        ],
-        "started": "Ekim 2026",
-        "summary": "Telefondaki fotoğraf ve videolardan birkaç dokunuşla WhatsApp çıkartma paketi hazırlayan Android uygulaması. Paket, WhatsApp’a eklenmeden önce orada nasıl görüneceğiyle önizlenir. Henüz mağazada değil.",
-        "features": [
-          "Fotoğraftan statik, videodan animasyonlu çıkartma",
-          "Kontur (beyaz çerçeve) stilleri; seçim önizlemeyle yapılır",
-          "Akıcı, Dengeli ve Net kalite seçenekleri",
-          "Adım rehberi: biten, sıradaki ve isteğe bağlı adımlar tek bakışta",
-          "“WhatsApp’ta böyle görünecek” paket önizlemesi",
-          "Hızlı paket ön ayarları ve Paketlerim listesi",
-          "Türkçe ve İngilizce arayüz"
-        ],
-        "links": [],
-        "changelog": [
-          {
-            "date": "1 Kasım 2026",
-            "title": "Editör yenilendi",
-            "items": [
-              "Kaydet düğmesi üst çubukta, paneller arası yumuşak geçiş.",
-              "Paneller tek bileşende birleşti; ekranda en fazla iki katman.",
-              "Daha sakin yüzeyler; iç bölümlerde geri oku.",
-              "Kod temizliği ve hata düzeltmeleri."
-            ]
-          },
-          {
-            "date": "Ekim 2026",
-            "title": "İlk çalışan sürüm",
-            "items": [
-              "Fotoğraf ve videodan çıkartma, paket oluşturma."
-            ]
-          }
-        ]
-      },
-      {
-        "id": "pc-kontrol",
-        "slug": "pckontrol",
-        "name": "PC Kontrol",
-        "tagline": "Evdeki bilgisayarı telefondan yönetmek",
-        "kind": "app",
-        "status": "dev",
-        "icon": "power",
-        "color": "#E5484D",
-        "platforms": [
-          "Android",
-          "Windows"
-        ],
-        "tech": [
-          "Kotlin",
-          "Jetpack Compose",
-          "PowerShell"
-        ],
-        "started": "Ağustos 2026",
-        "summary": "Bilgisayarımı telefondan kilitlemek, uyutmak, kapatmak ya da ekranına bakmak için yaptığım uygulama. Bilgisayarda arka planda çalışan küçük bir PowerShell sunucusu, telefonda tek ekranlık bir Compose uygulaması var; her komut gizli bir anahtarla doğrulanır. Sıradaki büyük adım kapalı bilgisayarı Wake-on-LAN ile uzaktan açmak.",
-        "features": [
-          "Güç: kilitle, uyku, hazırda beklet, kapat ve kapatmayı iptal et",
-          "Uzaktan ekran görüntüsü; istenirse telefonun galerisine kendiliğinden kaydedilir",
-          "Dosya açma ve program başlatma, yalnızca izin verilenler listesinden",
-          "Dosya ve program listeleri; bilgisayarın açık olup olmadığını gösteren durum",
-          "Ev dışından erişim: bilgisayar bir tünel üzerinden dışarıya açılır; sunucu pencere açmadan arka planda çalışır"
-        ],
-        "planned": [
-          "Wake-on-LAN: kapalı bilgisayarı telefondan açmak. Bilgisayar kapalıyken kendi sunucusu da kapalı olduğundan, sihirli paketi evde sürekli açık bir cihaz (modem, Raspberry Pi ya da eski bir telefon) gönderecek",
-          "Yeniden başlatma komutu",
-          "Ayrıntılı durum: işlemci, bellek, açık kalma süresi",
-          "“Eve geliyorum” modu: konuma göre bilgisayarı kendiliğinden açmak",
-          "Ana ekran widget'ı ve kısayollar"
-        ],
-        "links": []
-      },
-      {
         "id": "rubik",
         "slug": "rubik",
         "name": "Rubik Küpü Rehberi",
@@ -392,12 +313,25 @@
         ],
         "changelog": [
           {
+            "date": "9 Kasım 2026",
+            "title": "Yönetim paneli ve yeni arka plan",
+            "items": [
+              "admin.flozaxx.com: site içeriği formlarla düzenleniyor, kaydedince anında yayında.",
+              "Panele yalnızca izin verilen hesaplar girebiliyor; başarısız girişler kaydediliyor.",
+              "Arka planda ince kontur çizgileri; kartlar hafif saydam.",
+              "Proje sırası artık panelden ayarlanıyor."
+            ]
+          },
+          {
             "date": "8 Kasım 2026",
             "title": "flozaxx.com ve proje sayfaları",
             "items": [
               "Site flozaxx.com alan adına taşındı.",
               "Her projenin kendi sayfası; Noty, Sticker Studio ve site için sürüm geçmişi.",
-              "Ana sayfada sade kartlar; telefonda sol üstten açılan menü."
+              "Ana sayfada sade kartlar; telefonda sol üstten açılan menü.",
+              "İndirmeler sayfası; flozaxx.com/<proje>/dllatest her zaman son sürümü doğrudan indirir.",
+              "Yeni ikon ve favicon.",
+              "Projelerde arama; yayında ve geliştirilen proje sayıları."
             ]
           },
           {
@@ -406,6 +340,92 @@
             "items": [
               "Tüm projeler tek sayfada; kategori ve teknoloji süzgeci, yan sütunlar.",
               "“Önce Bak, Sonra Yap” rehber sayfası."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pc-kontrol",
+        "slug": "pckontrol",
+        "name": "PC Kontrol",
+        "tagline": "Evdeki bilgisayarı telefondan yönetmek",
+        "kind": "app",
+        "status": "dev",
+        "icon": "power",
+        "color": "#E5484D",
+        "platforms": [
+          "Android",
+          "Windows"
+        ],
+        "tech": [
+          "Kotlin",
+          "Jetpack Compose",
+          "PowerShell"
+        ],
+        "started": "Ağustos 2026",
+        "summary": "Bilgisayarımı telefondan kilitlemek, uyutmak, kapatmak ya da ekranına bakmak için yaptığım uygulama. Bilgisayarda arka planda çalışan küçük bir PowerShell sunucusu, telefonda tek ekranlık bir Compose uygulaması var; her komut gizli bir anahtarla doğrulanır. Sıradaki büyük adım kapalı bilgisayarı Wake-on-LAN ile uzaktan açmak.",
+        "features": [
+          "Güç: kilitle, uyku, hazırda beklet, kapat ve kapatmayı iptal et",
+          "Uzaktan ekran görüntüsü; istenirse telefonun galerisine kendiliğinden kaydedilir",
+          "Dosya açma ve program başlatma, yalnızca izin verilenler listesinden",
+          "Dosya ve program listeleri; bilgisayarın açık olup olmadığını gösteren durum",
+          "Ev dışından erişim: bilgisayar bir tünel üzerinden dışarıya açılır; sunucu pencere açmadan arka planda çalışır"
+        ],
+        "planned": [
+          "Wake-on-LAN: kapalı bilgisayarı telefondan açmak. Bilgisayar kapalıyken kendi sunucusu da kapalı olduğundan, sihirli paketi evde sürekli açık bir cihaz (modem, Raspberry Pi ya da eski bir telefon) gönderecek",
+          "Yeniden başlatma komutu",
+          "Ayrıntılı durum: işlemci, bellek, açık kalma süresi",
+          "“Eve geliyorum” modu: konuma göre bilgisayarı kendiliğinden açmak",
+          "Ana ekran widget'ı ve kısayollar"
+        ],
+        "links": []
+      },
+      {
+        "id": "sticker-studio",
+        "slug": "stickerstudio",
+        "name": "Sticker Studio",
+        "tagline": "Fotoğraf ve videolardan WhatsApp çıkartma paketleri",
+        "kind": "app",
+        "status": "dev",
+        "icon": "sticker",
+        "color": "#4FF07F",
+        "ink": "#003914",
+        "platforms": [
+          "Android"
+        ],
+        "tech": [
+          "Kotlin",
+          "Jetpack Compose",
+          "Material 3"
+        ],
+        "started": "Ekim 2026",
+        "summary": "Telefondaki fotoğraf ve videolardan birkaç dokunuşla WhatsApp çıkartma paketi hazırlayan Android uygulaması. Paket, WhatsApp’a eklenmeden önce orada nasıl görüneceğiyle önizlenir. Henüz mağazada değil.",
+        "features": [
+          "Fotoğraftan statik, videodan animasyonlu çıkartma",
+          "Kontur (beyaz çerçeve) stilleri; seçim önizlemeyle yapılır",
+          "Akıcı, Dengeli ve Net kalite seçenekleri",
+          "Adım rehberi: biten, sıradaki ve isteğe bağlı adımlar tek bakışta",
+          "“WhatsApp’ta böyle görünecek” paket önizlemesi",
+          "Hızlı paket ön ayarları ve Paketlerim listesi",
+          "Türkçe ve İngilizce arayüz"
+        ],
+        "links": [],
+        "changelog": [
+          {
+            "date": "1 Kasım 2026",
+            "title": "Editör yenilendi",
+            "items": [
+              "Kaydet düğmesi üst çubukta, paneller arası yumuşak geçiş.",
+              "Paneller tek bileşende birleşti; ekranda en fazla iki katman.",
+              "Daha sakin yüzeyler; iç bölümlerde geri oku.",
+              "Kod temizliği ve hata düzeltmeleri."
+            ]
+          },
+          {
+            "date": "Ekim 2026",
+            "title": "İlk çalışan sürüm",
+            "items": [
+              "Fotoğraf ve videodan çıkartma, paket oluşturma."
             ]
           }
         ]
