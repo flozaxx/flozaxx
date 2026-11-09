@@ -1573,3 +1573,46 @@ svg.icon-fill {
     transition: none !important;
   }
 }
+
+/* Arka plan: kontur çizgileri. Renk vurgu renginden gelir, SVG yalnız maske. */
+body {
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--accent);
+  -webkit-mask: url("/img/contour.svg") center / cover no-repeat;
+  mask: url("/img/contour.svg") center / cover no-repeat;
+  opacity: 0.1;
+}
+
+:root[data-theme="dark"] body::before {
+  opacity: 0.16;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body::before {
+    opacity: 0.16;
+  }
+}
+
+.layout,
+.footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Kartlar hafif saydam ve bulanık: çizgiler altından sezilsin. */
+.project,
+.side-card,
+.toolbox,
+.search {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
