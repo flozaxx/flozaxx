@@ -49,10 +49,23 @@ def push(token):
         sys.exit(f"Yüklenemedi ({err.code}): {detail}")
 
 
+def service_account_token():
+    # IAM Credentials API'ye gerek kalmadan anahtar dosyasından doğrudan erişim anahtarı alınır.
+    from google.auth.transport.requests import Request
+    from google.oauth2 import service_account
+
+    creds = service_account.Credentials.from_service_account_info(
+        json.loads(os.environ["FIREBASE_SERVICE_ACCOUNT"]),
+        scopes=["https://www.googleapis.com/auth/datastore"],
+    )
+    creds.refresh(Request())
+    return creds.token
+
+
 if __name__ == "__main__":
     if sys.argv[1:] == ["pull"]:
         pull()
     elif sys.argv[1:] == ["push"]:
-        push(os.environ["FIRESTORE_TOKEN"])
+        push(service_account_token())
     else:
         sys.exit("kullanım: content.py pull | push")

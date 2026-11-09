@@ -3,7 +3,8 @@ name: İçeriği veritabanına yaz
 on:
   push:
     branches: [main]
-    paths: ["content/content.json"]
+    paths: ["content/content.json", "tools/content.py", ".github/workflows/content.yml"]
+  workflow_dispatch:
 
 concurrency:
   group: site-content
@@ -15,18 +16,12 @@ permissions:
 jobs:
   push-content:
     runs-on: ubuntu-latest
-    env:
-      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FLOZAXX_A8521 }}
     steps:
       - uses: actions/checkout@v5
 
-      - id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FLOZAXX_A8521 }}
-          token_format: access_token
-
       - name: content/content.json → Firestore site/content
         env:
-          FIRESTORE_TOKEN: ${{ steps.auth.outputs.access_token }}
-        run: python3 tools/content.py push
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FLOZAXX_A8521 }}
+        run: |
+          pip install --quiet google-auth requests
+          python3 tools/content.py push
