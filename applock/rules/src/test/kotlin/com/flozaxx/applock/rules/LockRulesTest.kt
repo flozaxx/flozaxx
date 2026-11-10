@@ -138,3 +138,30 @@ class LockRulesTest {
         assertEquals(LockSession(), session)
     }
 }
+
+class AttemptPolicyTest {
+    @Test
+    fun `first attempts are free then the wait doubles up to the cap`() {
+        assertEquals(0, AttemptPolicy.lockoutMillis(4))
+        assertEquals(30_000, AttemptPolicy.lockoutMillis(5))
+        assertEquals(60_000, AttemptPolicy.lockoutMillis(6))
+        assertEquals(900_000, AttemptPolicy.lockoutMillis(10))
+        assertEquals(900_000, AttemptPolicy.lockoutMillis(500))
+    }
+}
+
+class LockSessionTest {
+    @Test
+    fun `window events during the lock screen do not let the unlock outlive the visit`() {
+        val policy = RelockPolicy.IMMEDIATELY
+        var session = LockSession()
+            .onForegroundChanged("chat", 0, policy)
+            // The launcher reports itself once more while the lock screen is already up.
+            .onForegroundChanged("launcher", 1, policy)
+            .onAuthenticated("chat", 2)
+        assertTrue(session.isUnlocked("chat", 3, policy, 0))
+
+        session = session.onForegroundChanged("launcher", 4, policy)
+        assertFalse(session.isUnlocked("chat", 5, policy, 0))
+    }
+}

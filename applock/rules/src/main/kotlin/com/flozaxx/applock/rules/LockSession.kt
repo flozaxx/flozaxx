@@ -31,8 +31,13 @@ data class LockSession(
         return LockSession(unlocked, packageName)
     }
 
+    /**
+     * The lock screen was passed for [packageName], which is therefore the app in front from now
+     * on. Window events of other apps may have arrived while the lock screen was showing; without
+     * this the "left the app" transition would be missed and the unlock would outlive the visit.
+     */
     fun onAuthenticated(packageName: String, nowMillis: Long): LockSession =
-        copy(unlockedAt = unlockedAt + (packageName to nowMillis))
+        LockSession(unlockedAt + (packageName to nowMillis), packageName)
 
     fun onScreenOff(nowMillis: Long, policy: RelockPolicy): LockSession = when (policy) {
         RelockPolicy.IMMEDIATELY, RelockPolicy.ON_SCREEN_OFF -> LockSession()

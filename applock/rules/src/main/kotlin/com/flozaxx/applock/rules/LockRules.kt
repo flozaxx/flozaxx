@@ -58,3 +58,16 @@ object LockRules {
         return !session.isUnlocked(packageName, nowMillis, settings.relockPolicy, settings.relockTimeoutMillis)
     }
 }
+
+object AttemptPolicy {
+    private const val FREE_ATTEMPTS = 5
+    private const val FIRST_LOCKOUT_MILLIS = 30_000L
+    private const val MAX_LOCKOUT_MILLIS = 15 * 60_000L
+
+    /** How long PIN entry stays blocked after the given number of consecutive wrong attempts. */
+    fun lockoutMillis(failedAttempts: Int): Long {
+        if (failedAttempts < FREE_ATTEMPTS) return 0
+        val doublings = (failedAttempts - FREE_ATTEMPTS).coerceAtMost(10)
+        return (FIRST_LOCKOUT_MILLIS shl doublings).coerceAtMost(MAX_LOCKOUT_MILLIS)
+    }
+}
