@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.flozaxx.applock"
-        minSdk = 33
+        minSdk = 34
         targetSdk = 36
         versionCode = (System.getenv("APPLOCK_VERSION_CODE") ?: "1").toInt()
         versionName = "0.1.0"
@@ -49,7 +49,15 @@ android {
     }
 
     testOptions {
-        unitTests.isIncludeAndroidResources = true
+        unitTests {
+            isIncludeAndroidResources = true
+            all {
+                // Makes the screenshot test write its images instead of only composing the screens.
+                it.systemProperty("roborazzi.test.record", "true")
+                // Compat: Robolectric's Android 16 runtime reaches into JDK internals for file descriptors.
+                it.jvmArgs("--add-exports=java.base/jdk.internal.access=ALL-UNNAMED")
+            }
+        }
     }
 }
 
