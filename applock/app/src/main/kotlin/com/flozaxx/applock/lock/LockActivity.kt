@@ -71,7 +71,15 @@ class LockActivity : FragmentActivity() {
 
     override fun onResume() {
         super.onResume()
-        window.decorView.post { graph.coordinator.onLockScreenVisible?.invoke() }
+        // Posted so the cover is only dropped once this window has had the chance to draw.
+        window.decorView.post {
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) graph.coordinator.onLockScreenResumed()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        graph.coordinator.onLockScreenPaused()
     }
 
     override fun onStop() {
@@ -136,6 +144,8 @@ class LockActivity : FragmentActivity() {
 
     private fun close(finished: Request, authenticated: Boolean) {
         if (authenticated) graph.coordinator.onAuthenticated(finished.packageName)
+        // Also reached without ever being resumed (nothing to lock any more); the cover must not wait for that.
+        graph.coordinator.onLockScreenVisible?.invoke()
         if (finished.openAfterUnlock) openTarget(finished.packageName)
         finish()
     }

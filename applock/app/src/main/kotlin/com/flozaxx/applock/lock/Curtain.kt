@@ -13,7 +13,7 @@ import com.flozaxx.applock.R
  * Starting [LockActivity] takes a few hundred milliseconds; without the cover the app's content
  * would be readable for that long.
  */
-class Curtain(private val service: AccessibilityService) {
+class Curtain(private val service: AccessibilityService, private val onLockScreenMissing: () -> Unit) {
 
     private val windowManager = service.getSystemService(WindowManager::class.java)
     private val handler = Handler(Looper.getMainLooper())
@@ -39,9 +39,15 @@ class Curtain(private val service: AccessibilityService) {
             windowManager.addView(cover, params)
             view = cover
         }
-        // Security/UX: the cover sits above every activity, including the lock screen. If that never
-        // reports in, remove the cover anyway rather than leave the phone unusable.
-        handler.postDelayed(::hide, MAX_VISIBLE_MILLIS)
+        // The cover sits above every activity, including the lock screen, so it cannot stay forever.
+        // If the lock screen never reports in, the caller gets to react before the app is exposed.
+        handler.postDelayed(
+            {
+                hide()
+                onLockScreenMissing()
+            },
+            MAX_VISIBLE_MILLIS,
+        )
     }
 
     fun hide() {

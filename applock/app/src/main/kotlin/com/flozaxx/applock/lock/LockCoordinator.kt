@@ -35,6 +35,19 @@ class LockCoordinator(
     /** Called once the lock screen is on screen, so the service can drop its cover. */
     var onLockScreenVisible: (() -> Unit)? = null
 
+    /** True while the lock screen is the activity the user is looking at. */
+    var lockScreenResumed = false
+        private set
+
+    fun onLockScreenResumed() {
+        lockScreenResumed = true
+        onLockScreenVisible?.invoke()
+    }
+
+    fun onLockScreenPaused() {
+        lockScreenResumed = false
+    }
+
     private val _unlocked = MutableSharedFlow<String>(extraBufferCapacity = 8)
     val unlocked: SharedFlow<String> = _unlocked
 

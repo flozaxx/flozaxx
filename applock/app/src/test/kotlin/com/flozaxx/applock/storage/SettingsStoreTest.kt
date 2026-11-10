@@ -82,4 +82,16 @@ class SettingsStoreTest {
         assertFalse(settings.biometricAllowedFor("b"))
         assertFalse(settings.copy(biometricEnabled = false).biometricAllowedFor("a"))
     }
+
+    @Test
+    fun `locking settings also locks the settings pages that live in other packages`() {
+        val chatOnly = AppSettings(lockedApps = mapOf("com.example.chat" to LockedApp(NotificationMode.UNTOUCHED)))
+        assertFalse("com.samsung.accessibility" in chatOnly.ruleSettings.lockedPackages)
+
+        val withSettings = chatOnly.copy(
+            lockedApps = chatOnly.lockedApps + (AppSettings.SETTINGS_PACKAGE to LockedApp(NotificationMode.UNTOUCHED, biometric = false)),
+        )
+        assertTrue("com.samsung.accessibility" in withSettings.ruleSettings.lockedPackages)
+        assertFalse(withSettings.biometricAllowedFor("com.samsung.accessibility"))
+    }
 }

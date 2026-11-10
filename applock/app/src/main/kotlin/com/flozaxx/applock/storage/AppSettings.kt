@@ -36,9 +36,13 @@ data class AppSettings(
     val lockoutUntilMillis: Long = 0,
     val zoneExitConfirmed: Boolean = false,
 ) {
+    /** The configuration that applies to [packageName], or null when it is not locked. */
+    fun lockedAppFor(packageName: String): LockedApp? =
+        lockedApps[packageName] ?: lockedApps[SETTINGS_PACKAGE].takeIf { packageName in SETTINGS_COMPANIONS }
+
     val ruleSettings: RuleSettings
         get() = RuleSettings(
-            lockedPackages = lockedApps.keys,
+            lockedPackages = if (SETTINGS_PACKAGE in lockedApps) lockedApps.keys + SETTINGS_COMPANIONS else lockedApps.keys,
             networkRule = networkRule,
             hasTrustedNetworks = trustedNetworks.isNotEmpty(),
             relockPolicy = relockPolicy,
@@ -46,5 +50,16 @@ data class AppSettings(
         )
 
     fun biometricAllowedFor(packageName: String): Boolean =
-        biometricEnabled && lockedApps[packageName]?.biometric == true
+        biometricEnabled && lockedAppFor(packageName)?.biometric == true
+
+    companion object {
+        const val SETTINGS_PACKAGE = "com.android.settings"
+
+        /**
+         * Security: settings pages Samsung ships as separate packages without a launcher icon. They
+         * can be opened through device search without passing the Settings app, and from there the
+         * accessibility service can be switched off or the app put to sleep. They follow the Settings lock.
+         */
+        val SETTINGS_COMPANIONS = setOf("com.samsung.accessibility", "com.samsung.android.lool")
+    }
 }

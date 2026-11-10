@@ -45,6 +45,7 @@ import com.flozaxx.applock.R
 import com.flozaxx.applock.graph
 import com.flozaxx.applock.protection.ProtectionStatus
 import com.flozaxx.applock.protection.protectionStatus
+import com.flozaxx.applock.storage.AppSettings
 import com.flozaxx.applock.storage.LockedApp
 import com.flozaxx.applock.storage.NotificationMode
 import com.flozaxx.applock.ui.components.ScreenScaffold
@@ -56,7 +57,7 @@ import kotlinx.coroutines.launch
 
 /** Locking these keeps the lock itself from being switched off or uninstalled. */
 private val SELF_PROTECTION_PACKAGES = setOf(
-    "com.android.settings",
+    AppSettings.SETTINGS_PACKAGE,
     "com.android.vending",
     "com.sec.android.app.samsungapps",
 )

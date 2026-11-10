@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.location.LocationManager
+import android.os.PowerManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
@@ -34,11 +35,16 @@ class AppLockAccessibilityService : AccessibilityService() {
     }
 
     override fun onServiceConnected() {
-        curtain = Curtain(this)
+        // Security: fail closed. If the lock screen could not be shown, the locked app is sent to the
+        // background instead of being left open.
+        curtain = Curtain(this, onLockScreenMissing = { performGlobalAction(GLOBAL_ACTION_HOME) })
         ignoredPackages = SYSTEM_SURFACES + keyboardPackages()
 
+        val power = getSystemService(PowerManager::class.java)
         graph.coordinator.presentLock = { lockedPackage ->
-            curtain.show()
+            // No cover over a lock screen that is already showing (apps announce several windows while
+            // starting), and none while the display is off, where nothing can be read anyway.
+            if (power.isInteractive && !graph.coordinator.lockScreenResumed) curtain.show()
             startActivity(LockActivity.intent(this, lockedPackage))
         }
         graph.coordinator.onLockScreenVisible = curtain::hide
