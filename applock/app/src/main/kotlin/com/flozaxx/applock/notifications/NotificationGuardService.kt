@@ -30,6 +30,7 @@ class NotificationGuardService : NotificationListenerService() {
     private var scope: CoroutineScope? = null
 
     override fun onListenerConnected() {
+        scope?.cancel()
         val scope = CoroutineScope(Job() + Dispatchers.Main.immediate).also { scope = it }
         scope.launch {
             graph.coordinator.unlocked.collect { packageName -> notificationManager().cancel(packageName, Channels.HIDDEN_NOTIFICATION_ID) }

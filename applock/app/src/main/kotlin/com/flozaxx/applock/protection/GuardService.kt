@@ -41,7 +41,13 @@ class GuardService : Service() {
             .setVisibility(Notification.VISIBILITY_SECRET)
             .setOngoing(true)
             .build()
-        startForeground(Channels.GUARD_NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+        try {
+            startForeground(Channels.GUARD_NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+        } catch (_: ForegroundServiceStartNotAllowedException) {
+            // Compat: a sticky restart by the system counts as a background start. Without the battery
+            // exemption that is refused, and an uncaught refusal would crash the accessibility service too.
+            stopSelf()
+        }
         return START_STICKY
     }
 
