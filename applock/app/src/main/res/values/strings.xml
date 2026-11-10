@@ -1,4 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Kilit</string>
+    <string name="back">Geri</string>
+    <string name="next">Devam</string>
+    <string name="accessibility_description">Açılan uygulamayı algılar ve kilitli uygulamaların üzerine kilit ekranı getirir. Ekran içeriğini okumaz, kaydetmez.</string>
+
+    <!-- Kilit ekranı -->
+    <string name="lock_enter_pin">PIN girin</string>
+    <string name="lock_enter_pin_for">%1$s için PIN girin</string>
+    <string name="lock_wrong_pin">Yanlış PIN</string>
+    <string name="lock_locked_out">Çok fazla hatalı deneme. %1$d sn bekleyin</string>
+    <string name="lock_forgot_pin">PIN\'i unuttum</string>
+    <string name="lock_cancel">İptal</string>
+    <string name="lock_delete">Sil</string>
+    <string name="lock_use_biometric">Biyometrik ile aç</string>
+    <string name="biometric_subtitle">Kilidi açmak için doğrulayın</string>
+    <string name="biometric_use_pin">PIN kullan</string>
+
+    <!-- Karşılama, PIN, kurtarma -->
+    <string name="welcome_title">Uygulamalarınızı kilitleyin</string>
+    <string name="welcome_body">Seçtiğiniz uygulamalar PIN veya parmak izi olmadan açılmaz, bildirimlerinin içeriği gizlenir.</string>
+    <string name="welcome_steps">Kurulum birkaç dakika sürer: önce bir PIN belirlersiniz, sonra gereken izinleri adım adım verirsiniz.</string>
+    <string name="welcome_start">Başla</string>
+
+    <string name="pin_create_title">PIN oluştur</string>
+    <string name="pin_change_title">PIN\'i değiştir</string>
+    <string name="pin_choose">Yeni PIN\'inizi girin</string>
+    <string name="pin_repeat">PIN\'i tekrar girin</string>
+    <string name="pin_length_hint">4 ile 8 hane arası</string>
+    <string name="pin_mismatch">PIN\'ler eşleşmedi, baştan girin</string>
+    <string name="pin_save">Kaydet</string>
+
+    <string name="recovery_title">Kurtarma kodu</string>
+    <string name="recovery_body">PIN\'inizi unutursanız yalnızca bu kodla sıfırlayabilirsiniz. Kod bir daha gösterilmez. Bir yere yazın veya e-postanıza gönderin; telefonu kullanan başka kimsenin göremeyeceği bir yerde dursun.</string>
+    <string name="recovery_email_label">E-posta adresi</string>
+    <string name="recovery_email_hint">Kod, telefondaki e-posta uygulamasıyla bu adrese gönderilir. E-posta uygulamasını da kilitlemeyi unutmayın.</string>
+    <string name="recovery_no_mail_app">Telefonda e-posta uygulaması bulunamadı. Kodu elle not edin.</string>
+    <string name="recovery_send_mail">Kodu e-postama gönder</string>
+    <string name="recovery_saved">Kodu kaydettim</string>
+    <string name="recovery_mail_subject">Kilit kurtarma kodu</string>
+    <string name="recovery_mail_body">Kilit uygulaması kurtarma kodunuz: %1$s\n\nPIN\'inizi unutursanız kilit ekranında \"PIN\'i unuttum\"a dokunup bu kodu girin.</string>
+    <string name="recovery_renew">Kurtarma kodunu yenile</string>
+    <string name="recovery_renew_hint">Eski kod geçersiz olur</string>
+
+    <string name="forgot_title">PIN\'i sıfırla</string>
+    <string name="forgot_body">Kurulumda aldığınız kurtarma kodunu girin. Kod kabul edilince yeni bir PIN belirlersiniz.</string>
+    <string name="forgot_code_label">Kurtarma kodu</string>
+    <string name="forgot_wrong_code">Kod yanlış</string>
+    <string name="forgot_check">Devam</string>
+
+    <!-- Kurulum ve izinler -->
+    <string name="setup_title">Kurulum</string>
+    <string name="setup_intro">Kilidin çalışması için aşağıdaki izinler gerekiyor. Tamamlanan adımın yanında yeşil onay belirir.</string>
+    <string name="setup_network_body">Kilidin etkin olacağı Wi-Fi ağına (ör. ev) şu an bağlıysanız ekleyin. Hiç ağ eklenmezse kilit her yerde etkin olur.</string>
+    <string name="setup_finish">Kurulumu bitir</string>
+    <string name="setup_finish_blocked">Devam etmek için erişilebilirlik servisi açık olmalı.</string>
+
+    <string name="step_done">Tamam</string>
+    <string name="step_open_settings">Ayarı aç</string>
+    <string name="step_restricted_title">Kısıtlı ayarlara izin ver</string>
+    <string name="step_restricted_body">Uygulama Play Store dışından kurulduğu için Android bazı izinleri baştan engeller. Önce alttaki erişilebilirlik adımını deneyin; \"Kısıtlı ayar\" uyarısı çıkarsa buraya dönün, uygulama bilgisi sayfasında sağ üstteki ⋮ menüsünden \"Kısıtlı ayarlara izin ver\"i seçin.</string>
+    <string name="step_restricted_action">Uygulama bilgisini aç</string>
+    <string name="step_restricted_confirm">Yaptım</string>
+    <string name="step_accessibility_title">Erişilebilirlik servisi</string>
+    <string name="step_accessibility_body">Hangi uygulamanın açıldığını görmek için gerekli. Açılan sayfada \"Yüklü uygulamalar\" altından \"Kilit\"i seçip açın.</string>
+    <string name="step_location_title">Konum</string>
+    <string name="step_location_body">Bağlı Wi-Fi ağını tanımak için gerekli; konumunuz başka hiçbir şey için kullanılmaz. Sırayla konum izni, \"Her zaman izin ver\" seçeneği ve telefonun konum özelliği açık olmalı.</string>
+    <string name="step_location_grant">Konum izni ver</string>
+    <string name="step_location_always">\"Her zaman izin ver\"i seç</string>
+    <string name="step_location_switch">Konumu aç</string>
+    <string name="step_battery_title">Pil kısıtlaması</string>
+    <string name="step_battery_body">Telefon arka planda bu uygulamayı durdurursa kilit çalışmaz. İzin verdikten sonra Ayarlar → Uygulamalar → Kilit → Pil bölümünde \"Kısıtlanmamış\" seçili olsun.</string>
+    <string name="step_battery_action">Kısıtlamayı kaldır</string>
+    <string name="step_admin_title">Cihaz yöneticisi</string>
+    <string name="step_admin_body">Etkinken uygulama, önce bu yetki kapatılmadan kaldırılamaz. Başka hiçbir yetki kullanılmaz.</string>
+    <string name="step_admin_action">Etkinleştir</string>
+    <string name="step_notifications_title">Bildirimler</string>
+    <string name="step_notifications_body">Kilitli uygulamaların bildirim içeriğini gizlemek ve yeni bir uygulama kurulunca sormak için gerekli.</string>
+    <string name="step_notifications_grant">Bildirim izni ver</string>
+    <string name="step_notifications_access">Bildirim erişimini aç</string>
+    <string name="step_overlay_title">Üstte gösterme (isteğe bağlı)</string>
+    <string name="step_overlay_body">Normalde gerekmez. Kilit ekranı bazı uygulamaların üzerinde açılmıyorsa bu izni verin.</string>
+
+    <string name="missing_accessibility">Kilit çalışmıyor: erişilebilirlik servisi kapalı</string>
+    <string name="missing_admin">Uygulama kolayca kaldırılabilir: cihaz yöneticisi kapalı</string>
+    <string name="missing_battery">Sistem uygulamayı durdurabilir: pil kısıtlaması açık</string>
+    <string name="missing_fix">Düzeltmek için dokunun</string>
+
+    <!-- Uygulama listesi -->
+    <string name="apps_search">Uygulama ara</string>
+    <string name="apps_search_clear">Aramayı temizle</string>
+    <string name="apps_locked">Kilitli (%1$d)</string>
+    <string name="apps_suggested">Koruma için önerilir</string>
+    <string name="apps_suggested_hint">Kilidin kapatılmasını veya kaldırılmasını önler</string>
+    <string name="apps_all">Tüm uygulamalar</string>
+    <string name="apps_none">Kilitlenebilecek uygulama bulunamadı</string>
+    <string name="apps_no_match">\"%1$s\" ile eşleşen uygulama yok</string>
+    <string name="app_details_notifications">Bildirimler</string>
+    <string name="app_details_unlock">Kilit açma</string>
+    <string name="app_details_biometric">Biyometrik ile açılabilsin</string>
+    <string name="app_details_biometric_hint">Kapalıyken bu uygulama yalnızca PIN ile açılır.</string>
+    <string name="app_details_biometric_off">Önce Ayarlar\'dan biyometrik ile açmayı etkinleştirin.</string>
+
+    <!-- Ayarlar -->
+    <string name="settings_title">Ayarlar</string>
+    <string name="network_rule_title">Ağ kuralı</string>
+    <string name="network_rule_on_trusted">Güvenli ağdayken kilitle</string>
+    <string name="network_rule_on_trusted_hint">Kayıtlı ağlara bağlıyken kilit etkin. Ağdan çıkınca bir kez PIN sorulur, sonra geri dönene kadar kilit kapalı kalır.</string>
+    <string name="network_rule_off_trusted">Güvenli ağ dışında kilitle</string>
+    <string name="network_rule_off_trusted_hint">Kayıtlı ağlara bağlıyken kilit kapalı, diğer her yerde etkin.</string>
+    <string name="network_rule_always">Her zaman kilitle</string>
+    <string name="network_state_active">Şu an: kilit etkin</string>
+    <string name="network_state_inactive">Şu an: kilit kapalı</string>
+
+    <string name="trusted_networks_title">Güvenli ağlar</string>
+    <string name="trusted_network_add">Bu ağı güvenli ağ olarak ekle</string>
+    <string name="trusted_network_connected">Bağlı ağ: %1$s</string>
+    <string name="trusted_network_already">\"%1$s\" zaten güvenli ağlarda.</string>
+    <string name="trusted_network_no_wifi">Şu an Wi-Fi\'ye bağlı değil.</string>
+    <string name="trusted_network_unreadable">Bağlı ağ okunamıyor. Konum izni \"Her zaman\" olmalı ve konum açık olmalı. Ağ okunamadığı sürece kilit etkin kalır.</string>
+    <string name="trusted_network_remove">Kaldır</string>
+    <string name="trusted_network_unnamed">Adsız ağ</string>
+    <string name="trusted_network_bands_hint">Modemin 2,4 GHz ve 5 GHz bantları ile varsa ek erişim noktaları ayrı ağ sayılır; her birine bağlıyken ayrı ayrı ekleyin.</string>
+
+    <string name="relock_title">Yeniden kilitleme</string>
+    <string name="relock_immediately">Uygulamadan çıkınca</string>
+    <string name="relock_immediately_hint">En güvenlisi: her çıkışta yeniden kilitlenir.</string>
+    <string name="relock_screen_off">Ekran kapanınca</string>
+    <string name="relock_timeout">Belirli bir süre sonra</string>
+    <string name="relock_timeout_hint">Uygulamadan çıktıktan sonra bu süre içinde dönerseniz PIN sorulmaz.</string>
+    <string name="relock_minutes">%1$d dk</string>
+
+    <string name="appearance_title">Görünüm</string>
+    <string name="style_setting">Kilit ekranı tasarımı</string>
+    <string name="style_preview_app">Örnek uygulama</string>
+    <string name="style_preview_hint">Önizlemeyi deneyebilirsiniz: ilk giriş hatalı, ikincisi doğru sayılır.</string>
+    <string name="style_samsung">Samsung tarzı</string>
+    <string name="style_pixel">Pixel tarzı</string>
+    <string name="style_ios">iOS tarzı</string>
+    <string name="style_minimal">Minimal</string>
+
+    <string name="notification_default_title">Yeni kilitlenen uygulamalarda bildirimler</string>
+    <string name="notification_default_hint">Her uygulama için listeden ayrıca değiştirilebilir. Gizleme yalnızca kilit etkinken çalışır.</string>
+    <string name="notification_mode_untouched">Dokunma</string>
+    <string name="notification_mode_untouched_hint">Bildirimler normal görünür.</string>
+    <string name="notification_mode_hide_content">İçeriği gizle</string>
+    <string name="notification_mode_hide_content_hint">Yerine içeriksiz bir bildirim gelir; dokununca önce PIN sorulur.</string>
+    <string name="notification_mode_hide_completely">Tamamen sakla</string>
+    <string name="notification_mode_hide_completely_hint">Bildirim kaldırılır, yerine hiçbir şey gösterilmez.</string>
+
+    <string name="security_title">Güvenlik</string>
+    <string name="biometric_setting">Biyometrik ile aç</string>
+    <string name="biometric_setting_hint">Parmak izi veya yüz ile açılır. Uygulama başına kapatılabilir.</string>
+    <string name="biometric_not_enrolled">Telefonda kayıtlı parmak izi veya yüz yok.</string>
+
+    <string name="protection_title">Koruma</string>
+    <string name="protection_permissions">İzinler ve koruma durumu</string>
+    <string name="limits_title">Bilinen sınırlar</string>
+    <string name="limits_intro">Bu uygulama kilitli uygulamaların üzerine bir ekran koyar. Günlük kullanımda işini görür ama aşılamaz değildir:</string>
+    <string-array name="limits">
+        <item>Güvenli mod: telefon güvenli modda açılırsa bu uygulama çalışmaz ve kilit devre dışı kalır. Android bunun engellenmesine izin vermiyor.</item>
+        <item>Şifreleme yok: kilitli uygulamanın verisi telefonda olduğu gibi durur. Dosya yöneticisinden veya bilgisayara bağlanarak ulaşılabilen dosyalar (ör. galerideki fotoğraflar) korunmaz.</item>
+        <item>Son uygulamalar: kilitli uygulamanın eski bir önizleme görüntüsü son uygulamalar ekranında görünebilir.</item>
+        <item>Bildirimler: gizleme, bildirim ekrana geldikten hemen sonra devreye girer. Bildirim bir an, açılır bildirimlerde biraz daha uzun görünebilir. Devam eden, ön plan servisi ve medya bildirimleri gizlenemez.</item>
+        <item>Ağ kuralı: telefon güvenli ağa bağlanmadıkça orada olduğunu bilemez. Dışarıda PIN girildikten sonra eve Wi-Fi kapalı dönülürse, Wi-Fi bağlanana kadar kilit kapalı kalır. Bundan kaçınmak için \"Her zaman kilitle\" seçilebilir.</item>
+        <item>Arka plan: sistem pil tasarrufu için uygulamayı durdurursa kilit çalışmaz. Pil ayarı \"Kısıtlanmamış\" olmalı, uygulama \"Uyuyan uygulamalar\" listesinde olmamalı.</item>
+        <item>Ayarlar: Ayarlar uygulaması kilitli değilse erişilebilirlik servisi oradan kapatılabilir ve uygulama kaldırılabilir.</item>
+        <item>Biyometrik: telefonda kayıtlı her parmak izi ve yüz kilidi açar. Başka birinin biyometrisi kayıtlıysa biyometrik ile açmayı kapatın.</item>
+    </string-array>
+
+    <!-- Bildirimler -->
+    <string name="channel_guard">Koruma servisi</string>
+    <string name="channel_hidden">Gizlenen bildirimler</string>
+    <string name="channel_new_app">Yeni uygulamalar</string>
+    <string name="notification_hidden_text">Yeni bildirim</string>
+    <string name="new_app_title">%1$s kuruldu</string>
+    <string name="new_app_text">Bu uygulama kilitlensin mi?</string>
+    <string name="new_app_lock">Kilitle</string>
+    <string name="new_app_skip">Kilitleme</string>
 </resources>

@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.AppLock" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.AppLock" parent="android:Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- The window background is what shows before the first frame; it must already look like the lock screen. -->
+    <style name="Theme.AppLock.Lock" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/lock_window_background</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
 </resources>
