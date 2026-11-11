@@ -1,8 +1,8 @@
 {
-  "basedOn": "2026-11-08T20:19:01.502950Z",
+  "basedOn": "2026-11-09T18:02:48.354163Z",
   "content": {
     "site": {
-      "updated": "8 Kasım 2026",
+      "updated": "11 Kasım 2026",
       "now": [
         {
           "project": "flozaxx-web",
@@ -14,6 +14,11 @@
         }
       ],
       "updates": [
+        {
+          "date": "11 Kas 2026",
+          "project": "noty",
+          "text": "Noty 1.13: notlardaki fotoğraflara çizim, yazı, kırpma ve döndürme."
+        },
         {
           "date": "8 Kas 2026",
           "project": "flozaxx-web",
@@ -90,6 +95,17 @@
           "platform": "Android"
         },
         "changelog": [
+          {
+            "version": "1.13.0",
+            "date": "11 Kasım 2026",
+            "title": "Fotoğraf düzenleme",
+            "items": [
+              "Not düzenlerken bir fotoğrafa dokunup “Düzenle” diyerek üstüne çizebilirsin: 6 renk, 3 kalınlık.",
+              "Fotoğrafa yazı ekle: dokunduğun yere yazılır, sürükleyerek taşınır, dokunup düzenlenir ya da silinir.",
+              "Kırpma (köşelerden sürükleyerek) ve 90° döndürme; her adım geri alınabilir.",
+              "Düzenleme tamamen cihazda yapılır; fotoğraf notla birlikte yine şifreli saklanır."
+            ]
+          },
           {
             "date": "9 Kasım 2026",
             "title": "Yan menüde yumuşak ışık",
@@ -252,36 +268,6 @@
         ]
       },
       {
-        "id": "once-bak-sonra-yap",
-        "slug": "oncebak",
-        "name": "Önce Bak, Sonra Yap",
-        "tagline": "AI destekli yazılımda profesyonel standartlar",
-        "kind": "tool",
-        "status": "live",
-        "icon": "compass",
-        "color": "#7A5AF8",
-        "platforms": [
-          "Web"
-        ],
-        "tech": [],
-        "started": "Kasım 2026",
-        "summary": "Yeni bir uygulama ya da ekrana başlarken izlediğim yöntem: kod yazmadan önce iyi örnekleri incele, ortak olanı kural kabul et, farkı bilinçli yerlerde yarat. Kaynaklı tablolar ve A, B, C diye sıralanmış adımlarla.",
-        "features": [
-          "Referans araştırma şablonu: 3–5 örnek uygulama, ortak kalıplar ve kararlar",
-          "AI ile yazılmış yazılımların büyük sorunları ve sektördeki karşılıkları",
-          "Arayüz: profesyonel editörlerin ortak düzeni, Sticker Studio editörü için öneriler",
-          "Optimizasyon: kare bütçesi, vekil önizleme, arka plan işleri",
-          "Kod sadeliği: AI kodunu ele veren izler, yorum kuralları, anlama borcu",
-          "Adım adım iş akışı: A planlama, B geliştirme, C yayın öncesi"
-        ],
-        "links": [
-          {
-            "label": "Rehberi oku",
-            "url": "/p/once-bak-sonra-yap/"
-          }
-        ]
-      },
-      {
         "id": "flozaxx-web",
         "slug": "flozaxx",
         "name": "flozaxx.com",
@@ -341,6 +327,36 @@
               "Tüm projeler tek sayfada; kategori ve teknoloji süzgeci, yan sütunlar.",
               "“Önce Bak, Sonra Yap” rehber sayfası."
             ]
+          }
+        ]
+      },
+      {
+        "id": "once-bak-sonra-yap",
+        "slug": "oncebak",
+        "name": "Önce Bak, Sonra Yap",
+        "tagline": "AI destekli yazılımda profesyonel standartlar",
+        "kind": "tool",
+        "status": "live",
+        "icon": "compass",
+        "color": "#7A5AF8",
+        "platforms": [
+          "Web"
+        ],
+        "tech": [],
+        "started": "Kasım 2026",
+        "summary": "Yeni bir uygulama ya da ekrana başlarken izlediğim yöntem: kod yazmadan önce iyi örnekleri incele, ortak olanı kural kabul et, farkı bilinçli yerlerde yarat. Kaynaklı tablolar ve A, B, C diye sıralanmış adımlarla.",
+        "features": [
+          "Referans araştırma şablonu: 3–5 örnek uygulama, ortak kalıplar ve kararlar",
+          "AI ile yazılmış yazılımların büyük sorunları ve sektördeki karşılıkları",
+          "Arayüz: profesyonel editörlerin ortak düzeni, Sticker Studio editörü için öneriler",
+          "Optimizasyon: kare bütçesi, vekil önizleme, arka plan işleri",
+          "Kod sadeliği: AI kodunu ele veren izler, yorum kuralları, anlama borcu",
+          "Adım adım iş akışı: A planlama, B geliştirme, C yayın öncesi"
+        ],
+        "links": [
+          {
+            "label": "Rehberi oku",
+            "url": "/p/once-bak-sonra-yap/"
           }
         ]
       },
