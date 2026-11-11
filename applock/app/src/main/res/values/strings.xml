@@ -19,8 +19,14 @@
 
     <!-- Karşılama, PIN, kurtarma -->
     <string name="welcome_title">Uygulamalarınızı kilitleyin</string>
-    <string name="welcome_body">Seçtiğiniz uygulamalar PIN veya parmak izi olmadan açılmaz, bildirimlerinin içeriği gizlenir.</string>
-    <string name="welcome_steps">Kurulum birkaç dakika sürer: önce bir PIN belirlersiniz, sonra gereken izinleri adım adım verirsiniz.</string>
+    <string name="welcome_body">Telefonunuz başkasının elindeyken özel uygulamalarınız kapalı kalsın.</string>
+    <string name="welcome_feature_lock_title">Uygulama kilidi</string>
+    <string name="welcome_feature_lock_body">Seçtiğiniz uygulamalar PIN veya parmak iziyle açılır.</string>
+    <string name="welcome_feature_notifications_title">Bildirim gizliliği</string>
+    <string name="welcome_feature_notifications_body">Kilitli uygulamaların bildirim içeriği görünmez.</string>
+    <string name="welcome_feature_network_title">Ağ kuralı</string>
+    <string name="welcome_feature_network_body">Kilit yalnızca seçtiğiniz Wi-Fi ağında etkin olabilir.</string>
+    <string name="welcome_duration">Kurulum birkaç dakika sürer: önce PIN, sonra izinler.</string>
     <string name="welcome_start">Başla</string>
 
     <string name="pin_create_title">PIN oluştur</string>
@@ -53,6 +59,7 @@
     <string name="setup_title">Kurulum</string>
     <string name="setup_intro">Kilidin çalışması için aşağıdaki izinler gerekiyor. Tamamlanan adımın yanında yeşil onay belirir.</string>
     <string name="setup_network_body">Kilidin etkin olacağı Wi-Fi ağına (ör. ev) şu an bağlıysanız ekleyin. Hiç ağ eklenmezse kilit her yerde etkin olur.</string>
+    <string name="setup_progress">%1$d / %2$d adım tamamlandı</string>
     <string name="setup_finish">Kurulumu bitir</string>
     <string name="setup_finish_blocked">Devam etmek için erişilebilirlik servisi açık olmalı.</string>
 
@@ -88,11 +95,17 @@
     <string name="missing_fix">Düzeltmek için dokunun</string>
 
     <!-- Uygulama listesi -->
+    <string name="status_active_title">Koruma etkin</string>
+    <string name="status_locked_count">%1$d uygulama kilitli</string>
+    <string name="status_inactive_title">Kilit şu an kapalı</string>
+    <string name="status_inactive_body">Ağ kuralına göre bu konumda kilit uygulanmıyor</string>
+    <string name="status_none_title">Henüz kilitli uygulama yok</string>
+    <string name="status_none_body">Kilitlemek istediklerinizi aşağıdan seçin</string>
     <string name="apps_search">Uygulama ara</string>
     <string name="apps_search_clear">Aramayı temizle</string>
     <string name="apps_locked">Kilitli (%1$d)</string>
     <string name="apps_suggested">Koruma için önerilir</string>
-    <string name="apps_suggested_hint">Kilidin kapatılmasını veya kaldırılmasını önler</string>
+    <string name="apps_suggested_hint">Kilidin kapatılmasını önler</string>
     <string name="apps_all">Tüm uygulamalar</string>
     <string name="apps_none">Kilitlenebilecek uygulama bulunamadı</string>
     <string name="apps_no_match">\"%1$s\" ile eşleşen uygulama yok</string>
@@ -132,6 +145,13 @@
     <string name="relock_minutes">%1$d dk</string>
 
     <string name="appearance_title">Görünüm</string>
+    <string name="theme_title">Tema</string>
+    <string name="theme_system">Sistem</string>
+    <string name="theme_light">Açık</string>
+    <string name="theme_dark">Koyu</string>
+    <string name="dynamic_color">Duvar kâğıdı renkleri</string>
+    <string name="dynamic_color_hint">Kapalıyken uygulamanın kendi renkleri kullanılır.</string>
+    <string name="app_version">Sürüm %1$s</string>
     <string name="style_setting">Kilit ekranı tasarımı</string>
     <string name="style_preview_app">Örnek uygulama</string>
     <string name="style_preview_hint">Önizlemeyi deneyebilirsiniz: ilk giriş hatalı, ikincisi doğru sayılır.</string>
@@ -158,15 +178,25 @@
     <string name="protection_permissions">İzinler ve koruma durumu</string>
     <string name="limits_title">Bilinen sınırlar</string>
     <string name="limits_intro">Bu uygulama kilitli uygulamaların üzerine bir ekran koyar. Günlük kullanımda işini görür ama aşılamaz değildir:</string>
-    <string-array name="limits">
-        <item>Güvenli mod: telefon güvenli modda açılırsa bu uygulama çalışmaz ve kilit devre dışı kalır. Android bunun engellenmesine izin vermiyor.</item>
-        <item>Şifreleme yok: kilitli uygulamanın verisi telefonda olduğu gibi durur. Dosya yöneticisinden veya bilgisayara bağlanarak ulaşılabilen dosyalar (ör. galerideki fotoğraflar) korunmaz.</item>
-        <item>Son uygulamalar: kilitli uygulamanın eski bir önizleme görüntüsü son uygulamalar ekranında görünebilir.</item>
-        <item>Bildirimler: gizleme, bildirim ekrana geldikten hemen sonra devreye girer. Bildirim bir an, açılır bildirimlerde biraz daha uzun görünebilir. Devam eden, ön plan servisi ve medya bildirimleri gizlenemez.</item>
-        <item>Ağ kuralı: telefon güvenli ağa bağlanmadıkça orada olduğunu bilemez. Dışarıda PIN girildikten sonra eve Wi-Fi kapalı dönülürse, Wi-Fi bağlanana kadar kilit kapalı kalır. Bundan kaçınmak için \"Her zaman kilitle\" seçilebilir.</item>
-        <item>Arka plan: sistem pil tasarrufu için uygulamayı durdurursa kilit çalışmaz. Pil ayarı \"Kısıtlanmamış\" olmalı, uygulama \"Uyuyan uygulamalar\" listesinde olmamalı.</item>
-        <item>Ayarlar: Ayarlar uygulaması kilitli değilse erişilebilirlik servisi oradan kapatılabilir ve uygulama kaldırılabilir.</item>
-        <item>Biyometrik: telefonda kayıtlı her parmak izi ve yüz kilidi açar. Başka birinin biyometrisi kayıtlıysa biyometrik ile açmayı kapatın.</item>
+    <string-array name="limit_titles">
+        <item>Güvenli mod</item>
+        <item>Şifreleme yok</item>
+        <item>Son uygulamalar</item>
+        <item>Bildirimler</item>
+        <item>Ağ kuralı</item>
+        <item>Arka plan</item>
+        <item>Ayarlar</item>
+        <item>Biyometrik</item>
+    </string-array>
+    <string-array name="limit_bodies">
+        <item>Telefon güvenli modda açılırsa bu uygulama çalışmaz ve kilit devre dışı kalır. Android bunun engellenmesine izin vermiyor.</item>
+        <item>Kilitli uygulamanın verisi telefonda olduğu gibi durur. Dosya yöneticisinden veya bilgisayara bağlanarak ulaşılabilen dosyalar (ör. galerideki fotoğraflar) korunmaz.</item>
+        <item>Kilitli uygulamanın eski bir önizleme görüntüsü son uygulamalar ekranında görünebilir.</item>
+        <item>Gizleme, bildirim ekrana geldikten hemen sonra devreye girer. Bildirim bir an, açılır bildirimlerde biraz daha uzun görünebilir. Devam eden, ön plan servisi ve medya bildirimleri gizlenemez.</item>
+        <item>Telefon güvenli ağa bağlanmadıkça orada olduğunu bilemez. Dışarıda PIN girildikten sonra eve Wi-Fi kapalı dönülürse, Wi-Fi bağlanana kadar kilit kapalı kalır. Bundan kaçınmak için \"Her zaman kilitle\" seçilebilir.</item>
+        <item>Sistem pil tasarrufu için uygulamayı durdurursa kilit çalışmaz. Pil ayarı \"Kısıtlanmamış\" olmalı, uygulama \"Uyuyan uygulamalar\" listesinde olmamalı.</item>
+        <item>Ayarlar uygulaması kilitli değilse erişilebilirlik servisi oradan kapatılabilir ve uygulama kaldırılabilir.</item>
+        <item>Telefonda kayıtlı her parmak izi ve yüz kilidi açar. Başka birinin biyometrisi kayıtlıysa biyometrik ile açmayı kapatın.</item>
     </string-array>
 
     <!-- Bildirimler -->

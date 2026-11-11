@@ -45,6 +45,7 @@ import com.flozaxx.applock.lock.LockTarget
 import com.flozaxx.applock.lock.LockUiState
 import com.flozaxx.applock.ui.components.ScreenScaffold
 import com.flozaxx.applock.ui.theme.AppTheme
+import com.flozaxx.applock.ui.theme.Spacing
 import kotlinx.coroutines.launch
 
 private val PHONE_WIDTH = 360.dp
@@ -68,7 +69,7 @@ fun StylePickerScreen(onBack: () -> Unit) {
                 stringResource(R.string.style_preview_hint),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                modifier = Modifier.padding(horizontal = Spacing.page + Spacing.lg, vertical = Spacing.sm),
             )
             ScaledPhone(scale = 0.62f, selected = false) {
                 key(selected.id) { LivePreview(selected, target, pinLength) }

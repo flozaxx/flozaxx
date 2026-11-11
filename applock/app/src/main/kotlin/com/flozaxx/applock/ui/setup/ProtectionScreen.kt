@@ -6,7 +6,9 @@ import android.content.Intent
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -14,17 +16,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -35,11 +37,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -49,8 +52,13 @@ import com.flozaxx.applock.graph
 import com.flozaxx.applock.protection.ProtectionIntents
 import com.flozaxx.applock.protection.ProtectionStatus
 import com.flozaxx.applock.protection.protectionStatus
+import com.flozaxx.applock.ui.components.Group
+import com.flozaxx.applock.ui.components.GroupHint
+import com.flozaxx.applock.ui.components.PrimaryButton
 import com.flozaxx.applock.ui.components.ScreenScaffold
 import com.flozaxx.applock.ui.settings.TrustedNetworkEditor
+import com.flozaxx.applock.ui.theme.Spacing
+import com.flozaxx.applock.ui.theme.appColors
 import kotlinx.coroutines.launch
 
 /**
@@ -85,25 +93,43 @@ fun ProtectionScreen(setupMode: Boolean, onDone: () -> Unit, onBack: (() -> Unit
     }
     var restrictedSettingsDone by rememberSaveable { mutableStateOf(false) }
     val adminExplanation = stringResource(R.string.step_admin_body)
+    val required = listOf(status.accessibility, status.location, status.batteryExempt, status.deviceAdmin, status.notifications)
 
     ScreenScaffold(
         title = stringResource(if (setupMode) R.string.setup_title else R.string.protection_title),
         onBack = onBack,
+        bottomBar = {
+            if (setupMode) {
+                Column(Modifier.navigationBarsPadding().padding(horizontal = Spacing.page, vertical = Spacing.md)) {
+                    if (!status.accessibility) {
+                        Text(
+                            stringResource(R.string.setup_finish_blocked),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(bottom = Spacing.sm),
+                        )
+                    }
+                    PrimaryButton(
+                        text = stringResource(R.string.setup_finish),
+                        enabled = status.accessibility,
+                        onClick = {
+                            scope.launch { graph.store.update { it.copy(setupComplete = true) } }
+                            onDone()
+                        },
+                    )
+                }
+            }
+        },
     ) { padding ->
         Column(
-            Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
+            Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
-            if (setupMode) {
-                Text(
-                    stringResource(R.string.setup_intro),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
-                )
-            }
+            Progress(done = required.count { it }, total = required.size, showIntro = setupMode)
 
             if (!status.accessibility) {
-                StepCard(
+                Step(
                     title = stringResource(R.string.step_restricted_title),
                     body = stringResource(R.string.step_restricted_body),
                     done = restrictedSettingsDone,
@@ -113,14 +139,14 @@ fun ProtectionScreen(setupMode: Boolean, onDone: () -> Unit, onBack: (() -> Unit
                     onSecondary = { restrictedSettingsDone = true },
                 )
             }
-            StepCard(
+            Step(
                 title = stringResource(R.string.step_accessibility_title),
                 body = stringResource(R.string.step_accessibility_body),
                 done = status.accessibility,
                 actionLabel = stringResource(R.string.step_open_settings),
                 onAction = { open(ProtectionIntents.accessibility()) },
             )
-            StepCard(
+            Step(
                 title = stringResource(R.string.step_location_title),
                 body = stringResource(R.string.step_location_body),
                 done = status.location,
@@ -142,21 +168,21 @@ fun ProtectionScreen(setupMode: Boolean, onDone: () -> Unit, onBack: (() -> Unit
                     }
                 },
             )
-            StepCard(
+            Step(
                 title = stringResource(R.string.step_battery_title),
                 body = stringResource(R.string.step_battery_body),
                 done = status.batteryExempt,
                 actionLabel = stringResource(R.string.step_battery_action),
                 onAction = { open(ProtectionIntents.batteryExemption(context)) },
             )
-            StepCard(
+            Step(
                 title = stringResource(R.string.step_admin_title),
                 body = adminExplanation,
                 done = status.deviceAdmin,
                 actionLabel = stringResource(R.string.step_admin_action),
                 onAction = { open(ProtectionIntents.deviceAdmin(context, adminExplanation)) },
             )
-            StepCard(
+            Step(
                 title = stringResource(R.string.step_notifications_title),
                 body = stringResource(R.string.step_notifications_body),
                 done = status.notifications,
@@ -171,7 +197,7 @@ fun ProtectionScreen(setupMode: Boolean, onDone: () -> Unit, onBack: (() -> Unit
                     }
                 },
             )
-            StepCard(
+            Step(
                 title = stringResource(R.string.step_overlay_title),
                 body = stringResource(R.string.step_overlay_body),
                 done = status.overlay,
@@ -180,49 +206,40 @@ fun ProtectionScreen(setupMode: Boolean, onDone: () -> Unit, onBack: (() -> Unit
             )
 
             if (setupMode) {
-                OutlinedCard(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
-                    Column(Modifier.padding(vertical = 12.dp)) {
-                        Text(
-                            stringResource(R.string.trusted_networks_title),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                        )
-                        Text(
-                            stringResource(R.string.setup_network_body),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                        )
-                        TrustedNetworkEditor(settings, horizontalPadding = 16.dp)
-                    }
-                }
-                Spacer(Modifier.height(12.dp))
-                Button(
-                    enabled = status.accessibility,
-                    onClick = {
-                        scope.launch { graph.store.update { it.copy(setupComplete = true) } }
-                        onDone()
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text(stringResource(R.string.setup_finish))
-                }
-                if (!status.accessibility) {
-                    Text(
-                        stringResource(R.string.setup_finish_blocked),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(4.dp),
-                    )
+                Column {
+                    Group(title = stringResource(R.string.trusted_networks_title)) { TrustedNetworkEditor(settings) }
+                    GroupHint(stringResource(R.string.setup_network_body))
                 }
             }
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(Spacing.sm))
         }
     }
 }
 
 @Composable
-private fun StepCard(
+private fun Progress(done: Int, total: Int, showIntro: Boolean) {
+    Column(Modifier.padding(horizontal = Spacing.page + Spacing.lg)) {
+        if (showIntro) {
+            Text(
+                stringResource(R.string.setup_intro),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.height(Spacing.lg))
+        }
+        Text(stringResource(R.string.setup_progress, done, total), style = MaterialTheme.typography.titleSmall)
+        Spacer(Modifier.height(Spacing.sm))
+        LinearProgressIndicator(
+            progress = { done.toFloat() / total },
+            color = if (done == total) MaterialTheme.appColors.success else MaterialTheme.colorScheme.primary,
+            modifier = Modifier.fillMaxWidth().height(6.dp),
+        )
+    }
+}
+
+/** One permission. Open steps explain themselves and offer the action; finished ones shrink to a title with a tick. */
+@Composable
+private fun Step(
     title: String,
     body: String,
     done: Boolean,
@@ -231,21 +248,21 @@ private fun StepCard(
     secondaryLabel: String? = null,
     onSecondary: (() -> Unit)? = null,
 ) {
-    OutlinedCard(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
-        Row(Modifier.padding(16.dp)) {
+    Group {
+        Row(Modifier.padding(Spacing.lg)) {
             StatusMark(done)
-            Spacer(Modifier.width(14.dp))
+            Spacer(Modifier.width(Spacing.lg))
             Column(Modifier.weight(1f)) {
                 Text(title, style = MaterialTheme.typography.titleMedium)
                 if (!done) {
-                    Spacer(Modifier.height(4.dp))
+                    Spacer(Modifier.height(Spacing.xs))
                     Text(
                         body,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    Spacer(Modifier.height(12.dp))
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Spacer(Modifier.height(Spacing.md))
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                         FilledTonalButton(onClick = onAction) { Text(actionLabel) }
                         if (secondaryLabel != null && onSecondary != null) {
                             TextButton(onClick = onSecondary) { Text(secondaryLabel) }
@@ -259,23 +276,26 @@ private fun StepCard(
 
 @Composable
 private fun StatusMark(done: Boolean) {
-    if (done) {
-        Icon(
-            painterResource(R.drawable.ic_check_circle),
-            stringResource(R.string.step_done),
-            tint = Color(0xFF2E9E5B),
-            modifier = Modifier.size(26.dp),
-        )
-    } else {
-        Surface(
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.surfaceContainerHighest,
-            modifier = Modifier.padding(1.dp).size(24.dp),
-        ) {}
+    Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+        if (done) {
+            Icon(
+                painterResource(R.drawable.ic_check_circle),
+                stringResource(R.string.step_done),
+                tint = MaterialTheme.appColors.success,
+                modifier = Modifier.size(24.dp),
+            )
+        } else {
+            Surface(
+                shape = CircleShape,
+                color = MaterialTheme.appColors.card,
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.outlineVariant),
+                modifier = Modifier.size(20.dp),
+            ) {}
+        }
     }
 }
 
-/** Short summary for the banner on the main screen; null when nothing essential is missing. */
+/** Short summary for the status card on the main screen; null when nothing essential is missing. */
 @Composable
 fun missingProtectionSummary(status: ProtectionStatus): String? = when {
     !status.accessibility -> stringResource(R.string.missing_accessibility)

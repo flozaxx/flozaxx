@@ -15,8 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,7 +47,9 @@ import com.flozaxx.applock.graph
 import com.flozaxx.applock.lock.PinDots
 import com.flozaxx.applock.lock.PinPad
 import com.flozaxx.applock.storage.PinVault
+import com.flozaxx.applock.ui.components.PrimaryButton
 import com.flozaxx.applock.ui.components.ScreenScaffold
+import com.flozaxx.applock.ui.theme.appColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -163,6 +164,7 @@ private fun PinChoiceScreen(title: String, saving: Boolean, onBack: (() -> Unit)
                     Surface(
                         onClick = { entry = entry.dropLast(1) },
                         shape = CircleShape,
+                        color = Color.Transparent,
                         modifier = Modifier.size(72.dp),
                     ) {
                         Box(contentAlignment = Alignment.Center) {
@@ -177,14 +179,15 @@ private fun PinChoiceScreen(title: String, saving: Boolean, onBack: (() -> Unit)
                         mismatch = false
                     },
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    color = MaterialTheme.appColors.card,
                     modifier = Modifier.size(72.dp),
                 ) {
                     Box(contentAlignment = Alignment.Center) { Text(digit.toString(), fontSize = 26.sp) }
                 }
             }
             Spacer(Modifier.height(20.dp))
-            Button(
+            PrimaryButton(
+                text = stringResource(if (confirming) R.string.pin_save else R.string.next),
                 enabled = entry.length >= MIN_PIN_LENGTH && !saving,
                 onClick = {
                     val chosen = first
@@ -201,10 +204,7 @@ private fun PinChoiceScreen(title: String, saving: Boolean, onBack: (() -> Unit)
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(stringResource(if (confirming) R.string.pin_save else R.string.next))
-            }
+            )
             Spacer(Modifier.height(16.dp))
         }
     }
@@ -233,7 +233,11 @@ private fun RecoveryCodeScreen(code: String, onDone: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Spacer(Modifier.height(20.dp))
-            Card(Modifier.fillMaxWidth()) {
+            Surface(
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.appColors.card,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
                 Text(
                     code,
                     style = MaterialTheme.typography.headlineSmall,
@@ -277,9 +281,7 @@ private fun RecoveryCodeScreen(code: String, onDone: () -> Unit) {
                 Text(stringResource(R.string.recovery_send_mail))
             }
             Spacer(Modifier.height(24.dp))
-            Button(onClick = onDone, modifier = Modifier.fillMaxWidth()) {
-                Text(stringResource(R.string.recovery_saved))
-            }
+            PrimaryButton(stringResource(R.string.recovery_saved), onDone)
             Spacer(Modifier.height(16.dp))
         }
     }
@@ -321,7 +323,8 @@ fun ForgotPinScreen(onRecovered: () -> Unit, onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(Modifier.height(16.dp))
-            Button(
+            PrimaryButton(
+                text = stringResource(R.string.forgot_check),
                 enabled = entry.isNotBlank() && !checking,
                 onClick = {
                     checking = true
@@ -334,10 +337,7 @@ fun ForgotPinScreen(onRecovered: () -> Unit, onBack: () -> Unit) {
                         if (matches) accepted = true else wrong = true
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(stringResource(R.string.forgot_check))
-            }
+            )
         }
     }
 }

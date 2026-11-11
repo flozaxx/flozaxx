@@ -9,15 +9,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,10 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.flozaxx.applock.BuildConfig
 import com.flozaxx.applock.R
 import com.flozaxx.applock.context.WifiSnapshot
 import com.flozaxx.applock.graph
@@ -41,11 +40,16 @@ import com.flozaxx.applock.rules.NetworkRule
 import com.flozaxx.applock.rules.RelockPolicy
 import com.flozaxx.applock.storage.AppSettings
 import com.flozaxx.applock.storage.NotificationMode
+import com.flozaxx.applock.storage.ThemeMode
 import com.flozaxx.applock.storage.TrustedNetwork
+import com.flozaxx.applock.ui.components.Group
+import com.flozaxx.applock.ui.components.GroupDivider
+import com.flozaxx.applock.ui.components.GroupHint
 import com.flozaxx.applock.ui.components.LinkRow
 import com.flozaxx.applock.ui.components.RadioRow
 import com.flozaxx.applock.ui.components.ScreenScaffold
-import com.flozaxx.applock.ui.components.SectionTitle
+import com.flozaxx.applock.ui.components.SwitchRow
+import com.flozaxx.applock.ui.theme.Spacing
 import kotlinx.coroutines.launch
 
 private val RELOCK_MINUTES = listOf(1, 5, 15, 30)
@@ -64,115 +68,162 @@ fun SettingsScreen(
     val scope = rememberCoroutineScope()
     val settings by graph.store.settings.collectAsStateWithLifecycle()
     val lockActive by graph.coordinator.lockActive.collectAsStateWithLifecycle(initialValue = true)
-    val update = { transform: (AppSettings) -> AppSettings -> scope.launch { graph.store.update(transform) }; Unit }
+    val update: ((AppSettings) -> AppSettings) -> Unit = { transform -> scope.launch { graph.store.update(transform) } }
 
     ScreenScaffold(title = stringResource(R.string.settings_title), onBack = onBack) { padding ->
         Column(Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState())) {
-            SectionTitle(stringResource(R.string.network_rule_title))
-            RadioRow(
-                stringResource(R.string.network_rule_on_trusted),
-                selected = settings.networkRule == NetworkRule.ON_TRUSTED_NETWORK,
-                onSelect = { update { it.copy(networkRule = NetworkRule.ON_TRUSTED_NETWORK) } },
-                supporting = stringResource(R.string.network_rule_on_trusted_hint),
-            )
-            RadioRow(
-                stringResource(R.string.network_rule_off_trusted),
-                selected = settings.networkRule == NetworkRule.OFF_TRUSTED_NETWORK,
-                onSelect = { update { it.copy(networkRule = NetworkRule.OFF_TRUSTED_NETWORK) } },
-                supporting = stringResource(R.string.network_rule_off_trusted_hint),
-            )
-            RadioRow(
-                stringResource(R.string.network_rule_always),
-                selected = settings.networkRule == NetworkRule.ALWAYS,
-                onSelect = { update { it.copy(networkRule = NetworkRule.ALWAYS) } },
-            )
-            Text(
-                stringResource(if (lockActive) R.string.network_state_active else R.string.network_state_inactive),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-            )
+            Group(title = stringResource(R.string.network_rule_title)) {
+                RadioRow(
+                    stringResource(R.string.network_rule_on_trusted),
+                    selected = settings.networkRule == NetworkRule.ON_TRUSTED_NETWORK,
+                    onSelect = { update { it.copy(networkRule = NetworkRule.ON_TRUSTED_NETWORK) } },
+                    supporting = stringResource(R.string.network_rule_on_trusted_hint),
+                )
+                GroupDivider()
+                RadioRow(
+                    stringResource(R.string.network_rule_off_trusted),
+                    selected = settings.networkRule == NetworkRule.OFF_TRUSTED_NETWORK,
+                    onSelect = { update { it.copy(networkRule = NetworkRule.OFF_TRUSTED_NETWORK) } },
+                    supporting = stringResource(R.string.network_rule_off_trusted_hint),
+                )
+                GroupDivider()
+                RadioRow(
+                    stringResource(R.string.network_rule_always),
+                    selected = settings.networkRule == NetworkRule.ALWAYS,
+                    onSelect = { update { it.copy(networkRule = NetworkRule.ALWAYS) } },
+                )
+            }
+            GroupHint(stringResource(if (lockActive) R.string.network_state_active else R.string.network_state_inactive))
 
             if (settings.networkRule != NetworkRule.ALWAYS) {
-                SectionTitle(stringResource(R.string.trusted_networks_title))
-                TrustedNetworkEditor(settings, horizontalPadding = 20.dp)
+                Group(title = stringResource(R.string.trusted_networks_title)) { TrustedNetworkEditor(settings) }
+                GroupHint(stringResource(R.string.trusted_network_bands_hint))
             }
 
-            SectionTitle(stringResource(R.string.relock_title))
-            RadioRow(
-                stringResource(R.string.relock_immediately),
-                selected = settings.relockPolicy == RelockPolicy.IMMEDIATELY,
-                onSelect = { update { it.copy(relockPolicy = RelockPolicy.IMMEDIATELY) } },
-                supporting = stringResource(R.string.relock_immediately_hint),
-            )
-            RadioRow(
-                stringResource(R.string.relock_screen_off),
-                selected = settings.relockPolicy == RelockPolicy.ON_SCREEN_OFF,
-                onSelect = { update { it.copy(relockPolicy = RelockPolicy.ON_SCREEN_OFF) } },
-            )
-            RadioRow(
-                stringResource(R.string.relock_timeout),
-                selected = settings.relockPolicy == RelockPolicy.AFTER_TIMEOUT,
-                onSelect = { update { it.copy(relockPolicy = RelockPolicy.AFTER_TIMEOUT) } },
-                supporting = stringResource(R.string.relock_timeout_hint),
-            )
-            if (settings.relockPolicy == RelockPolicy.AFTER_TIMEOUT) {
-                Row(Modifier.padding(start = 68.dp, end = 20.dp)) {
-                    RELOCK_MINUTES.forEach { minutes ->
-                        FilterChip(
-                            selected = settings.relockTimeoutMinutes == minutes,
-                            onClick = { update { it.copy(relockTimeoutMinutes = minutes) } },
-                            label = { Text(stringResource(R.string.relock_minutes, minutes)) },
-                            modifier = Modifier.padding(end = 8.dp),
-                        )
+            Group(title = stringResource(R.string.relock_title)) {
+                RadioRow(
+                    stringResource(R.string.relock_immediately),
+                    selected = settings.relockPolicy == RelockPolicy.IMMEDIATELY,
+                    onSelect = { update { it.copy(relockPolicy = RelockPolicy.IMMEDIATELY) } },
+                    supporting = stringResource(R.string.relock_immediately_hint),
+                )
+                GroupDivider()
+                RadioRow(
+                    stringResource(R.string.relock_screen_off),
+                    selected = settings.relockPolicy == RelockPolicy.ON_SCREEN_OFF,
+                    onSelect = { update { it.copy(relockPolicy = RelockPolicy.ON_SCREEN_OFF) } },
+                )
+                GroupDivider()
+                RadioRow(
+                    stringResource(R.string.relock_timeout),
+                    selected = settings.relockPolicy == RelockPolicy.AFTER_TIMEOUT,
+                    onSelect = { update { it.copy(relockPolicy = RelockPolicy.AFTER_TIMEOUT) } },
+                    supporting = stringResource(R.string.relock_timeout_hint),
+                )
+                if (settings.relockPolicy == RelockPolicy.AFTER_TIMEOUT) {
+                    Row(Modifier.padding(start = Spacing.lg, end = Spacing.lg, bottom = Spacing.sm)) {
+                        RELOCK_MINUTES.forEach { minutes ->
+                            FilterChip(
+                                selected = settings.relockTimeoutMinutes == minutes,
+                                onClick = { update { it.copy(relockTimeoutMinutes = minutes) } },
+                                label = { Text(stringResource(R.string.relock_minutes, minutes)) },
+                                modifier = Modifier.padding(end = Spacing.sm),
+                            )
+                        }
                     }
                 }
             }
 
-            SectionTitle(stringResource(R.string.appearance_title))
-            LinkRow(
-                R.drawable.ic_palette,
-                stringResource(R.string.style_setting),
-                stringResource(LockScreenStyles.byId(settings.lockStyleId).nameRes),
-                onClick = onOpenStyle,
-            )
+            Group(title = stringResource(R.string.appearance_title)) {
+                ThemeModePicker(settings.themeMode) { mode -> update { it.copy(themeMode = mode) } }
+                GroupDivider()
+                SwitchRow(
+                    title = stringResource(R.string.dynamic_color),
+                    supporting = stringResource(R.string.dynamic_color_hint),
+                    checked = settings.dynamicColor,
+                    onCheckedChange = { enabled -> update { it.copy(dynamicColor = enabled) } },
+                )
+                GroupDivider()
+                LinkRow(
+                    R.drawable.ic_palette,
+                    stringResource(R.string.style_setting),
+                    stringResource(LockScreenStyles.byId(settings.lockStyleId).nameRes),
+                    onClick = onOpenStyle,
+                )
+            }
 
-            SectionTitle(stringResource(R.string.notification_default_title))
-            NotificationModePicker(settings.defaultNotificationMode) { mode -> update { it.copy(defaultNotificationMode = mode) } }
+            Group(title = stringResource(R.string.notification_default_title)) {
+                NotificationModePicker(settings.defaultNotificationMode) { mode -> update { it.copy(defaultNotificationMode = mode) } }
+            }
+            GroupHint(stringResource(R.string.notification_default_hint))
+
+            Group(title = stringResource(R.string.security_title)) {
+                val biometricEnrolled = remember { context.hasEnrolledBiometric() }
+                SwitchRow(
+                    title = stringResource(R.string.biometric_setting),
+                    supporting = stringResource(
+                        if (biometricEnrolled) R.string.biometric_setting_hint else R.string.biometric_not_enrolled,
+                    ),
+                    checked = settings.biometricEnabled && biometricEnrolled,
+                    enabled = biometricEnrolled,
+                    onCheckedChange = { enabled -> update { it.copy(biometricEnabled = enabled) } },
+                )
+                GroupDivider()
+                LinkRow(R.drawable.ic_key, stringResource(R.string.pin_change_title), onClick = onChangePin)
+                GroupDivider()
+                LinkRow(
+                    R.drawable.ic_mail,
+                    stringResource(R.string.recovery_renew),
+                    stringResource(R.string.recovery_renew_hint),
+                    onClick = onNewRecoveryCode,
+                )
+            }
+
+            Group(title = stringResource(R.string.protection_title)) {
+                LinkRow(R.drawable.ic_shield, stringResource(R.string.protection_permissions), onClick = onOpenProtection)
+                GroupDivider()
+                LinkRow(R.drawable.ic_info, stringResource(R.string.limits_title), onClick = onOpenLimits)
+            }
+
             Text(
-                stringResource(R.string.notification_default_hint),
-                style = MaterialTheme.typography.bodyMedium,
+                stringResource(R.string.app_version, BuildConfig.VERSION_NAME),
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(Spacing.xl),
             )
-
-            SectionTitle(stringResource(R.string.security_title))
-            val biometricEnrolled = remember { context.hasEnrolledBiometric() }
-            SwitchRow(
-                title = stringResource(R.string.biometric_setting),
-                supporting = stringResource(
-                    if (biometricEnrolled) R.string.biometric_setting_hint else R.string.biometric_not_enrolled,
-                ),
-                checked = settings.biometricEnabled && biometricEnrolled,
-                enabled = biometricEnrolled,
-                onCheckedChange = { enabled -> update { it.copy(biometricEnabled = enabled) } },
-            )
-            LinkRow(R.drawable.ic_key, stringResource(R.string.pin_change_title), onClick = onChangePin)
-            LinkRow(
-                R.drawable.ic_mail,
-                stringResource(R.string.recovery_renew),
-                stringResource(R.string.recovery_renew_hint),
-                onClick = onNewRecoveryCode,
-            )
-
-            SectionTitle(stringResource(R.string.protection_title))
-            LinkRow(R.drawable.ic_shield, stringResource(R.string.protection_permissions), onClick = onOpenProtection)
-            LinkRow(R.drawable.ic_info, stringResource(R.string.limits_title), onClick = onOpenLimits)
-            Spacer(Modifier.height(24.dp))
         }
     }
 }
 
+@Composable
+private fun ThemeModePicker(selected: ThemeMode, onSelect: (ThemeMode) -> Unit) {
+    Column(Modifier.padding(horizontal = Spacing.lg, vertical = Spacing.md)) {
+        Text(stringResource(R.string.theme_title), style = MaterialTheme.typography.bodyLarge)
+        Spacer(Modifier.height(Spacing.sm))
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+            ThemeMode.entries.forEachIndexed { index, mode ->
+                SegmentedButton(
+                    selected = mode == selected,
+                    onClick = { onSelect(mode) },
+                    shape = SegmentedButtonDefaults.itemShape(index, ThemeMode.entries.size),
+                ) {
+                    Text(
+                        stringResource(
+                            when (mode) {
+                                ThemeMode.SYSTEM -> R.string.theme_system
+                                ThemeMode.LIGHT -> R.string.theme_light
+                                ThemeMode.DARK -> R.string.theme_dark
+                            },
+                        ),
+                    )
+                }
+            }
+        }
+    }
+}
+
+/** The three notification modes as rows of one group. */
 @Composable
 fun NotificationModePicker(selected: NotificationMode, onSelect: (NotificationMode) -> Unit) {
     RadioRow(
@@ -181,12 +232,14 @@ fun NotificationModePicker(selected: NotificationMode, onSelect: (NotificationMo
         onSelect = { onSelect(NotificationMode.UNTOUCHED) },
         supporting = stringResource(R.string.notification_mode_untouched_hint),
     )
+    GroupDivider()
     RadioRow(
         stringResource(R.string.notification_mode_hide_content),
         selected = selected == NotificationMode.HIDE_CONTENT,
         onSelect = { onSelect(NotificationMode.HIDE_CONTENT) },
         supporting = stringResource(R.string.notification_mode_hide_content_hint),
     )
+    GroupDivider()
     RadioRow(
         stringResource(R.string.notification_mode_hide_completely),
         selected = selected == NotificationMode.HIDE_COMPLETELY,
@@ -195,74 +248,43 @@ fun NotificationModePicker(selected: NotificationMode, onSelect: (NotificationMo
     )
 }
 
+/** Rows for a group: the saved trusted networks, then the network the phone is on right now with an add button. */
 @Composable
-fun SwitchRow(
-    title: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    supporting: String? = null,
-    enabled: Boolean = true,
-) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .toggleable(value = checked, enabled = enabled, role = Role.Switch, onValueChange = onCheckedChange)
-            .padding(horizontal = 20.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge)
-            if (supporting != null) {
-                Text(
-                    supporting,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-        Spacer(Modifier.width(16.dp))
-        Switch(checked = checked, onCheckedChange = null, enabled = enabled)
-    }
-}
-
-/** The saved trusted networks plus a button to add the network the phone is connected to right now. */
-@Composable
-fun TrustedNetworkEditor(settings: AppSettings, horizontalPadding: Dp) {
+fun TrustedNetworkEditor(settings: AppSettings) {
     val graph = LocalContext.current.graph
     val scope = rememberCoroutineScope()
     val wifi by graph.wifi.state.collectAsStateWithLifecycle()
 
-    Column {
-        settings.trustedNetworks.forEach { network ->
-            Row(
-                Modifier.fillMaxWidth().padding(start = horizontalPadding, end = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+    settings.trustedNetworks.forEach { network ->
+        Row(
+            Modifier.fillMaxWidth().padding(start = Spacing.lg, end = Spacing.xs, top = Spacing.sm, bottom = Spacing.sm),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(painterResource(R.drawable.ic_wifi), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            Spacer(Modifier.width(Spacing.lg))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    network.ssid.ifEmpty { stringResource(R.string.trusted_network_unnamed) },
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                Text(
+                    network.bssid,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            IconButton(
+                onClick = { scope.launch { graph.store.update { it.copy(trustedNetworks = it.trustedNetworks - network) } } },
             ) {
-                Icon(painterResource(R.drawable.ic_wifi), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                Spacer(Modifier.width(16.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(network.ssid.ifEmpty { stringResource(R.string.trusted_network_unnamed) }, style = MaterialTheme.typography.bodyLarge)
-                    Text(
-                        network.bssid,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                IconButton(
-                    onClick = {
-                        scope.launch { graph.store.update { it.copy(trustedNetworks = it.trustedNetworks - network) } }
-                    },
-                ) {
-                    Icon(painterResource(R.drawable.ic_delete), stringResource(R.string.trusted_network_remove))
-                }
+                Icon(painterResource(R.drawable.ic_delete), stringResource(R.string.trusted_network_remove))
             }
         }
-        if (settings.trustedNetworks.isNotEmpty()) {
-            HorizontalDivider(Modifier.padding(horizontal = horizontalPadding, vertical = 8.dp))
-        }
+        GroupDivider()
+    }
 
-        val connected = wifi as? WifiSnapshot.Connected
-        val alreadySaved = connected != null && settings.trustedNetworks.any { it.bssid == connected.bssid }
+    val connected = wifi as? WifiSnapshot.Connected
+    val alreadySaved = connected != null && settings.trustedNetworks.any { it.bssid == connected.bssid }
+    Column(Modifier.padding(Spacing.lg)) {
         Text(
             when {
                 connected == null && wifi == WifiSnapshot.NotConnected -> stringResource(R.string.trusted_network_no_wifi)
@@ -272,8 +294,8 @@ fun TrustedNetworkEditor(settings: AppSettings, horizontalPadding: Dp) {
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = horizontalPadding),
         )
+        Spacer(Modifier.height(Spacing.sm))
         OutlinedButton(
             enabled = connected != null && !alreadySaved,
             onClick = {
@@ -282,15 +304,8 @@ fun TrustedNetworkEditor(settings: AppSettings, horizontalPadding: Dp) {
                     scope.launch { graph.store.update { it.copy(trustedNetworks = it.trustedNetworks + network) } }
                 }
             },
-            modifier = Modifier.padding(horizontal = horizontalPadding, vertical = 8.dp),
         ) {
             Text(stringResource(R.string.trusted_network_add))
         }
-        Text(
-            stringResource(R.string.trusted_network_bands_hint),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = horizontalPadding),
-        )
     }
 }

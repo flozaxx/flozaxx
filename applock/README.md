@@ -20,6 +20,21 @@ Gerçek bir yalıtım değildir: kilitli uygulama öne geçtiğinde üstüne bir
 
 Yeni kilit ekranı stili: `lock/styles/` altına bir dosya, `LockScreenStyles.all` listesine bir satır.
 
+## Arayüz kuralları
+
+Uygulamanın kendi ekranları `ui/theme` ve `ui/components` üzerinden çizilir:
+
+| | Değerler |
+| --- | --- |
+| Renk | Duvar kâğıdı renkleri (Material You) ya da uygulamanın kendi paleti; `appColors.page` sayfa zemini, `appColors.card` kart, `appColors.success` tamamlandı işareti |
+| Yazı | Sistem yazı tipi, Material 3 ölçeği; başlıklar yarı kalın |
+| Boşluk | `Spacing`: 4, 8, 12, 16, 24, 32 dp; sayfa kenarı 16 dp |
+| Köşe | 8, 12, 16, 24 (kart), 32 dp |
+
+Ayarlar ve listeler `Group` kartlarının içinde `RadioRow`, `SwitchRow`, `LinkRow` satırlarıyla
+kurulur; ekranın ana eylemi `PrimaryButton`, vurgulu simge `IconBadge` ile çizilir. Kilit ekranı
+stilleri bu kuralların dışındadır, her stil kendi görünümünü taşır.
+
 ## Derleme
 
     ./gradlew :rules:test :app:testDebugUnitTest :app:assembleDebug
