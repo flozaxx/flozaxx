@@ -7,6 +7,8 @@ import kotlinx.serialization.Serializable
 
 enum class NotificationMode { UNTOUCHED, HIDE_CONTENT, HIDE_COMPLETELY }
 
+enum class ThemeMode { SYSTEM, LIGHT, DARK }
+
 @Serializable
 data class LockedApp(
     val notificationMode: NotificationMode,
@@ -27,6 +29,8 @@ data class AppSettings(
     val relockPolicy: RelockPolicy = RelockPolicy.IMMEDIATELY,
     val relockTimeoutMinutes: Int = 5,
     val lockStyleId: String = "",
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val dynamicColor: Boolean = true,
     val defaultNotificationMode: NotificationMode = NotificationMode.HIDE_CONTENT,
     val biometricEnabled: Boolean = true,
     val pin: Credential? = null,

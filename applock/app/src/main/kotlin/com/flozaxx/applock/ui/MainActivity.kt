@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.os.SystemClock
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.flozaxx.applock.graph
 import com.flozaxx.applock.protection.GuardService
+import com.flozaxx.applock.storage.ThemeMode
 import com.flozaxx.applock.ui.theme.AppTheme
 
 class MainActivity : FragmentActivity() {
@@ -24,8 +28,15 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         recoveryRequested = intent.getBooleanExtra(EXTRA_RECOVERY, false)
         setContent {
-            AppTheme {
+            val settings by graph.store.settings.collectAsStateWithLifecycle()
+            val darkTheme = when (settings.themeMode) {
+                ThemeMode.SYSTEM -> isSystemInDarkTheme()
+                ThemeMode.LIGHT -> false
+                ThemeMode.DARK -> true
+            }
+            AppTheme(darkTheme, settings.dynamicColor) {
                 AppRoot(
+                    darkTheme = darkTheme,
                     unlocked = unlocked,
                     onUnlocked = { unlocked = true },
                     recoveryRequested = recoveryRequested,

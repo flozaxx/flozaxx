@@ -1,11 +1,17 @@
 package com.flozaxx.applock.ui
 
+import android.graphics.Color
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -25,8 +31,11 @@ import com.flozaxx.applock.ui.setup.WelcomeScreen
 
 private enum class Screen { APPS, SETTINGS, STYLE, PROTECTION, LIMITS, CHANGE_PIN, NEW_RECOVERY_CODE }
 
+private enum class Destination { RECOVERY, CREDENTIALS, WELCOME, SETUP, GATE, MAIN }
+
 @Composable
 fun AppRoot(
+    darkTheme: Boolean,
     unlocked: Boolean,
     onUnlocked: () -> Unit,
     recoveryRequested: Boolean,
@@ -37,16 +46,26 @@ fun AppRoot(
     // PIN is already stored halfway through.
     var creatingCredentials by rememberSaveable { mutableStateOf(false) }
 
-    when {
-        recoveryRequested && settings.pin != null -> ForgotPinScreen(
+    val destination = when {
+        recoveryRequested && settings.pin != null -> Destination.RECOVERY
+        creatingCredentials -> Destination.CREDENTIALS
+        settings.pin == null -> Destination.WELCOME
+        !settings.setupComplete -> Destination.SETUP
+        !unlocked -> Destination.GATE
+        else -> Destination.MAIN
+    }
+    // The PIN gate is dark in every theme, so it needs light status bar icons of its own.
+    SystemBars(dark = darkTheme || destination == Destination.GATE)
+
+    when (destination) {
+        Destination.RECOVERY -> ForgotPinScreen(
             onRecovered = {
                 onUnlocked()
                 onRecoveryClosed()
             },
             onBack = onRecoveryClosed,
         )
-
-        creatingCredentials -> CredentialSetup(
+        Destination.CREDENTIALS -> CredentialSetup(
             mode = CredentialSetupMode.FIRST_TIME,
             onFinished = {
                 creatingCredentials = false
@@ -54,14 +73,21 @@ fun AppRoot(
             },
             onBack = null,
         )
+        Destination.WELCOME -> WelcomeScreen(onStart = { creatingCredentials = true })
+        Destination.SETUP -> ProtectionScreen(setupMode = true, onDone = {}, onBack = null)
+        Destination.GATE -> AppGate(settings, onUnlocked)
+        Destination.MAIN -> MainScreens()
+    }
+}
 
-        settings.pin == null -> WelcomeScreen(onStart = { creatingCredentials = true })
-
-        !settings.setupComplete -> ProtectionScreen(setupMode = true, onDone = {}, onBack = null)
-
-        !unlocked -> AppGate(settings, onUnlocked)
-
-        else -> MainScreens()
+@Composable
+private fun SystemBars(dark: Boolean) {
+    val activity = LocalActivity.current as ComponentActivity
+    LaunchedEffect(dark) {
+        val style =
+            if (dark) SystemBarStyle.dark(Color.TRANSPARENT)
+            else SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+        activity.enableEdgeToEdge(style, style)
     }
 }
 

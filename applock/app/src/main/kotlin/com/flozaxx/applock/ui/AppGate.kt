@@ -1,11 +1,7 @@
 package com.flozaxx.applock.ui
 
-import android.graphics.Color
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.LocalActivity
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -33,12 +29,6 @@ fun AppGate(settings: AppSettings, onUnlocked: () -> Unit) {
     val graph = LocalContext.current.graph
     val scope = rememberCoroutineScope()
     val appName = stringResource(R.string.app_name)
-
-    // The lock styles are dark regardless of the system theme, so the status bar icons must be light.
-    DisposableEffect(Unit) {
-        activity.enableEdgeToEdge(SystemBarStyle.dark(Color.TRANSPARENT), SystemBarStyle.dark(Color.TRANSPARENT))
-        onDispose { activity.enableEdgeToEdge() }
-    }
 
     val controller = remember {
         LockController(

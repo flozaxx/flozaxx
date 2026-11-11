@@ -41,6 +41,8 @@ class SettingsStore(private val dataStore: DataStore<Preferences>, scope: Corout
             relockPolicy = p[RELOCK_POLICY]?.let(RelockPolicy::valueOf) ?: defaults.relockPolicy,
             relockTimeoutMinutes = p[RELOCK_TIMEOUT_MINUTES] ?: defaults.relockTimeoutMinutes,
             lockStyleId = p[LOCK_STYLE] ?: defaults.lockStyleId,
+            themeMode = p[THEME_MODE]?.let(ThemeMode::valueOf) ?: defaults.themeMode,
+            dynamicColor = p[DYNAMIC_COLOR] ?: defaults.dynamicColor,
             defaultNotificationMode = p[DEFAULT_NOTIFICATION_MODE]?.let(NotificationMode::valueOf)
                 ?: defaults.defaultNotificationMode,
             biometricEnabled = p[BIOMETRIC_ENABLED] ?: defaults.biometricEnabled,
@@ -61,6 +63,8 @@ class SettingsStore(private val dataStore: DataStore<Preferences>, scope: Corout
         p[RELOCK_POLICY] = s.relockPolicy.name
         p[RELOCK_TIMEOUT_MINUTES] = s.relockTimeoutMinutes
         p[LOCK_STYLE] = s.lockStyleId
+        p[THEME_MODE] = s.themeMode.name
+        p[DYNAMIC_COLOR] = s.dynamicColor
         p[DEFAULT_NOTIFICATION_MODE] = s.defaultNotificationMode.name
         p[BIOMETRIC_ENABLED] = s.biometricEnabled
         p.setOrRemove(PIN, s.pin?.let { json.encodeToString(it) })
@@ -85,6 +89,8 @@ class SettingsStore(private val dataStore: DataStore<Preferences>, scope: Corout
         val RELOCK_POLICY = stringPreferencesKey("relock_policy")
         val RELOCK_TIMEOUT_MINUTES = intPreferencesKey("relock_timeout_minutes")
         val LOCK_STYLE = stringPreferencesKey("lock_style")
+        val THEME_MODE = stringPreferencesKey("theme_mode")
+        val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
         val DEFAULT_NOTIFICATION_MODE = stringPreferencesKey("default_notification_mode")
         val BIOMETRIC_ENABLED = booleanPreferencesKey("biometric_enabled")
         val PIN = stringPreferencesKey("pin")

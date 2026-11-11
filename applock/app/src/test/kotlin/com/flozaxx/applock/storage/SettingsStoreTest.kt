@@ -42,6 +42,8 @@ class SettingsStoreTest {
             relockPolicy = RelockPolicy.AFTER_TIMEOUT,
             relockTimeoutMinutes = 15,
             lockStyleId = "pixel",
+            themeMode = ThemeMode.DARK,
+            dynamicColor = false,
             defaultNotificationMode = NotificationMode.UNTOUCHED,
             biometricEnabled = false,
             pin = Credential("salt", "hash", 6),

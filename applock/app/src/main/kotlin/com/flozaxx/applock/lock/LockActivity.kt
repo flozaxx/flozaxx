@@ -57,7 +57,8 @@ class LockActivity : FragmentActivity() {
 
         accept(intent)
         setContent {
-            AppTheme(darkTheme = true) {
+            val settings by graph.store.settings.collectAsStateWithLifecycle()
+            AppTheme(darkTheme = true, dynamicColor = settings.dynamicColor) {
                 request?.let { current -> key(current) { LockContent(current) } }
             }
         }
