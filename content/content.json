@@ -1,8 +1,8 @@
 {
-  "basedOn": "2026-11-09T18:02:48.354163Z",
+  "basedOn": "2026-11-11T23:09:02.917035Z",
   "content": {
     "site": {
-      "updated": "11 Kasım 2026",
+      "updated": "12 Kasım 2026",
       "now": [
         {
           "project": "flozaxx-web",
@@ -14,6 +14,11 @@
         }
       ],
       "updates": [
+        {
+          "date": "12 Kas 2026",
+          "project": "noty",
+          "text": "Noty 1.14: kartlar ve IBAN, kelime işlemci gibi editör, renkli gruplar."
+        },
         {
           "date": "11 Kas 2026",
           "project": "noty",
@@ -71,7 +76,7 @@
           "Firebase",
           "Riverpod"
         ],
-        "version": "1.12.1",
+        "version": "1.14.0",
         "started": "Ekim 2026",
         "summary": "Notlarımı ve şifrelerimi tek yerde, güvenle tutmak için yaptım. Başlıklar dahil her şey cihazda, hesaba özel bir anahtarla şifrelenir; sunucuya yalnızca şifreli veri gider. Anahtarın sunucuda kopyası yoktur.",
         "features": [
@@ -95,6 +100,20 @@
           "platform": "Android"
         },
         "changelog": [
+          {
+            "version": "1.14.0",
+            "date": "12 Kasım 2026",
+            "title": "Kartlar, IBAN ve yeni editör",
+            "items": [
+              "Şifreler'de yeni kayıt çeşitleri: banka kartı (numara, son kullanma, CVV, PIN) ve IBAN (banka, hesap sahibi). IBAN dörtlü gruplarla görünür, tek dokunuşla kopyalanır.",
+              "Not editörü kelime işlemci gibi: başlık ve hizalama menüleri, bağlantı ekleme (Ctrl+K), yazı ve vurgu rengi, kod, girinti; altta kelime ve karakter sayısı.",
+              "Nottaki fotoğrafın üstüne gelince sil, düzenle ve boyutlandır düğmeleri; genişlik ve konum (sol, orta, sağ) notla kaydedilir.",
+              "Notlar içerikleri kadar uzayan kartlarda; kartta grup etiketi, “Paylaşılıyor · 2 kişi” ve “Dün”, “2 sa” gibi tarih. Ada göre sıralama.",
+              "Yan menüde renkli gruplar, Benimle paylaşılanlar ve Çöp kutusu; gruplar ana sayfaya sabitlenebilir. Çıkış yap artık hesap satırında.",
+              "Web'de sekmelerin kendi adresi var: /notlar, /sifreler, /ayarlar.",
+              "Düzeltmeler: not düzenlemeye geçince yazı yazılamaması, yazarken N tuşunun yeni not açması, silinen paylaşılan notun listede kalması."
+            ]
+          },
           {
             "version": "1.13.0",
             "date": "11 Kasım 2026",
