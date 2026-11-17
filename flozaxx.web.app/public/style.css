@@ -881,13 +881,18 @@ svg.icon-fill {
   color: var(--muted);
 }
 
+/* SHA-256 kartın altında, tam genişlikte ayrı bir satır: kod tek satıra
+   sığar, Kopyala sağda aynı hizada. */
 .dl-sha {
+  grid-column: 2 / -1;
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 2px var(--s2);
-  margin: var(--s1) 0 0;
+  align-items: center;
+  gap: var(--s2);
+  margin: var(--s3) 0 0;
+  padding-top: var(--s3);
+  border-top: 1px solid var(--line);
   font-size: 0.75rem;
+  line-height: 1.4;
   color: var(--muted);
 }
 
@@ -896,12 +901,21 @@ svg.icon-fill {
 }
 
 .dl-sha code {
+  flex: 1 1 auto;
+  min-width: 0;
   font-family: var(--mono);
   overflow-wrap: anywhere;
 }
 
 .dl-sha-label {
+  flex: none;
   font-weight: 600;
+}
+
+.dl-sha .text-btn {
+  flex: none;
+  padding: 0;
+  font-size: inherit;
 }
 
 .dl-card.is-empty .tile {
@@ -931,6 +945,18 @@ svg.icon-fill {
     grid-column: 2;
     justify-self: start;
     margin-top: var(--s3);
+  }
+
+  /* Dar ekranda: üstte SHA-256 ve Kopyala, altta kodun tamamı. */
+  .dl-sha {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .dl-sha code {
+    order: 3;
+    flex-basis: 100%;
   }
 }
 

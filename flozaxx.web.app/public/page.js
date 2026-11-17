@@ -198,9 +198,9 @@ function downloadView() {
         <div class="dl-body">
           <h2><a href="${projectUrl(p)}">${esc(p.name)}</a>${statusHtml(p)}</h2>
           <p class="dl-info">Bilgiler yükleniyor…</p>
-          <p class="dl-sha"></p>
         </div>
         <a class="btn btn-primary" href="${downloadUrl(p)}">${UI_ICONS.download}İndir<span class="btn-note">${esc(p.download.platform)}</span></a>
+        <p class="dl-sha"></p>
       </article>`).join("")}
     </div>
     <p class="dl-note">Android, Play Store dışından indirilen uygulamalar için “bilinmeyen kaynak” izni ister. Kurulumdan önce SHA-256 kodunu karşılaştırarak dosyanın değişmediğini doğrulayabilirsin. Kalıcı bağlantı: <code>flozaxx.com/&lt;proje&gt;/dllatest</code></p>`;
