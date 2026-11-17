@@ -1,5 +1,5 @@
 {
-  "basedOn": "2026-11-12T13:28:22.632074Z",
+  "basedOn": "2026-11-17T12:36:05.156382Z",
   "content": {
     "site": {
       "updated": "17 Kasım 2026",
@@ -14,6 +14,11 @@
         }
       ],
       "updates": [
+        {
+          "date": "17 Kas 2026",
+          "project": "noty",
+          "text": "Noty 1.16: sayfalar yan menünün yanında açılır, klasörlere ikon."
+        },
         {
           "date": "17 Kas 2026",
           "project": "noty",
@@ -86,7 +91,7 @@
           "Firebase",
           "Riverpod"
         ],
-        "version": "1.15.0",
+        "version": "1.16.0",
         "started": "Ekim 2026",
         "summary": "Notlarımı ve şifrelerimi tek yerde, güvenle tutmak için yaptım. Başlıklar dahil her şey cihazda, hesaba özel bir anahtarla şifrelenir; sunucuya yalnızca şifreli veri gider. Anahtarın sunucuda kopyası yoktur.",
         "features": [
@@ -110,6 +115,18 @@
           "platform": "Android"
         },
         "changelog": [
+          {
+            "version": "1.16.0",
+            "date": "17 Kasım 2026",
+            "title": "Sayfalar yan menünün yanında, klasör ikonları",
+            "items": [
+              "Bilgisayarda not, şifre, klasör, çöp kutusu ve paylaşılanlar artık ayrı bir tam ekran sayfada değil, sağdaki alanda açılır; yan menü hep görünür kalır.",
+              "Yan menüden başka bir sayfaya ya da klasöre geçince açık sayfa kapanır; kaydedilmemiş değişiklik varsa önce sorulur.",
+              "Klasörlere ikon: okul, iş, ev, aile, para, seyahat ve daha fazlası; ikon klasörün renginde bir karede görünür.",
+              "Klasör düzenleyici yenilendi: üstte canlı önizleme, altında ad, renk ve ikon seçimi.",
+              "Sağ tık menüleri ve alttan açılan pencereler uygulamanın tamamının üstünde açılır; dışına tıklayınca kapanır."
+            ]
+          },
           {
             "version": "1.15.0",
             "date": "17 Kasım 2026",
