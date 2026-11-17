@@ -1,8 +1,8 @@
 {
-  "basedOn": "2026-11-12T12:23:42.788105Z",
+  "basedOn": "2026-11-12T13:28:22.632074Z",
   "content": {
     "site": {
-      "updated": "12 Kasım 2026",
+      "updated": "17 Kasım 2026",
       "now": [
         {
           "project": "flozaxx-web",
@@ -14,6 +14,11 @@
         }
       ],
       "updates": [
+        {
+          "date": "17 Kas 2026",
+          "project": "noty",
+          "text": "Noty 1.15: “+ Yeni” ve hesap menüsü yan menüde, ayarlar penceresi, boyutlanan panel."
+        },
         {
           "date": "12 Kas 2026",
           "project": "noty",
@@ -81,7 +86,7 @@
           "Firebase",
           "Riverpod"
         ],
-        "version": "1.14.1",
+        "version": "1.15.0",
         "started": "Ekim 2026",
         "summary": "Notlarımı ve şifrelerimi tek yerde, güvenle tutmak için yaptım. Başlıklar dahil her şey cihazda, hesaba özel bir anahtarla şifrelenir; sunucuya yalnızca şifreli veri gider. Anahtarın sunucuda kopyası yoktur.",
         "features": [
@@ -105,6 +110,19 @@
           "platform": "Android"
         },
         "changelog": [
+          {
+            "version": "1.15.0",
+            "date": "17 Kasım 2026",
+            "title": "Yeni yan menü, hesap menüsü ve ayarlar penceresi",
+            "items": [
+              "Yan menünün tepesinde “+ Yeni”: not, şifre, kart / IBAN ya da şifre üretici, ana sayfadakiyle aynı menü.",
+              "Sol altta tek hesap kartı; tıklayınca üstünde menü açılır: Ayarlar (Ctrl+,), tema (koyu, açık, sistem), kilitle (Ctrl+L), klavye kısayolları ve çıkış.",
+              "Bilgisayarda Ayarlar ortada bir pencerede açılır: solda bölümler, sağda ayarlar. Esc ya da dışarı tıklamak kapatır. Telefonda değişiklik yok.",
+              "Normal / Detaylı görünüm seçimi ana sayfa başlığına taşındı.",
+              "Detaylı görünümde sütun genişliği aradaki çizgiden sürüklenir (çift tık sıfırlar); sıra, genişlik ve büyütülen pencere hatırlanır.",
+              "Detaylı görünümde klavye: oklar listede gezer, Enter ayrıntıya geçer, Esc listeye döner, Tab pencereler arasında gezer. Satırlar ve boş ekranlar normal görünümdekiyle aynı."
+            ]
+          },
           {
             "version": "1.14.1",
             "date": "12 Kasım 2026",
