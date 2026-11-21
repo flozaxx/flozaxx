@@ -1,8 +1,8 @@
 {
-  "basedOn": "2026-11-17T12:36:05.156382Z",
+  "basedOn": "2026-11-17T17:29:29.082480Z",
   "content": {
     "site": {
-      "updated": "17 Kasım 2026",
+      "updated": "21 Kasım 2026",
       "now": [
         {
           "project": "flozaxx-web",
@@ -14,6 +14,11 @@
         }
       ],
       "updates": [
+        {
+          "date": "21 Kas 2026",
+          "project": "noty",
+          "text": "Noty 1.17: notlara gömülü kasa kayıtları, Android ana ekran widget'ı."
+        },
         {
           "date": "17 Kas 2026",
           "project": "noty",
@@ -91,7 +96,7 @@
           "Firebase",
           "Riverpod"
         ],
-        "version": "1.16.0",
+        "version": "1.17.0",
         "started": "Ekim 2026",
         "summary": "Notlarımı ve şifrelerimi tek yerde, güvenle tutmak için yaptım. Başlıklar dahil her şey cihazda, hesaba özel bir anahtarla şifrelenir; sunucuya yalnızca şifreli veri gider. Anahtarın sunucuda kopyası yoktur.",
         "features": [
@@ -115,6 +120,19 @@
           "platform": "Android"
         },
         "changelog": [
+          {
+            "version": "1.17.0",
+            "date": "21 Kasım 2026",
+            "title": "Notlara gömülü kasa kayıtları ve Android widget'ı",
+            "items": [
+              "Not yazarken /element ile kasadaki bir şifre, kart, IBAN ya da not seçilip nota kart olarak gömülür; kart basit ya da ayrıntılı (kullanıcı adı, gizli şifre ve kopyala) görünür.",
+              "Gömülü kart kaydın kopyası değildir, kasadaki güncel hâlinden çizilir; kayıt silinirse \"Kayıt bulunamadı\" yazar.",
+              "Paylaşılan notlarda gömülü kayıtlar her zaman kapalı görünür; şifreler ve kartlar paylaşılan kişiye açılmaz.",
+              "Android ana ekran widget'ı: bir not ana ekrana eklenir, içeriği kaydırılabilir; yapılacaklar kutucukları widget'tan işaretlenir ve nota kaydedilir.",
+              "Widget Noty'nin yazı tipi ve renkleriyle çizilir; herhangi bir yerine dokununca not açılır. Notun okuma görünümünde \"Ana ekrana ekle\" de var.",
+              "Kasa kilitliyken widget varsayılan olarak \"Kasa kilitli\" gösterir; istenirse widget başına kilitliyken de gösterme seçilebilir."
+            ]
+          },
           {
             "version": "1.16.0",
             "date": "17 Kasım 2026",
