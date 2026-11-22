@@ -2,7 +2,7 @@
   "basedOn": "2026-11-21T20:02:39.588302Z",
   "content": {
     "site": {
-      "updated": "21 Kasım 2026",
+      "updated": "22 Kasım 2026",
       "now": [
         {
           "project": "flozaxx-web",
@@ -14,6 +14,11 @@
         }
       ],
       "updates": [
+        {
+          "date": "22 Kas 2026",
+          "project": "noty",
+          "text": "Noty 1.17.1: yeni sürüm bildirimi, gezinme çubuğu düzeltmesi."
+        },
         {
           "date": "21 Kas 2026",
           "project": "noty",
@@ -96,7 +101,7 @@
           "Firebase",
           "Riverpod"
         ],
-        "version": "1.17.0",
+        "version": "1.17.1",
         "started": "Ekim 2026",
         "summary": "Notlarımı ve şifrelerimi tek yerde, güvenle tutmak için yaptım. Başlıklar dahil her şey cihazda, hesaba özel bir anahtarla şifrelenir; sunucuya yalnızca şifreli veri gider. Anahtarın sunucuda kopyası yoktur.",
         "features": [
@@ -120,6 +125,17 @@
           "platform": "Android"
         },
         "changelog": [
+          {
+            "version": "1.17.1",
+            "date": "22 Kasım 2026",
+            "title": "Yeni sürüm bildirimi, gezinme çubuğu düzeltmesi",
+            "items": [
+              "Telefonda yeni sürüm çıkınca açılışta bir kart haber verir: yenilikler, \"Hemen indir\" ve \"Daha sonra hatırlat\" (bir gün sonra yeniden sorar).",
+              "Kart kapatılsa da Ayarlar'ın üstünde güncelleyene kadar \"Yeni sürüm\" satırı kalır.",
+              "Alttan açılan pencerelerin düğmeleri (klasöre ekleme, paylaşım, gruplar, kayıt seçici) artık telefonun gezinme çubuğunun altında kalmıyor.",
+              "Klasör sayfasında ve notu okurken son satır gezinme çubuğunun üstünde durur."
+            ]
+          },
           {
             "version": "1.17.0",
             "date": "21 Kasım 2026",
