@@ -1,5 +1,5 @@
 {
-  "basedOn": "2026-11-22T12:26:26.173484Z",
+  "basedOn": "2026-11-22T12:52:04.334536Z",
   "content": {
     "site": {
       "updated": "22 Kasım 2026",
@@ -14,6 +14,11 @@
         }
       ],
       "updates": [
+        {
+          "date": "22 Kas 2026",
+          "project": "noty",
+          "text": "Noty 1.17.4: notlarda hesap satırları, tek Noty penceresi."
+        },
         {
           "date": "22 Kas 2026",
           "project": "noty",
@@ -111,7 +116,7 @@
           "Firebase",
           "Riverpod"
         ],
-        "version": "1.17.3",
+        "version": "1.17.4",
         "started": "Ekim 2026",
         "summary": "Notlarımı ve şifrelerimi tek yerde, güvenle tutmak için yaptım. Başlıklar dahil her şey cihazda, hesaba özel bir anahtarla şifrelenir; sunucuya yalnızca şifreli veri gider. Anahtarın sunucuda kopyası yoktur.",
         "features": [
@@ -135,6 +140,18 @@
           "platform": "Android"
         },
         "changelog": [
+          {
+            "version": "1.17.4",
+            "date": "22 Kasım 2026",
+            "title": "Notlarda hesap satırları, tek Noty penceresi",
+            "items": [
+              "Notta bir satırı \"=\" ile bitirince sonuç yanında soluk olarak belirir; Tab (telefonda dokunmak) sonucu yazar, Esc kapatır.",
+              "Sayılar Türkçe (12.500,75) ya da İngilizce (12500.75) yazılabilir; sonuç Türkçe gösterilir.",
+              "Değişkenler (kira = 12.500, sonra kira * 12 =), yüzde (1.250 + %18), önceki ve toplam; topla(1; 2; 3), ortalama, min, maks, yuvarla, kök gibi fonksiyonlar.",
+              "TL, $, € ve £ sonuçta korunur; hesap tamamen cihazda yapılır.",
+              "Android: widget'tan nota dokununca ya da güncellemeden sonra \"Aç\" deyince son uygulamalarda iki Noty penceresi oluşması düzeldi."
+            ]
+          },
           {
             "version": "1.17.3",
             "date": "22 Kasım 2026",
